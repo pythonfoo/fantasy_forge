@@ -46,6 +46,26 @@ class Area:
         return self.name
 
 
+class Gateway:
+    """A Gateway connects two areas."""
+
+    name: str
+    description: str
+    source: Area
+    target: Area
+
+    def __init__(self, name: str, source: Area, target: Area):
+        self.name = name
+        self.source = source
+        self.target = target
+
+    def __str__(self) -> str:
+        return self.name
+
+    def __repr__(self) -> str:
+        return f"Gateway({self.name}, {self.source} -> {self.target})"
+
+
 class Item:
     """An Item is an object with which players and NPC can interact with."""
 
