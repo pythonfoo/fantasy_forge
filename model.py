@@ -14,6 +14,9 @@ class NPC:
         self.name = name
         self.health = health
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Area:
     """An Area is a place in the world, containing NPCs, Items and connections to other areas."""

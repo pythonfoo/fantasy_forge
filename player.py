@@ -1,4 +1,4 @@
-from model import Inventory, Item
+from model import Inventory, Item, NPC
 
 BASE_INVENTORY_CAPACITY = 10
 
@@ -26,3 +26,14 @@ class Player:
         item = self.inventory.get(item_name)
         self.main_hand = item
         print(f"{self.name} equipped {item.name}")
+
+    def attack(self, target: NPC):
+        """Player attacks NPC using his main hand."""
+        print(f"{self.name} attacks {target.name} with {self.main_hand.name}")
+        damage = self.main_hand.damage
+        target.health = target.health - damage
+
+        if target.health:
+            print(f"{target} remains at {target.health} health points")
+        else:
+            print(f"{target} vanished.")
