@@ -1,3 +1,4 @@
+from typing import Self
 from model import Inventory, Item, NPC
 
 BASE_INVENTORY_CAPACITY = 10
@@ -8,7 +9,7 @@ class Player:
     main_hand: Item
     inventory: Inventory
 
-    def __init__(self, name):
+    def __init__(self: Self, name):
         self.name = name
         self.inventory = Inventory(BASE_INVENTORY_CAPACITY)
 

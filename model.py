@@ -1,4 +1,4 @@
-from typing import Iterator
+from typing import Iterator, Self
 
 
 class Area:
@@ -8,24 +8,24 @@ class Area:
     description: str
     contents: list
 
-    def __init__(self, name: str, description: str):
+    def __init__(self: Self, name: str, description: str):
         self.name = name
         self.description = description
 
-    def on_look(self) -> str:
+    def on_look(self: Self) -> str:
         output = f"{self.description}\n"
         for obj in self.contents:
             output += f"You see {obj.name}\n"
         return output
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self: Self) -> Iterator:
         for obj in self.contents:
             yield obj
 
-    def __repr__(self) -> str:
+    def __repr__(self: Self) -> str:
         return f"Area({self.name})"
 
-    def __str__(self) -> str:
+    def __str__(self: Self) -> str:
         return self.name
 
 
@@ -37,15 +37,15 @@ class Gateway:
     source: Area
     target: Area
 
-    def __init__(self, name: str, source: Area, target: Area):
+    def __init__(self: Self, name: str, source: Area, target: Area):
         self.name = name
         self.source = source
         self.target = target
 
-    def __str__(self) -> str:
+    def __str__(self: Self) -> str:
         return self.name
 
-    def __repr__(self) -> str:
+    def __repr__(self: Self) -> str:
         return f"Gateway({self.name}, {self.source} -> {self.target})"
 
 
@@ -56,18 +56,18 @@ class Item:
     description: str
     value: int
 
-    def __init__(self, name: str, description: str, value: int) -> None:
+    def __init__(self: Self, name: str, description: str, value: int) -> None:
         self.name = name
         self.description = description
         self.value = value
 
-    def on_look(self) -> str:
+    def on_look(self: Self) -> str:
         return self.description
 
-    def __repr__(self) -> str:
+    def __repr__(self: Self) -> str:
         return f"Item({self.name}, {self.description}, {self.value})"
 
-    def __str__(self) -> str:
+    def __str__(self: Self) -> str:
         return self.name
 
 
@@ -77,18 +77,18 @@ class Inventory:
     capacity: int
     contents: list[Item]
 
-    def __init__(self, capacity: int):
+    def __init__(self: Self, capacity: int):
         self.capacity = capacity
         self.contents = []
 
-    def add(self, item: Item) -> None:
+    def add(self: Self, item: Item) -> None:
         """Adds Item to inventory with respect to capacity."""
         if len(self) < self.capacity:
             self.contents.append(item)
         else:
             raise Exception(f"Maximum capacity ({self.capacity}) reached.")
 
-    def get(self, item_name: str) -> Item:
+    def get(self: Self, item_name: str) -> Item:
         """Returns item from inventory based on item name."""
         for item in self.contents:
             if item.name == item_name:
@@ -96,20 +96,20 @@ class Inventory:
                 return item
         raise Exception(f"Item {item_name} couldn't be found.")
 
-    def on_look(self) -> str:
+    def on_look(self: Self) -> str:
         output = f"In the inventory you find {', '.join(map(str, self))}"
         return output
 
-    def __len__(self) -> int:
+    def __len__(self: Self) -> int:
         """Returns current capacity."""
         return len(self.contents)
 
-    def __iter__(self) -> Iterator[Item]:
+    def __iter__(self: Self) -> Iterator[Item]:
         """Iterates over items in inventory."""
         for item in self.contents:
             yield item
 
-    def __repr__(self) -> str:
+    def __repr__(self: Self) -> str:
         output: str = f"Inventory({len(self)}/{self.capacity})\n"
         output += "[" + ", ".join(map(lambda i: i.name, self.contents)) + "]"
         return output
@@ -124,7 +124,7 @@ class NPC:
     name: str
     health: int
 
-    def __init__(self, name: str, health: int) -> None:
+    def __init__(self: Self, name: str, health: int) -> None:
         self.name = name
         self.health = health
 
@@ -137,6 +137,8 @@ class Weapon(Item):
 
     damage: int
 
-    def __init__(self, name: str, description: str, value: int, damage: int) -> None:
+    def __init__(
+        self: Self, name: str, description: str, value: int, damage: int
+    ) -> None:
         super().__init__(name, description, value)
         self.damage = damage
