@@ -96,6 +96,7 @@ class Inventory:
         """Returns item from inventory based on item name."""
         for item in self.contents:
             if item.name == item_name:
+                self.contents.remove(item)
                 return item
         raise Exception(f"Item {item_name} couldn't be found.")
 
