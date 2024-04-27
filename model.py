@@ -131,6 +131,7 @@ class NPC:
     def __str__(self) -> str:
         return self.name
 
+
 class Enemy(NPC):
     """An enemy is a NPC which will fight back."""
     weapon: Weapon
