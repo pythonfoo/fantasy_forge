@@ -15,6 +15,21 @@ class Area:
 
     name: str
     description: str
+    contents: list
+
+    def __init__(self, name: str, description: str):
+        self.name = name
+        self.description = description
+
+    def __iter__(self) -> Iterator:
+        for obj in self.contents:
+            yield obj
+
+    def __repr__(self) -> str:
+        return f"Area({self.name})"
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Item:
