@@ -1,23 +1,6 @@
 from typing import Iterator
 
 
-class NPC:
-    """A non player character is a person in the world.
-
-    The Player might interact with NPCs.
-    """
-
-    name: str
-    health: int
-
-    def __init__(self, name: str, health: int) -> None:
-        self.name = name
-        self.health = health
-
-    def __str__(self) -> str:
-        return self.name
-
-
 class Area:
     """An Area is a place in the world, containing NPCs, Items and connections to other areas."""
 
@@ -88,16 +71,6 @@ class Item:
         return self.name
 
 
-class Weapon(Item):
-    """A Weapon is an item, which can deal damage to players or NPCs."""
-
-    damage: int
-
-    def __init__(self, name: str, description: str, value: int, damage: int) -> None:
-        super().__init__(name, description, value)
-        self.damage = damage
-
-
 class Inventory:
     """An Inventory contains multiple items."""
 
@@ -140,3 +113,30 @@ class Inventory:
         output: str = f"Inventory({len(self)}/{self.capacity})\n"
         output += "[" + ", ".join(map(lambda i: i.name, self.contents)) + "]"
         return output
+
+
+class NPC:
+    """A non player character is a person in the world.
+
+    The Player might interact with NPCs.
+    """
+
+    name: str
+    health: int
+
+    def __init__(self, name: str, health: int) -> None:
+        self.name = name
+        self.health = health
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class Weapon(Item):
+    """A Weapon is an item, which can deal damage to players or NPCs."""
+
+    damage: int
+
+    def __init__(self, name: str, description: str, value: int, damage: int) -> None:
+        super().__init__(name, description, value)
+        self.damage = damage
