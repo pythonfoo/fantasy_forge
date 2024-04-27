@@ -14,7 +14,7 @@ class Player:
     def look_at(self, obj: object):
         """Prints the description of an object."""
         print(f"{self.name} looks at {obj.name}")
-        print(f"{obj.description}")
+        print(obj.on_look())
 
     def pick_up(self, item_name: str):
         self.inventory.add(item_name)

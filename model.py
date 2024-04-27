@@ -21,6 +21,12 @@ class Area:
         self.name = name
         self.description = description
 
+    def on_look(self) -> str:
+        output = f"{self.description}\n"
+        for obj in self.contents:
+            output += f"You see {obj.name}\n"
+        return output
+
     def __iter__(self) -> Iterator:
         for obj in self.contents:
             yield obj
@@ -44,8 +50,14 @@ class Item:
         self.description = description
         self.value = value
 
+    def on_look(self) -> str:
+        return self.description
+
     def __repr__(self) -> str:
         return f"Item({self.name}, {self.description}, {self.value})"
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Inventory:
@@ -71,6 +83,10 @@ class Inventory:
             if item.name == item_name:
                 return item
         raise Exception(f"Item {item_name} couldn't be found.")
+
+    def on_look(self) -> str:
+        output = f"In the inventory you find {', '.join(map(str, self))}"
+        return output
 
     def __len__(self) -> int:
         """Returns current capacity."""
