@@ -8,6 +8,11 @@ class NPC:
     """
 
     name: str
+    health: int
+
+    def __init__(self, name: str, health: int) -> None:
+        self.name = name
+        self.health = health
 
 
 class Area:
@@ -58,6 +63,16 @@ class Item:
 
     def __str__(self) -> str:
         return self.name
+
+
+class Weapon(Item):
+    """A Weapon is an item, which can deal damage to players or NPCs."""
+
+    damage: int
+
+    def __init__(self, name: str, description: str, value: int, damage: int) -> None:
+        super().__init__(name, description, value)
+        self.damage = damage
 
 
 class Inventory:
