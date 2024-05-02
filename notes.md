@@ -28,6 +28,9 @@ Aktionen über die der Spieler mit der Welt interagieren kann. Diese Aktionen k�
 - Rucksack Item welches die Inventarkapazität eines Spielers erhöhen kann
 - Attribut "can_be_picked_up" welches bestimmt ob ein Item vom Spieler aufgehoben werden kann
 - Effekt Items: Items können den Spieler beinflussen, wenn Sie aufgeboben (pick_up), ausgerüstet (equip) oder benutzt werden (use)
+- Attribut: moveable: bool
+- Attribut: carryable: bool
+- Player Attribute (S.P.E.C.I.A.L)
 
 ### Container Klasse
 

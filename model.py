@@ -106,8 +106,7 @@ class Inventory:
 
     def __iter__(self: Self) -> Iterator[Item]:
         """Iterates over items in inventory."""
-        for item in self.contents:
-            yield item
+        yield from iter(self.contents)
 
     def __repr__(self: Self) -> str:
         output: str = f"Inventory({len(self)}/{self.capacity})\n"
@@ -161,3 +160,9 @@ class Enemy(Person):
 
     def __repr__(self: Self) -> str:
         return f"Weapon({self.name}, {self.weapon})"
+
+
+class Container(Item, Inventory):
+    def __init__(self: Self, name: str, description: str, value: int, capacity: int):
+        super(Item).__init__(name, description, value)
+        super(Inventory).__init__(capacity)
