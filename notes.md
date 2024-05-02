@@ -1,4 +1,6 @@
-# Notes
+# Fantasy Forge (working title)
+
+Ziel ist es eine API zu entwickeln, die in der Lage ist Text Adventure oder interactive fiction Spiele zu erstellen. Das ganze soll data driven sein, es soll sehr niederschwellig möglich eigene Spiele zu entwickeln.
 
 ## Klassen
 
