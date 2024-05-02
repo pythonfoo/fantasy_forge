@@ -14,11 +14,12 @@ class Player(Person):
         self.inventory = Inventory(BASE_INVENTORY_CAPACITY)
 
     def look_at(self, obj: object):
-        """Prints the description of an object."""
+        """Calls the on_look method of an object."""
         print(f"{self.name} looks at {obj}")
         print(obj.on_look())
 
     def pick_up(self, item_name: str):
+        """Picks up item and puts it into the inventory."""
         self.inventory.add(item_name)
         print(f"{self.name} picked up {item_name} and put the item in the inventory.")
 
@@ -29,7 +30,7 @@ class Player(Person):
         print(f"{self.name} equipped {item.name}")
 
     def attack(self, target: Person):
-        """Player attacks NPC using his main hand."""
+        """Player attacks Person using his main hand."""
         print(f"{self.name} attacks {target.name} with {self.main_hand.name}")
         damage = self.main_hand.damage
         target.health = target.health - damage
