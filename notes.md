@@ -31,6 +31,12 @@ Aktionen über die der Spieler mit der Welt interagieren kann. Diese Aktionen k�
 - Attribut: moveable: bool
 - Attribut: carryable: bool
 - Player Attribute (S.P.E.C.I.A.L)
+- Chaosdorf als Setting
+- Deadline für Motivation
+- Zufällige Items
+  - Roguelike
+- Levelkurve
+- Dialogoptionen
 
 ### Container Klasse
 
