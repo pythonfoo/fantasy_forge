@@ -115,11 +115,8 @@ class Inventory:
         return output
 
 
-class NPC:
-    """A non player character is a person in the world.
-
-    The Player might interact with NPCs.
-    """
+class Person:
+    """A person in the world."""
 
     name: str
     health: int
@@ -132,27 +129,6 @@ class NPC:
         return self.name
 
 
-class Enemy(NPC):
-    """An enemy is a NPC which will fight back."""
-    weapon: Weapon
-    loot: Inventory
-
-    def __init__(self: Self, name: str, health: int):
-        super().__init__(name, health)
-        self.loot = Inventory(5)
-    
-    def attack(self: Self, target: Player):
-        damage = self.weapon.damage
-        target.health = target.health - damage
-        print(f"{self.name} attacks {target.name} using {self.weapon}")
-
-    def __str__(self: Self) -> str:
-        return self.name
-
-    def __repr__(self: Self) -> str:
-        return f"Weapon({self.name}, {self.weapon})"
-
-
 class Weapon(Item):
     """A Weapon is an item, which can deal damage to players or NPCs."""
 
@@ -163,3 +139,25 @@ class Weapon(Item):
     ) -> None:
         super().__init__(name, description, value)
         self.damage = damage
+
+
+class Enemy(Person):
+    """An enemy is a person which will fight back."""
+
+    weapon: Weapon
+    loot: Inventory
+
+    def __init__(self: Self, name: str, health: int):
+        super().__init__(name, health)
+        self.loot = Inventory(5)
+
+    def attack(self: Self, target: Person):
+        damage = self.weapon.damage
+        target.health = target.health - damage
+        print(f"{self.name} attacks {target.name} using {self.weapon}")
+
+    def __str__(self: Self) -> str:
+        return self.name
+
+    def __repr__(self: Self) -> str:
+        return f"Weapon({self.name}, {self.weapon})"

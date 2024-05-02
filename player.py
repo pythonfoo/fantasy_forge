@@ -1,16 +1,16 @@
 from typing import Self
-from model import Inventory, Item, NPC
+from model import Inventory, Item, Person
 
 BASE_INVENTORY_CAPACITY = 10
+BASE_PLAYER_HEALTH = 100
 
 
-class Player:
-    name: str
+class Player(Person):
     main_hand: Item
     inventory: Inventory
 
-    def __init__(self: Self, name):
-        self.name = name
+    def __init__(self: Self, name: str, health: int = BASE_PLAYER_HEALTH):
+        super().__init__(name, health)
         self.inventory = Inventory(BASE_INVENTORY_CAPACITY)
 
     def look_at(self, obj: object):
@@ -28,7 +28,7 @@ class Player:
         self.main_hand = item
         print(f"{self.name} equipped {item.name}")
 
-    def attack(self, target: NPC):
+    def attack(self, target: Person):
         """Player attacks NPC using his main hand."""
         print(f"{self.name} attacks {target.name} with {self.main_hand.name}")
         damage = self.main_hand.damage
