@@ -4,17 +4,107 @@ Ziel ist es eine API zu entwickeln, die in der Lage ist Text Adventure oder inte
 
 ## Klassen
 
-- Entity
-  - Area
-  - Character
-    - Player
-    - Enemy
-  - Item
-    - Weapon
-  - Gateway
-  - Key (planned)
-- Inventory
-  - Container (planned)
+### Entity
+
+```python
+class Entity():
+  name: str
+  description: str
+```
+
+### Area
+
+```python
+class Area(Entity):
+  name: str  # inherited from Entity
+  description: str  # inherited from Entity
+  contents: list[Entity]
+```
+
+### Character
+
+```python
+class Character(Entity):
+  name: str  # inherited from Entity
+  description: str  # inherited from Entity
+  health: int
+  alive: bool
+```
+
+### Player
+
+```python
+class Player(Character):
+  name: str  # inherited from Entity
+  description: str  # inherited from Entity
+  health: int # inherited from Character
+  alive: bool # inherited from Character
+  main_hand: Item
+  inventory: Inventory
+```
+
+### Enemy
+
+```python
+class Enemy(Entity):
+  name: str  # inherited from Entity
+  description: str  # inherited from Entity
+  health: int # inherited from Character
+  alive: bool # inherited from Character
+  weapon: Weapon
+  loot: Inventory
+```
+
+### Item
+
+```python
+class Item(Entity):
+  name: str  # inherited from Entity
+  description: str  # inherited from Entity
+  moveable: bool
+  carryable: bool
+```
+
+### Weapon
+
+```python
+class Weapon(Item):
+  name: str  # inherited from Entity
+  description: str  # inherited from Entity
+  moveable: bool  # inherited from Item
+  carryable: bool  # inherited from Item
+  damage: int
+```
+
+### Gateway
+
+```python
+class Gateway(Entity):
+  name: str  # inherited from Entity
+  description: str  # inherited from Entity
+  source: area
+  target: area
+```
+
+### Inventory
+
+```python
+class Inventory:
+  capacity: int
+  contents: list[Item]
+```
+
+### Container
+
+```python
+class Container(Entity, Inventory):
+  name: str  # inherited from Entity
+  description: str  # inherited from Entity
+  capacity: int  # inherited from Inventory
+  contents: list[Item]  # inherited from Inventory
+```
+
+- Key (planned)
 - Currency (planned)
 
 ## Spieler Verben
