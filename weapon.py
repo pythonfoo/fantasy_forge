@@ -8,8 +8,6 @@ class Weapon(Item):
 
     damage: int
 
-    def __init__(
-        self: Self, name: str, description: str, value: int, damage: int
-    ) -> None:
+    def __init__(self: Self, name: str, description: str, damage: int) -> None:
         super().__init__(name, description)
         self.damage = damage
