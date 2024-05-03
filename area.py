@@ -8,10 +8,11 @@ from entity import Entity
 class Area(Entity):
     """An Area is a place in the world, containing NPCs, Items and connections to other areas."""
 
-    contents: list
+    contents: list[Entity]
 
     def __init__(self: Self, name: str, description: str):
         super().__init__(name, description)
+        self.contents = []
 
     def __iter__(self: Self) -> Iterator:
         for obj in self.contents:
