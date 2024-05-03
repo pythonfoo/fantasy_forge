@@ -44,7 +44,7 @@ class Area(Entity):
 
 
 class Gateway(Entity):
-    """A Gateway connects two areas."""
+    """A Gateway is a one-way connection between two areas."""
 
     source: Area
     target: Area
@@ -54,11 +54,12 @@ class Gateway(Entity):
         self.source = source
         self.target = target
 
-    def __str__(self: Self) -> str:
-        return self.name
-
     def __repr__(self: Self) -> str:
         return f"Gateway({self.name}, {self.source} -> {self.target})"
+
+    def on_use(self: Self) -> Area:
+        """Returns the target area."""
+        return self.target
 
 
 class Item(Entity):
