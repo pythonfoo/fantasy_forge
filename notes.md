@@ -4,16 +4,17 @@ Ziel ist es eine API zu entwickeln, die in der Lage ist Text Adventure oder inte
 
 ## Klassen
 
-- Area
-- Person
-  - Player
-  - Enemy
-- Item
-  - Weapon
+- Entity
+  - Area
+  - Character
+    - Player
+    - Enemy
+  - Item
+    - Weapon
+  - Gateway
   - Key (planned)
 - Inventory
   - Container (planned)
-- Gateway
 - Currency (planned)
 
 ## Spieler Verben
@@ -28,10 +29,9 @@ Aktionen über die der Spieler mit der Welt interagieren kann. Diese Aktionen k�
 ## Ideen
 
 - Rucksack Item welches die Inventarkapazität eines Spielers erhöhen kann
-- Attribut "can_be_picked_up" welches bestimmt ob ein Item vom Spieler aufgehoben werden kann
 - Effekt Items: Items können den Spieler beinflussen, wenn Sie aufgeboben (pick_up), ausgerüstet (equip) oder benutzt werden (use)
-- Attribut: moveable: bool
-- Attribut: carryable: bool
+- Attribut: moveable: bool bestimmt ob ein Item bewegt werden kann
+- Attribut: carryable: bool bestimmt ob ein Item von einem Spieler aufgenommen werden kann
 - Player Attribute (S.P.E.C.I.A.L)
 - Chaosdorf als Setting
 - Deadline für Motivation

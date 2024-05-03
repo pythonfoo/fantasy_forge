@@ -1,16 +1,33 @@
 from typing import Iterator, Self
 
 
-class Area:
-    """An Area is a place in the world, containing NPCs, Items and connections to other areas."""
+class Entity:
+    """An Entity is an abstract object in the world."""
 
     name: str
     description: str
+
+    def __init__(self: Self, name: str, description: str) -> None:
+        self.name = name
+        self.description = description
+
+    def on_look(self: Self) -> str:
+        return self.description
+
+    def __repr__(self: Self) -> str:
+        return f"Entity({self.name}, {self.description})"
+
+    def __str__(self: Self) -> str:
+        return self.name
+
+
+class Area(Entity):
+    """An Area is a place in the world, containing NPCs, Items and connections to other areas."""
+
     contents: list
 
     def __init__(self: Self, name: str, description: str):
-        self.name = name
-        self.description = description
+        super().__init__(name, description)
 
     def on_look(self: Self) -> str:
         output = f"{self.description}\n"
@@ -25,20 +42,15 @@ class Area:
     def __repr__(self: Self) -> str:
         return f"Area({self.name})"
 
-    def __str__(self: Self) -> str:
-        return self.name
 
-
-class Gateway:
+class Gateway(Entity):
     """A Gateway connects two areas."""
 
-    name: str
-    description: str
     source: Area
     target: Area
 
-    def __init__(self: Self, name: str, source: Area, target: Area):
-        self.name = name
+    def __init__(self: Self, name: str, description: str, source: Area, target: Area):
+        super().__init__(name, description)
         self.source = source
         self.target = target
 
@@ -49,26 +61,22 @@ class Gateway:
         return f"Gateway({self.name}, {self.source} -> {self.target})"
 
 
-class Item:
-    """An Item is an object with which players and NPC can interact with."""
+class Item(Entity):
+    """An Item is an entity which can be picked up by the player."""
 
-    name: str
-    description: str
-    value: int
+    moveable: bool
+    carryable: bool
 
-    def __init__(self: Self, name: str, description: str, value: int) -> None:
-        self.name = name
-        self.description = description
-        self.value = value
-
-    def on_look(self: Self) -> str:
-        return self.description
+    def __init__(self: Self, name: str, description: str) -> None:
+        super().__init__(name, description)
+        self.moveable = True
+        self.carryable = True
 
     def __repr__(self: Self) -> str:
-        return f"Item({self.name}, {self.description}, {self.value})"
+        return f"Item({self.name}, {self.description}, moveable={self.moveable}, carryable={self.carryable})"
 
-    def __str__(self: Self) -> str:
-        return self.name
+    def on_pickup(self: Self):
+        pass
 
 
 class Inventory:
@@ -114,18 +122,17 @@ class Inventory:
         return output
 
 
-class Person:
-    """A person in the world."""
+class Character(Entity):
+    """A character in the world."""
 
-    name: str
     health: int
 
-    def __init__(self: Self, name: str, health: int) -> None:
-        self.name = name
+    def __init__(self: Self, name: str, description: str, health: int) -> None:
+        super().__init__(name, description)
         self.health = health
 
-    def __str__(self) -> str:
-        return self.name
+    def __repr__(self: Self) -> str:
+        return f"Character({self.name}, {self.description}, {self.health})"
 
 
 class Weapon(Item):
@@ -136,21 +143,21 @@ class Weapon(Item):
     def __init__(
         self: Self, name: str, description: str, value: int, damage: int
     ) -> None:
-        super().__init__(name, description, value)
+        super().__init__(name, description)
         self.damage = damage
 
 
-class Enemy(Person):
+class Enemy(Character):
     """An enemy is a person which will fight back."""
 
     weapon: Weapon
     loot: Inventory
 
-    def __init__(self: Self, name: str, health: int):
-        super().__init__(name, health)
+    def __init__(self: Self, name: str, description: str, health: int):
+        super().__init__(name, description, health)
         self.loot = Inventory(5)
 
-    def attack(self: Self, target: Person):
+    def attack(self: Self, target: Character):
         damage = self.weapon.damage
         target.health = target.health - damage
         print(f"{self.name} attacks {target.name} using {self.weapon}")
@@ -162,12 +169,10 @@ class Enemy(Person):
         return f"Weapon({self.name}, {self.weapon})"
 
 
-class Container(Item, Inventory):
-    def __init__(self: Self, name: str, description: str, value: int, capacity: int):
-        super(Container, self).__init__(name, description, value)
-        super(Item, self).__init__(capacity)
+class Container(Entity, Inventory):
+    def __init__(self: Self, name: str, description: str, capacity: int):
+        super(Container, self).__init__(name, description)
+        super(Entity, self).__init__(capacity)
 
     def __repr__(self: Self) -> str:
-        return (
-            f"Container({self.name}, {self.description}, {self.value}, {self.capacity})"
-        )
+        return f"Container({self.name}, {self.description}, {self.capacity})"

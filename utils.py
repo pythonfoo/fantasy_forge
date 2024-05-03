@@ -12,7 +12,7 @@ def pickup_menu(area: Area) -> Item | None:
     print("[ q] Quit")
     selection: str = input("Please select your option: ")
     if selection.upper() == "Q":
-        return
+        return None
     if selection.isnumeric():
         selection_index = int(selection)
         return pickup_items[selection_index]

@@ -1,11 +1,11 @@
 from typing import Self
-from model import Inventory, Item, Person
+from model import Inventory, Character, Item
 
 BASE_INVENTORY_CAPACITY = 10
 BASE_PLAYER_HEALTH = 100
 
 
-class Player(Person):
+class Player(Character):
     main_hand: Item
     inventory: Inventory
 
@@ -29,7 +29,7 @@ class Player(Person):
         self.main_hand = item
         print(f"{self.name} equipped {item.name}")
 
-    def attack(self, target: Person):
+    def attack(self, target: Character):
         """Player attacks Person using his main hand."""
         print(f"{self.name} attacks {target.name} with {self.main_hand.name}")
         damage = self.main_hand.damage
