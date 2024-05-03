@@ -1,4 +1,5 @@
-from model import Area, Item
+from area import Area
+from item import Item
 
 
 def pickup_menu(area: Area) -> Item | None:

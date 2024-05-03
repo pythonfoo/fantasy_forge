@@ -1,5 +1,8 @@
 from typing import Self
-from model import Inventory, Character, Item
+
+from character import Character
+from inventory import Inventory
+from item import Item
 
 BASE_INVENTORY_CAPACITY = 10
 BASE_PLAYER_HEALTH = 100
