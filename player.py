@@ -16,6 +16,9 @@ class Player(Character):
         super().__init__(name, health)
         self.inventory = Inventory(BASE_INVENTORY_CAPACITY)
 
+    def __repr__(self: Self) -> str:
+        return f"Player({self.name}, {self.health})"
+
     def look_at(self, obj: object):
         """Calls the on_look method of an object."""
         print(f"{self.name} looks at {obj}")
