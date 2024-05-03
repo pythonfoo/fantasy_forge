@@ -18,10 +18,10 @@ class Player(Person):
         print(f"{self.name} looks at {obj}")
         print(obj.on_look())
 
-    def pick_up(self, item_name: str):
+    def pick_up(self, item: Item):
         """Picks up item and puts it into the inventory."""
-        self.inventory.add(item_name)
-        print(f"{self.name} picked up {item_name} and put the item in the inventory.")
+        self.inventory.add(item)
+        print(f"{self.name} picked up {item.name} and put the item in the inventory.")
 
     def equip(self, item_name: str):
         """Gets an item from player inventory and puts it in the main hand."""
