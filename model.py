@@ -164,5 +164,10 @@ class Enemy(Person):
 
 class Container(Item, Inventory):
     def __init__(self: Self, name: str, description: str, value: int, capacity: int):
-        super(Item).__init__(name, description, value)
-        super(Inventory).__init__(capacity)
+        super(Container, self).__init__(name, description, value)
+        super(Item, self).__init__(capacity)
+
+    def __repr__(self: Self) -> str:
+        return (
+            f"Container({self.name}, {self.description}, {self.value}, {self.capacity})"
+        )
