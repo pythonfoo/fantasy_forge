@@ -1,7 +1,5 @@
 # class model
 
-![class diagram](classes.png "class diagram")
-
 This class diagram was created using [pyreverse](https://pylint.pycqa.org/en/latest/pyreverse.html) which is a part of `pylint`. Use the command `pyreverse -o png -A *.py` to replicate.
 
 ## Entity
