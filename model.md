@@ -1,5 +1,9 @@
 # class model
 
+![class diagram](classes.png "class diagram")
+
+This class diagram was created using `pyreverse` which is a part of `pylint`. Use the command `pyreverse --colorized -o png -A *.py`to replicate.
+
 ## Entity
 
 An entity is an abstract object in the game world. This class serves as a template for other classes. Each entity has a name and a description.
