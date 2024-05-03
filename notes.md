@@ -39,6 +39,8 @@ Aktionen über die der Spieler mit der Welt interagieren kann. Diese Aktionen k�
   - Roguelike
 - Levelkurve
 - Dialogoptionen
+- "untouchable" Attribut für die Character Klasse, damit bestimmte Charactere nicht angegriffen werden können
+- on_death Methode für Character Klasse
 
 ### Container Klasse
 
