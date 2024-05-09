@@ -1,10 +1,10 @@
 from typing import Self
 
-from character import Character
-from enemy import BASE_DAMAGE
-from inventory import Inventory
-from item import Item
-from weapon import Weapon
+from .character import Character
+from .enemy import BASE_DAMAGE
+from .inventory import Inventory
+from .item import Item
+from .weapon import Weapon
 
 BASE_INVENTORY_CAPACITY = 10
 BASE_PLAYER_HEALTH = 100

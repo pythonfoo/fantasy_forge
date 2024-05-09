@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Self
 
-from entity import Entity
+from .entity import Entity
 
 
 class Item(Entity):

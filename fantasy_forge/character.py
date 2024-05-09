@@ -1,7 +1,7 @@
 from typing import Self
 
-from entity import Entity
-from weapon import Weapon
+from .entity import Entity
+from .weapon import Weapon
 
 
 class Character(Entity):

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Self, Iterator
 
-from item import Item
+from .item import Item
 
 
 class Inventory:

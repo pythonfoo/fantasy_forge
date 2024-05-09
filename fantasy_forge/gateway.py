@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Self
 
-from area import Area
-from entity import Entity
+from .area import Area
+from .entity import Entity
 
 
 class Gateway(Entity):

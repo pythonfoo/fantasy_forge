@@ -1,8 +1,8 @@
 from typing import Self
 
-from character import Character
-from inventory import Inventory
-from weapon import Weapon
+from .character import Character
+from .inventory import Inventory
+from .weapon import Weapon
 
 BASE_DAMAGE = 1
 

@@ -1,7 +1,7 @@
 from typing import Self
 
-from entity import Entity
-from inventory import Inventory
+from .entity import Entity
+from .inventory import Inventory
 
 
 class Container(Entity, Inventory):

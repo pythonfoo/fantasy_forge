@@ -1,6 +1,6 @@
 from typing import Self
 
-from item import Item
+from .item import Item
 
 
 class Weapon(Item):
