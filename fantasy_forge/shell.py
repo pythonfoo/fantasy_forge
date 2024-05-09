@@ -18,5 +18,15 @@ class Shell(Cmd):
     def do_EOF(self, arg):
         return self.do_quit(arg)
 
+    def do_look(self, arg):
+        match arg.split():
+            case ["around"]:
+                print("You take a look around.")
+                print("You see: nothing")
+            case ["at", entity]:
+                print(f"You are looking at {entity}.")
+            case default:
+                print("This is no valid command.")
+
 if TYPE_CHECKING:
     from .player import Player
