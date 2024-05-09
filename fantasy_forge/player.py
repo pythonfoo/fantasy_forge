@@ -17,7 +17,7 @@ class Player(Character):
     inventory: Inventory
 
     def __init__(self: Self, name: str, health: int = BASE_PLAYER_HEALTH):
-        super().__init__(name, health)
+        super().__init__(name, "the heroic player", health)
         self.main_hand = None
         self.inventory = Inventory(BASE_INVENTORY_CAPACITY)
 

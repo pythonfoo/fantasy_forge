@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-from typing import Self, Iterator
+from pathlib import Path
+from typing import Iterator, Self
+
+import toml
 
 from .entity import Entity
 
@@ -39,3 +42,11 @@ class Area(Entity):
         area = Area(entity.name, entity.description)
         area.contents = contents
         return area
+
+
+    @staticmethod
+    def load(root_path: Path, name: str):
+        path = root_path / "areas" / f"{name}.toml"
+        with path.open() as area_file:
+            area_toml = toml.load(area_file)
+        return Area.from_dict(area_toml)
