@@ -5,6 +5,7 @@ from .character import Character
 from .enemy import BASE_DAMAGE
 from .inventory import Inventory
 from .item import Item
+from .shell import Shell
 from .weapon import Weapon
 from .world import World
 
@@ -77,3 +78,4 @@ class Player(Character):
     def main_loop(self):
         """Runs the game."""
         self.enter_area(self.world.spawn_point)
+        Shell(self).cmdloop()
