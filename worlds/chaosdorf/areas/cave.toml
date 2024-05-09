@@ -1,4 +1,4 @@
 name = "Cave"
 description = "a comfy room with sofas and a tv"
 
-[contents]
+[[contents]]

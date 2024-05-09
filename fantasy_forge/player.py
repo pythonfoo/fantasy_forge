@@ -1,10 +1,12 @@
 from typing import Self
 
+from .area import Area
 from .character import Character
 from .enemy import BASE_DAMAGE
 from .inventory import Inventory
 from .item import Item
 from .weapon import Weapon
+from .world import World
 
 BASE_INVENTORY_CAPACITY = 10
 BASE_PLAYER_HEALTH = 100
@@ -13,11 +15,19 @@ BARE_HANDS = Weapon("bare hands", "the harmful hands of the player", BASE_DAMAGE
 
 
 class Player(Character):
+    world: World
+    area: Area  # the area we are currently in
     main_hand: Item | None
     inventory: Inventory
 
-    def __init__(self: Self, name: str, health: int = BASE_PLAYER_HEALTH):
+    def __init__(self: Self, world: World, name: str, health: int = BASE_PLAYER_HEALTH):
         super().__init__(name, "the heroic player", health)
+        self.world = world
+        self.area = Area.empty()
+        # put us in the void
+        # We will (hopefully) never see this, but it's important for the
+        # transition to the next area.
+        self.area.contents.append(self)
         self.main_hand = None
         self.inventory = Inventory(BASE_INVENTORY_CAPACITY)
 
@@ -54,3 +64,16 @@ class Player(Character):
             print(f"{target} remains at {target.health} health points")
         else:
             print(f"{target} vanished.")
+    
+    def enter_area(self, new_area: Area):
+        # leave the previous area
+        self.area.contents.remove(self)
+        self.area = new_area
+        # enter the new one
+        self.area.contents.append(self)
+        print(f"You are now in {self.area}.")
+        # TODO: output better text
+    
+    def main_loop(self):
+        """Runs the game."""
+        self.enter_area(self.world.spawn_point)

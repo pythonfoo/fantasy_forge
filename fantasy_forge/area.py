@@ -50,3 +50,8 @@ class Area(Entity):
         with path.open() as area_file:
             area_toml = toml.load(area_file)
         return Area.from_dict(area_toml)
+
+    @staticmethod
+    def empty() -> Area:
+        """Return an empty area, this is a placeholder."""
+        return Area("the void", "a place filled with nothingness")
