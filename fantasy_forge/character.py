@@ -2,6 +2,7 @@ from typing import Self
 
 from .entity import Entity
 from .weapon import Weapon
+from .world import World
 
 
 class Character(Entity):
@@ -10,8 +11,8 @@ class Character(Entity):
     health: int
     _alive: bool
 
-    def __init__(self: Self, name: str, description: str, health: int) -> None:
-        super().__init__(name, description)
+    def __init__(self: Self, world: World, name: str, description: str, health: int) -> None:
+        super().__init__(world, name, description)
         self.health = health
 
     def __repr__(self: Self) -> str:

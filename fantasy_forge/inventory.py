@@ -3,15 +3,18 @@ from __future__ import annotations
 from typing import Self, Iterator
 
 from .item import Item
+from .world import World
 
 
 class Inventory:
     """An Inventory contains multiple items."""
 
+    world: World
     capacity: int
     contents: list[Item]
 
-    def __init__(self: Self, capacity: int):
+    def __init__(self: Self, world: World, capacity: int):
+        self.world = world
         self.capacity = capacity
         self.contents = []
 
@@ -33,7 +36,10 @@ class Inventory:
         if len(self) < self.capacity:
             self.contents.append(item)
         else:
-            raise Exception(f"Maximum capacity ({self.capacity}) reached.")
+            raise Exception(self.world.l10n.format_value(
+                "inventory-capacity",
+                {"capacity": self.capacity, },
+            ))
 
     def get(self: Self, item_name: str) -> Item:
         """Returns item from inventory based on item name."""
@@ -41,8 +47,13 @@ class Inventory:
             if item.name == item_name:
                 self.contents.remove(item)
                 return item
-        raise Exception(f"Item {item_name} couldn't be found.")
+        raise Exception(self.world.l10n.format_value(
+            "inventory-item-not-found",
+            {"item": item_name, },
+        ))
 
     def on_look(self: Self) -> str:
-        output = f"In the inventory you find {', '.join(map(str, self))}"
-        return output
+        return self.world.l10n.format_value(
+            "inventory-look-message",
+            { "items": ", ".join(map(str, self)), },
+        )
