@@ -104,3 +104,8 @@ class Player(Character):
         """Runs the game."""
         self.enter_area(self.world.spawn_point)
         Shell(self).cmdloop()
+        # afterwards, leave the current area for the void
+        self.enter_area(Area.empty(self.world))
+        print(self.world.l10n.format_value(
+            "quit-game-message", {},
+        ))
