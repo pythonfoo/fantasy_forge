@@ -6,5 +6,6 @@ name = "tv"
 description = "Hackers has to run for the thousandth time now"
 
 [[contents]]
+kind = "item"
 name = "tv remote"
 description = "the batteries seem to have died"

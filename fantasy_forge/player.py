@@ -33,7 +33,7 @@ class Player(Character):
         # put us in the void
         # We will (hopefully) never see this, but it's important for the
         # transition to the next area.
-        self.area.contents.append(self)
+        self.area.contents[self.name]=self
         self.seen_entities = dict()
         self.main_hand = None
         self.inventory = Inventory(world, BASE_INVENTORY_CAPACITY)
@@ -42,8 +42,9 @@ class Player(Character):
         return f"Player({self.name}, {self.health})"
 
     def look_around(self):
+        self.seen_entities.clear()
         print(self.area.on_look())
-        for entity in self.area.contents:
+        for entity in self.area.contents.values():
             print(self.world.l10n.format_value(
                 "look-around-single",
                 { "object": entity.name, },
@@ -65,13 +66,33 @@ class Player(Character):
         ))
         print(entity.on_look())
 
-    def pick_up(self, item: Item):
+    def pick_up(self, item_name: str):
         """Picks up item and puts it into the inventory."""
-        self.inventory.add(item)
-        print(self.world.l10n.format_value(
-            "pick-up-item-message",
-            { "player": self.name, "item": item.name, },
-        ))
+        item = self.seen_entities.get(item_name)
+        if item is None:
+            print(
+                self.world.l10n.format_value(
+                    "item-does-not-exist",
+                    {"item": item_name},
+                )
+            )
+            return
+        if item_name not in self.area.contents:
+            print(self.world.l10n.format_value("item-vanished"))
+            self.seen_entities.pop(item_name)
+            return
+        if isinstance(item, Item) and item.carryable:
+            self.inventory.add(item)
+            self.seen_entities.pop(item_name)
+            self.area.contents.pop(item_name)
+            print(self.world.l10n.format_value(
+                "pick-up-item-message",
+                { "item": item.name, },
+            ))
+        else:
+            print(
+                self.world.l10n.format_value("pick-up-failed-message")
+            )
 
     def equip(self, item_name: str):
         """Gets an item from player inventory and puts it in the main hand."""
@@ -109,12 +130,12 @@ class Player(Character):
     
     def enter_area(self, new_area: Area):
         # leave the previous area
-        self.area.contents.remove(self)
+        self.area.contents.pop(self.name)
         self.area = new_area
         # clear seen items
         self.seen_entities.clear()
         # enter the new one
-        self.area.contents.append(self)
+        self.area.contents[self.name] = self
         print(self.world.l10n.format_value(
             "enter-area-message",
             {"area": self.area.name, },

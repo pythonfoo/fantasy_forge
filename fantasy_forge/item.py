@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Self
 
 from .entity import Entity
+from .world import World
 
 
 class Item(Entity):
@@ -11,10 +12,10 @@ class Item(Entity):
     moveable: bool
     carryable: bool
 
-    def __init__(self: Self, name: str, description: str) -> None:
-        super().__init__(name, description)
-        self.moveable = True
-        self.carryable = True
+    def __init__(self: Self, world: World, name: str, description: str, moveable: bool, carryable: bool) -> None:
+        super().__init__(world, name, description)
+        self.moveable = moveable
+        self.carryable = carryable
 
     def __repr__(self: Self) -> str:
         return f"Item({self.name}, {self.description}, moveable={self.moveable}, carryable={self.carryable})"
@@ -30,9 +31,8 @@ class Item(Entity):
         return item_dict
 
     @staticmethod
-    def from_dict(item_dict: dict) -> Entity:
-        entity: Entity = Entity.from_dict(item_dict)
+    def from_dict(world: World, item_dict: dict) -> Item:
         moveable = item_dict.get("moveable", True)
         carryable = item_dict.get("carryable", True)
-        item: Item = Item(entity.name, entity.description, moveable, carryable)
+        item: Item = Item(world, item_dict["name"], item_dict.get("description", ""), moveable, carryable)
         return item

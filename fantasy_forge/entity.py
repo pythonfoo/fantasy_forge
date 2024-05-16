@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Self, TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
+
 
 class Entity:
     """An Entity is an abstract object in the world."""
@@ -29,6 +30,9 @@ class Entity:
 
     @staticmethod
     def from_dict(world: World, entity_dict: dict) -> Entity:
+        if entity_dict.get("kind", "entity") == "item":
+            from .item import Item
+            return Item.from_dict(world, entity_dict)
         name: str = entity_dict.get("name", "")
         description: str = entity_dict.get("description", "")
         return Entity(world, name, description)

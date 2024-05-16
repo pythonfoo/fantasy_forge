@@ -3,6 +3,8 @@ from __future__ import annotations
 from cmd import Cmd
 from typing import TYPE_CHECKING
 
+from .item import Item
+
 
 class Shell(Cmd):
     player: Player
@@ -75,6 +77,14 @@ class ShellEn(Shell):
             ]
         return []
 
+    def do_pick(self, arg: str):
+        if arg.startswith("up "):
+            arg = arg.removeprefix("up ")
+        self.player.pick_up(arg.strip())
+    
+    def complete_pick(self, text: str, line: str, begidx: int, endidx: int,):
+        # TODO
+        return []
 
 if TYPE_CHECKING:
     from .player import Player
