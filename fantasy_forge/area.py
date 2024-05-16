@@ -38,7 +38,10 @@ class Area(Entity):
     @staticmethod
     def from_dict(world: World, area_dict: dict) -> Area:
         entity: Entity = Entity.from_dict(world, area_dict)
-        contents: list = area_dict.get("contents", [])
+        contents = [
+            Entity.from_dict(world, entity_dict)
+            for entity_dict in area_dict.get("contents", [])
+        ]
         area = Area(world, entity.name, entity.description)
         area.contents = contents
         return area
