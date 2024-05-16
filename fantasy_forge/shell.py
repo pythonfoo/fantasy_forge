@@ -3,6 +3,7 @@ from __future__ import annotations
 from cmd import Cmd
 from typing import TYPE_CHECKING
 
+
 class Shell(Cmd):
     player: Player
     prompt = '> '
@@ -34,6 +35,10 @@ class Shell(Cmd):
             for name in super().completenames(text, *ignored)
         ]
 
+    def default(self, line: str):
+        """Display an error message, because the command was invalid."""
+        print(self.player.world.l10n.format_value("shell-invalid-command"))
+
     def do_EOF(self, arg: str) -> bool:
         return True
 
@@ -47,7 +52,7 @@ class ShellEn(Shell):
         elif arg.strip().startswith("at"):
             self.player.look_at(arg.strip().removeprefix("at").strip())
         else:
-            print(self.player.world.l10n.format_value("shell-invalid-command"))
+            self.default(arg)
     
     def complete_look(self, text: str, line: str, begidx: int, endidx: int,):
         if line.startswith("look at "):
