@@ -11,7 +11,9 @@ def pickup_menu(area: Area) -> Item | None:
     for idx, item in enumerate(pickup_items):
         print(f"[{idx:>2}] {item.name}")
     print("[ q] Quit")
-    selection: str = input("Please select your option: ")
+    selection: str = input(area.world.l10n.format_value(
+        "pick-up-item-menu"
+    ) + " ")
     if selection.upper() == "Q":
         return None
     if selection.isnumeric():

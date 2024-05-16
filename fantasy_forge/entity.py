@@ -1,15 +1,16 @@
 from __future__ import annotations
 
-from typing import Self
-
+from typing import Self, TYPE_CHECKING
 
 class Entity:
     """An Entity is an abstract object in the world."""
 
+    world: World
     name: str
     description: str
 
-    def __init__(self: Self, name: str, description: str) -> None:
+    def __init__(self: Self, world: World, name: str, description: str) -> None:
+        self.world = world
         self.name = name
         self.description = description
 
@@ -27,7 +28,10 @@ class Entity:
         return entity_dict
 
     @staticmethod
-    def from_dict(entity_dict: dict) -> Entity:
+    def from_dict(world: World, entity_dict: dict) -> Entity:
         name: str = entity_dict.get("name", "")
         description: str = entity_dict.get("description", "")
-        return Entity(name, description)
+        return Entity(world, name, description)
+
+if TYPE_CHECKING:
+    from .world import World

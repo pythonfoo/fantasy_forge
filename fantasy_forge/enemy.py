@@ -3,6 +3,7 @@ from typing import Self
 from .character import Character
 from .inventory import Inventory
 from .weapon import Weapon
+from .world import World
 
 BASE_DAMAGE = 1
 
@@ -13,10 +14,10 @@ class Enemy(Character):
     weapon: Weapon | None
     loot: Inventory
 
-    def __init__(self: Self, name: str, description: str, health: int):
-        super().__init__(name, description, health)
+    def __init__(self: Self, world: World, name: str, description: str, health: int):
+        super().__init__(world, name, description, health)
         self.weapon = None
-        self.loot = Inventory(5)
+        self.loot = Inventory(world, 5)
 
     def __str__(self: Self) -> str:
         return self.name
@@ -30,4 +31,7 @@ class Enemy(Character):
         else:
             damage = self.weapon.damage
         target.health = target.health - damage
-        print(f"{self.name} attacks {target.name} using {self.weapon}")
+        print(self.world.l10n.format_value(
+            "attack-character-message",
+            { "source": self.name, "target": target.name, "weapon": self.weapon.name, },
+        ))

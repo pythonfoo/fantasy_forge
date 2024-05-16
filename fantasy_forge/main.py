@@ -14,5 +14,6 @@ def parse_args(argv=argv[1:]):
 def main():
     args = parse_args()
     world = World.load(args.world)
-    player = Player(world, input("Please name your character: "))
+    player_name = input(world.l10n.format_value("character-name-prompt") + " ")
+    player = Player(world, player_name)
     player.main_loop()
