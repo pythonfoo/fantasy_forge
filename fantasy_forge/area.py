@@ -24,19 +24,14 @@ class Area(Entity):
     def __repr__(self: Self) -> str:
         return f"Area({self.name})"
 
-    def on_look(self: Self):
-        print(self.world.l10n.format_value(
+    def on_look(self: Self) -> str:
+        return self.world.l10n.format_value(
             "look-around-begin",
             {
                 "area-name": self.name,
                 "area-description": self.description,
             },
-        ))
-        for obj in self.contents:
-            print(self.world.l10n.format_value(
-                "look-around-single",
-                { "object": obj.name, },
-            ))
+        )
 
     def to_dict(self: Self) -> dict:
         area_dict: dict = super().to_dict()

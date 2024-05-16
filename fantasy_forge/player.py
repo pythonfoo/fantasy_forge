@@ -3,6 +3,7 @@ from typing import Self
 from .area import Area
 from .character import Character
 from .enemy import BASE_DAMAGE
+from .entity import Entity
 from .inventory import Inventory
 from .item import Item
 from .shell import Shell
@@ -22,6 +23,7 @@ def BARE_HANDS(l10n):
 
 class Player(Character):
     area: Area  # the area we are currently in
+    seen_entities: dict[str, Entity]
     main_hand: Item | None
     inventory: Inventory
 
@@ -32,19 +34,36 @@ class Player(Character):
         # We will (hopefully) never see this, but it's important for the
         # transition to the next area.
         self.area.contents.append(self)
+        self.seen_entities = dict()
         self.main_hand = None
         self.inventory = Inventory(world, BASE_INVENTORY_CAPACITY)
 
     def __repr__(self: Self) -> str:
         return f"Player({self.name}, {self.health})"
 
-    def look_at(self, obj: object):
+    def look_around(self):
+        print(self.area.on_look())
+        for entity in self.area.contents:
+            print(self.world.l10n.format_value(
+                "look-around-single",
+                { "object": entity.name, },
+            ))
+            self.seen_entities[entity.name] = entity
+
+    def look_at(self, name: str):
         """Calls the on_look method of an object."""
+        entity = self.seen_entities.get(name)
+        if entity is None:
+            print(self.world.l10n.format_value(
+                "entity-not-seen",
+                {"entity": name, },
+            ))
+            return
         print(self.world.l10n.format_value(
             "look-at-message",
-            { "player": self.name, "object": obj, },
+            { "object": entity.name, },
         ))
-        print(obj.on_look())
+        print(entity.on_look())
 
     def pick_up(self, item: Item):
         """Picks up item and puts it into the inventory."""
@@ -92,12 +111,15 @@ class Player(Character):
         # leave the previous area
         self.area.contents.remove(self)
         self.area = new_area
+        # clear seen items
+        self.seen_entities.clear()
         # enter the new one
         self.area.contents.append(self)
         print(self.world.l10n.format_value(
             "enter-area-message",
             {"area": self.area.name, },
         ))
+        # TODO: add obvious items of the new area to seen_entities
         # TODO: output better text
     
     def main_loop(self):
