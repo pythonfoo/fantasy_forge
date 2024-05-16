@@ -20,3 +20,4 @@ void-name = the void
 void-description = a place filled with nothingness
 shell-invalid-command = This is not a valid command.
 quit-game-message = This is the end.
+unknown-language-error = Unknown language "{ $language }"

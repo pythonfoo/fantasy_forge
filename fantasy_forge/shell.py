@@ -7,15 +7,28 @@ class Shell(Cmd):
     player: Player
     prompt = '> '
 
+    def __new__(self, player: Player) -> Shell:
+        match player.world.l10n.locales[0]:
+            case "en":
+                shell_type = ShellEn
+            case default:
+                raise RuntimeError(player.world.l10n.format_value(
+                    "unknown-language-error",
+                    { "language": default, },
+                ))
+        shell = super().__new__(shell_type)
+        return shell
+
     def __init__(self, player: Player):
         super().__init__()
         self.player = player
-    
-    def do_quit(self, arg):
+
+    def do_EOF(self, arg: str) -> bool:
         return True
-    
-    def do_EOF(self, arg):
-        return self.do_quit(arg)
+
+class ShellEn(Shell):
+    def do_quit(self, arg: str) -> bool:
+        return self.do_EOF(arg)
 
     def do_look(self, arg):
         match arg.split():
