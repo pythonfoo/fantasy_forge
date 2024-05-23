@@ -13,8 +13,8 @@ class Item(Entity):
     carryable: bool
 
     def __init__(self: Self, world: World, config_dict: dict[str, Any]) -> None:
-        self.moveable = config_dict.pop("moveable", False)
-        self.carryable = config_dict.pop("carryable", False)
+        self.moveable = config_dict.pop("moveable", True)
+        self.carryable = config_dict.pop("carryable", True)
         super().__init__(world, config_dict)
 
 
