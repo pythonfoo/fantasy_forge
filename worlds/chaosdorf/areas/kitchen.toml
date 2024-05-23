@@ -1,0 +1,7 @@
+name = "kitchen"
+description = "a room where food is created using black magic"
+
+[[contents]]
+kind = "gateway"
+name = "lounge"
+target = "lounge"

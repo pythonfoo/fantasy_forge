@@ -6,3 +6,37 @@ kind = "gateway"
 name = "cave door"
 description = "it has a sign on it which says 'sauna'"
 target = "cave"
+
+
+[[contents]]
+name = "table"
+description = ""
+
+[[contents]]
+name = "sofa"
+description = ""
+
+[[contents]]
+name = "server rack"
+description = ""
+
+[[contents]]
+name = "arcade machine"
+description = ""
+
+[[contents]]
+name = "music box"
+description = ""
+
+[[contents]]
+name = "window"
+description = ""
+
+[[contents]]
+name = "book shelve"
+description = ""
+
+[[contents]]
+kind = "gateway"
+name = "kitchen"
+target = "kitchen"
