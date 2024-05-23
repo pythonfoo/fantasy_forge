@@ -4,6 +4,7 @@ from .area import Area
 from .character import Character
 from .enemy import BASE_DAMAGE
 from .entity import Entity
+from .gateway import Gateway
 from .inventory import Inventory
 from .item import Item
 from .shell import Shell
@@ -127,6 +128,32 @@ class Player(Character):
                 { "target": target.name, },
             ))
             # TODO
+    
+    def go(self, gateway_name: str):
+        """
+        Go through a gateway.
+        
+        This is like enter_area, but takes a string.
+        """
+        gateway = self.seen_entities.get(gateway_name)
+        if gateway is None:
+            print(
+                self.world.l10n.format_value(
+                    "item-does-not-exist",
+                    {"item": gateway_name},
+                )
+            )
+            return
+        if gateway_name not in self.area.contents:
+            print(self.world.l10n.format_value("item-vanished"))
+            self.seen_entities.pop(gateway_name)
+            return 
+        if isinstance(gateway, Gateway):
+            self.enter_area(self.world.areas[gateway.target])
+        else:
+            print(
+                self.world.l10n.format_value("go-failed-message")
+            )
     
     def enter_area(self, new_area: Area):
         # leave the previous area

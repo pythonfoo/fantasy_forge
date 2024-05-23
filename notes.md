@@ -24,6 +24,8 @@ Aktionen über die der Spieler mit der Welt interagieren kann. Diese Aktionen k�
 - Dialogoptionen
 - "untouchable" Attribut für die Character Klasse, damit bestimmte Charactere nicht angegriffen werden können
 - on_death Methode für Character Klasse
+- Versteckte Items/Entitys, die nicht beim look around erscheinen (Attribut "visible")
+- Versteckte Gateways, z.B. trapdoors 
 
 ### Key Klasse
 

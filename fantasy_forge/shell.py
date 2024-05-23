@@ -3,6 +3,7 @@ from __future__ import annotations
 from cmd import Cmd
 from typing import TYPE_CHECKING
 
+from .gateway import Gateway
 from .item import Item
 
 
@@ -106,6 +107,20 @@ class ShellEn(Shell):
                 completions.append("up ")
             return completions
         return []
+
+    def do_go(self, arg: str):
+        self.player.go(arg)
+
+    def complete_go(self, text: str, line: str, begidx: int, endidx: int,):
+        entity_name = line.removeprefix("go ").strip()
+        completions = [
+            text + name.removeprefix(entity_name).strip() + ' '
+            for name, entity in self.player.seen_entities.items()
+            if name.startswith(entity_name) and isinstance(entity, Gateway)
+        ]
+        if ' ' in completions:
+            completions.remove(' ')
+        return completions
 
 if TYPE_CHECKING:
     from .player import Player

@@ -9,3 +9,9 @@ description = "Hackers has to run for the thousandth time now"
 kind = "item"
 name = "tv remote"
 description = "the batteries seem to have died"
+
+[[contents]]
+kind = "gateway"
+name = "door"
+description = "there's a drawing of Xenia the fox on it"
+target = "lounge"

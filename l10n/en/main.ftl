@@ -11,6 +11,7 @@ pick-up-item-message = You picked up { $item } and put it in your inventory.
 item-does-not-exist = { $item } does not exist.
 item-vanished = The item has vanished before your eyes.
 pick-up-failed-message = You can't pick up this item.
+go-failed-message = You can't go there.
 equip-item-message = { $player } equipped { $item }
 attack-character-message = { $source } attacks { $target } with { $weapon }
 attack-character-alive-message = { $target } remains at { $health } health points

@@ -1,0 +1,8 @@
+name = "Lounge"
+description = "a place to eat and socialize"
+
+[[contents]]
+kind = "gateway"
+name = "cave door"
+description = "it has a sign on it which says 'sauna'"
+target = "cave"

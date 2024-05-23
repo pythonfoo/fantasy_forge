@@ -30,12 +30,17 @@ class Entity:
 
     @staticmethod
     def from_dict(world: World, entity_dict: dict) -> Entity:
-        if entity_dict.get("kind", "entity") == "item":
-            from .item import Item
-            return Item.from_dict(world, entity_dict)
-        name: str = entity_dict.get("name", "")
-        description: str = entity_dict.get("description", "")
-        return Entity(world, name, description)
+        match entity_dict.get("kind", "entity"):
+            case "item":
+                from .item import Item
+                return Item.from_dict(world, entity_dict)
+            case "gateway":
+                from .gateway import Gateway
+                return Gateway.from_dict(world, entity_dict)
+            case default:
+                name: str = entity_dict.get("name", "")
+                description: str = entity_dict.get("description", "")
+                return Entity(world, name, description)
 
 if TYPE_CHECKING:
     from .world import World
