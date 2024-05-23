@@ -83,7 +83,28 @@ class ShellEn(Shell):
         self.player.pick_up(arg.strip())
     
     def complete_pick(self, text: str, line: str, begidx: int, endidx: int,):
-        # TODO
+        if line.startswith("pick up "):
+            entity_name = line.removeprefix("pick up ").strip()
+            completions = [
+                text + name.removeprefix(entity_name).strip() + ' '
+                for name, entity in self.player.seen_entities.items()
+                if name.startswith(entity_name) and isinstance(entity, Item) and entity.carryable
+            ]
+            if ' ' in completions:
+                completions.remove(' ')
+            return completions
+        if line.startswith("pick "):
+            entity_name = line.removeprefix("pick ").strip()
+            completions = [
+                text + name.removeprefix(entity_name).strip() + ' '
+                for name, entity in self.player.seen_entities.items()
+                if name.startswith(entity_name) and isinstance(entity, Item) and entity.carryable
+            ]
+            if ' ' in completions:
+                completions.remove(' ')
+            if not text or text.startswith("u") or text.startswith("up"):
+                completions.append("up ")
+            return completions
         return []
 
 if TYPE_CHECKING:
