@@ -6,7 +6,7 @@ kind = "gateway"
 name = "cave door"
 description = "it has a sign on it which says 'sauna'"
 target = "cave"
-
+obvious = true
 
 [[contents]]
 name = "table"
@@ -40,3 +40,4 @@ description = ""
 kind = "gateway"
 name = "kitchen"
 target = "kitchen"
+obvious = true

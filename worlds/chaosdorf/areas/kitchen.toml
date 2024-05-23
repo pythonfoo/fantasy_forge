@@ -5,3 +5,4 @@ description = "a room where food is created using black magic"
 kind = "gateway"
 name = "lounge"
 target = "lounge"
+obvious = true

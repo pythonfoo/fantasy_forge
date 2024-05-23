@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Self
+from typing import Any, Self
 
 from .entity import Entity
 from .world import World
@@ -12,10 +12,11 @@ class Item(Entity):
     moveable: bool
     carryable: bool
 
-    def __init__(self: Self, world: World, name: str, description: str, moveable: bool, carryable: bool) -> None:
-        super().__init__(world, name, description)
-        self.moveable = moveable
-        self.carryable = carryable
+    def __init__(self: Self, world: World, config_dict: dict[str, Any]) -> None:
+        self.moveable = config_dict.pop("moveable", False)
+        self.carryable = config_dict.pop("carryable", False)
+        super().__init__(world, config_dict)
+
 
     def __repr__(self: Self) -> str:
         return f"Item({self.name}, {self.description}, moveable={self.moveable}, carryable={self.carryable})"

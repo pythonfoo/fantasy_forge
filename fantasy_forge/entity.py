@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING, Any, Self
 
 
 class Entity:
@@ -9,11 +9,15 @@ class Entity:
     world: World
     name: str
     description: str
+    obvious: bool # obvious entities are seen when entering the room
 
-    def __init__(self: Self, world: World, name: str, description: str) -> None:
+    def __init__(
+        self: Self, world: World, config_dict: dict[str, Any],
+    ) -> None:
         self.world = world
-        self.name = name
-        self.description = description
+        self.name = config_dict.pop("name")
+        self.description = config_dict.pop("description", "")
+        self.obvious = config_dict.pop("obvious", False)
 
     def on_look(self: Self) -> str:
         return self.description
@@ -28,19 +32,6 @@ class Entity:
         entity_dict: dict = {"name": self.name, "description": self.description}
         return entity_dict
 
-    @staticmethod
-    def from_dict(world: World, entity_dict: dict) -> Entity:
-        match entity_dict.get("kind", "entity"):
-            case "item":
-                from .item import Item
-                return Item.from_dict(world, entity_dict)
-            case "gateway":
-                from .gateway import Gateway
-                return Gateway.from_dict(world, entity_dict)
-            case default:
-                name: str = entity_dict.get("name", "")
-                description: str = entity_dict.get("description", "")
-                return Entity(world, name, description)
 
 if TYPE_CHECKING:
     from .world import World

@@ -167,7 +167,13 @@ class Player(Character):
             "enter-area-message",
             {"area": self.area.name, },
         ))
-        # TODO: add obvious items of the new area to seen_entities
+        for entity in self.area.contents.values():
+            if entity.obvious:
+                print(self.world.l10n.format_value(
+                    "look-around-single",
+                    { "object": entity.name, },
+                ))
+                self.seen_entities[entity.name] = entity
         # TODO: output better text
     
     def main_loop(self):

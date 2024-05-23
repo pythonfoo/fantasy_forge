@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from typing import Self
+from typing import Any, Self
 
-from .area import Area
 from .entity import Entity
 from .world import World
 
@@ -11,9 +10,9 @@ class Gateway(Entity):
     """A Gateway is a one-way connection to an area."""
     target: str  # This is not an area because the target might not be loaded yet.
 
-    def __init__(self: Self, world: World, name: str, description: str, target: str):
-        super().__init__(world, name, description)
-        self.target = target
+    def __init__(self: Self, world: World, config_dict: dict[str, Any], ):
+        self.target = config_dict.pop("target")
+        super().__init__(world, config_dict)
 
     def __repr__(self: Self) -> str:
         return f"Gateway({self.name}, -> {self.target})"
@@ -27,12 +26,3 @@ class Gateway(Entity):
         gateway_dict["target"] = self.target
         return gateway_dict
 
-    @staticmethod
-    def from_dict(world: World, gateway_dict: dict) -> Gateway:
-        gateway = Gateway(
-            world,
-            gateway_dict["name"],
-            gateway_dict.get("description", ""),
-            gateway_dict["target"],
-        )
-        return gateway

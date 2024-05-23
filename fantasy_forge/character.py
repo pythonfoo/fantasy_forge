@@ -12,8 +12,8 @@ class Character(Entity):
     _alive: bool
 
     def __init__(self: Self, world: World, name: str, description: str, health: int) -> None:
-        super().__init__(world, name, description)
         self.health = health
+        super().__init__(world, dict(name=name, description=description))
 
     def __repr__(self: Self) -> str:
         return f"Character({self.name}, {self.description}, {self.health}, alive={self.alive})"
