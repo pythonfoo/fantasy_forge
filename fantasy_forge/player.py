@@ -43,7 +43,10 @@ class Player(Character):
         return f"Player({self.name}, {self.health})"
 
     def look_around(self):
+        # clear seen items, but re-add inventory items
         self.seen_entities.clear()
+        for item in self.inventory:
+            self.seen_entities[item.name] = item
         print(self.area.on_look())
         for entity in self.area.contents.values():
             print(self.world.l10n.format_value(
@@ -79,12 +82,15 @@ class Player(Character):
             )
             return
         if item_name not in self.area.contents:
+            if item_name in self.inventory.contents:
+                print(self.world.l10n.format_value("item-is-in-inventory"))
+                return
             print(self.world.l10n.format_value("item-vanished"))
             self.seen_entities.pop(item_name)
             return
         if isinstance(item, Item) and item.carryable:
             self.inventory.add(item)
-            self.seen_entities.pop(item_name)
+            # picking up items keeps them in seen_entities
             self.area.contents.pop(item_name)
             print(self.world.l10n.format_value(
                 "pick-up-item-message",
@@ -159,8 +165,10 @@ class Player(Character):
         # leave the previous area
         self.area.contents.pop(self.name)
         self.area = new_area
-        # clear seen items
+        # clear seen items, but re-add inventory items
         self.seen_entities.clear()
+        for item in self.inventory:
+            self.seen_entities[item.name] = item
         # enter the new one
         self.area.contents[self.name] = self
         print(self.world.l10n.format_value(

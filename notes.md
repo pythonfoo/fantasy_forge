@@ -26,6 +26,8 @@ Aktionen über die der Spieler mit der Welt interagieren kann. Diese Aktionen k�
 - on_death Methode für Character Klasse
 - Versteckte Items/Entitys, die nicht beim look around erscheinen (Attribut "visible")
 - Versteckte Gateways, z.B. trapdoors 
+- grauer, weißer und schwarzer Hut in der Garderobe
+- Betreten des Hackspace braucht Katzenohren
 
 ### Key Klasse
 

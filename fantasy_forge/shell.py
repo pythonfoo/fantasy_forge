@@ -121,6 +121,9 @@ class ShellEn(Shell):
         if ' ' in completions:
             completions.remove(' ')
         return completions
+    
+    def do_inventory(self, arg: str):
+        print(self.player.inventory.on_look())
 
 if TYPE_CHECKING:
     from .player import Player

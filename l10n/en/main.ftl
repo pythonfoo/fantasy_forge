@@ -10,6 +10,7 @@ pick-up-item-menu = Please select your option:
 pick-up-item-message = You picked up { $item } and put it in your inventory.
 item-does-not-exist = { $item } does not exist.
 item-vanished = The item has vanished before your eyes.
+item-is-in-inventory = You already picked up this item.
 pick-up-failed-message = You can't pick up this item.
 go-failed-message = You can't go there.
 equip-item-message = { $player } equipped { $item }
