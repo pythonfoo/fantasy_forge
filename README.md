@@ -3,5 +3,6 @@
 ## How to start the game
 
 ```
-python3.11 -m fantasy_forge
+pipenv install
+pipenv run python3 -m fantasy_forge
 ```
