@@ -9,10 +9,12 @@ class Entity:
     world: World
     name: str
     description: str
-    obvious: bool # obvious entities are seen when entering the room
+    obvious: bool  # obvious entities are seen when entering the room
 
     def __init__(
-        self: Self, world: World, config_dict: dict[str, Any],
+        self: Self,
+        world: World,
+        config_dict: dict[str, Any],
     ) -> None:
         self.world = world
         self.name = config_dict.pop("name")

@@ -17,7 +17,6 @@ class Item(Entity):
         self.carryable = config_dict.pop("carryable", True)
         super().__init__(world, config_dict)
 
-
     def __repr__(self: Self) -> str:
         return f"Item({self.name}, {self.description}, moveable={self.moveable}, carryable={self.carryable})"
 
@@ -35,5 +34,11 @@ class Item(Entity):
     def from_dict(world: World, item_dict: dict) -> Item:
         moveable = item_dict.get("moveable", True)
         carryable = item_dict.get("carryable", True)
-        item: Item = Item(world, item_dict["name"], item_dict.get("description", ""), moveable, carryable)
+        item: Item = Item(
+            world,
+            item_dict["name"],
+            item_dict.get("description", ""),
+            moveable,
+            carryable,
+        )
         return item

@@ -25,7 +25,7 @@ Aktionen über die der Spieler mit der Welt interagieren kann. Diese Aktionen k�
 - "untouchable" Attribut für die Character Klasse, damit bestimmte Charactere nicht angegriffen werden können
 - on_death Methode für Character Klasse
 - Versteckte Items/Entitys, die nicht beim look around erscheinen (Attribut "visible")
-- Versteckte Gateways, z.B. trapdoors 
+- Versteckte Gateways, z.B. trapdoors
 - grauer, weißer und schwarzer Hut in der Garderobe
 - Betreten des Hackspace braucht Katzenohren
 
