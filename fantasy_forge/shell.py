@@ -134,5 +134,18 @@ class ShellEn(Shell):
         """shows the contents of the players inventory"""
         print(self.player.inventory.on_look())
 
+
+    def do_use(self, arg: str):
+        """
+        use <subject> [with <other>]
+        """
+        if "with" in arg:
+            subject, other = arg.split("with")
+            self.player.use(subject.strip(), other.strip())
+        else:
+            self.player.use(arg.strip())
+    
+    # TODO: Implement completion for use command
+
 if TYPE_CHECKING:
     from .player import Player
