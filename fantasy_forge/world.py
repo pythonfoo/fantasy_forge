@@ -1,21 +1,22 @@
 from __future__ import annotations
 
-from fluent.runtime import FluentLocalization, FluentResourceLoader
+import toml
+
 from pathlib import Path
 from typing import Self
 
-import toml
+from fluent.runtime import FluentLocalization, FluentResourceLoader
 
 from .area import Area
 
 
 class World:
     """A world contains many rooms. It's where the game happens."""
-    def __init__(self, l10n: FluentLocalization, name: str, areas: dict[str, Area]):
+    def __init__(self: Self, l10n: FluentLocalization, name: str, areas: dict[str, Area]):
         self.l10n = l10n
         self.name = name
         self.areas = areas
-    
+
     @property
     def spawn_point(self) -> Area:
         assert len(self.areas) > 0, "World has no areas"

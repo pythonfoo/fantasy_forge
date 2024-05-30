@@ -11,7 +11,7 @@ class Shell(Cmd):
     player: Player
     prompt = '> '
 
-    def __new__(self, player: Player) -> Shell:
+    def __new__(cls, player: Player) -> Shell:
         match player.world.l10n.locales[0]:
             case "en":
                 shell_type = ShellEn
@@ -26,10 +26,10 @@ class Shell(Cmd):
     def __init__(self, player: Player):
         super().__init__()
         self.player = player
-    
+
     def completenames(self, text, *ignored):
         """This is called when completing the command itself.
-        
+
         This is uses the stdlib's Cmd, but adds a space after every command,
         so that the user doesn't have to enter it manually.
         """
@@ -56,7 +56,7 @@ class ShellEn(Shell):
             self.player.look_at(arg.strip().removeprefix("at").strip())
         else:
             self.default(arg)
-    
+
     def complete_look(self, text: str, line: str, begidx: int, endidx: int,):
         if line.startswith("look at "):
             entity_name = line.removeprefix("look at ").strip()
@@ -71,8 +71,8 @@ class ShellEn(Shell):
         if line.startswith("look around "):
             return []
         if line.startswith("look "):
-            return [ 
-                verb for verb in 
+            return [
+                verb for verb in
                 ["at ", "around "]
                 if verb.startswith(text)
             ]
@@ -82,7 +82,7 @@ class ShellEn(Shell):
         if arg.startswith("up "):
             arg = arg.removeprefix("up ")
         self.player.pick_up(arg.strip())
-    
+
     def complete_pick(self, text: str, line: str, begidx: int, endidx: int,):
         if line.startswith("pick up "):
             entity_name = line.removeprefix("pick up ").strip()
@@ -121,7 +121,7 @@ class ShellEn(Shell):
         if ' ' in completions:
             completions.remove(' ')
         return completions
-    
+
     def do_inventory(self, arg: str):
         print(self.player.inventory.on_look())
 

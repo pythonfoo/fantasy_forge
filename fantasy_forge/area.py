@@ -15,7 +15,7 @@ class Area(Entity):
 
     def __init__(self: Self, world: World, config_dict: dict[str, Any]):
         super().__init__(world, config_dict)
-        self.contents = dict()
+        self.contents: dict = {}
 
     def __iter__(self: Self) -> Iterator:
         for obj in self.contents:

@@ -25,4 +25,3 @@ class Gateway(Entity):
         gateway_dict: dict = super().to_dict()
         gateway_dict["target"] = self.target
         return gateway_dict
-

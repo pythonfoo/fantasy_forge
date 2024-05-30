@@ -35,7 +35,7 @@ class Player(Character):
         # We will (hopefully) never see this, but it's important for the
         # transition to the next area.
         self.area.contents[self.name]=self
-        self.seen_entities = dict()
+        self.seen_entities = {}
         self.main_hand = None
         self.inventory = Inventory(world, BASE_INVENTORY_CAPACITY)
 

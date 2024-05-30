@@ -16,7 +16,7 @@ class Inventory:
     def __init__(self: Self, world: World, capacity: int):
         self.world = world
         self.capacity = capacity
-        self.contents = dict()
+        self.contents = {}
 
     def __len__(self: Self) -> int:
         """Returns current capacity."""
