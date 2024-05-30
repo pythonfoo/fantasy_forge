@@ -7,6 +7,7 @@ from .entity import Entity
 from .gateway import Gateway
 from .inventory import Inventory
 from .item import Item
+from .key import Key
 from .shell import Shell
 from .weapon import Weapon
 from .world import World
@@ -137,6 +138,36 @@ class Player(Character):
             ))
             # TODO
 
+    def use(self, subject: str, other: str|None=None):
+        if subject not in self.inventory:
+            if subject not in self.seen_entities:
+                print(self.world.l10n.format_value(
+                    "item-does-not-exist",
+                    {"item": subject},
+                ))
+            subject = self.seen_entities.get(subject)
+        else:
+            subject = self.inventory.get(subject)
+
+
+        if other is None:
+            subject.on_use()
+            return
+
+        if other not in self.inventory:
+            if other not in self.seen_entities:
+                print(self.world.l10n.format_value(
+                    "item-does-not-exist",
+                    {"item": other},
+                ))
+                return
+            other = self.seen_entities.get(other)
+        else:
+            other = self.inventory.get(other)
+
+        # It makes more sense to implement the key logic in the gateway
+        other.on_use(other=subject)
+
     def go(self, gateway_name: str):
         """
         Go through a gateway.
@@ -157,11 +188,22 @@ class Player(Character):
             self.seen_entities.pop(gateway_name)
             return
         if isinstance(gateway, Gateway):
-            self.enter_area(self.world.areas[gateway.target])
+            self.enter_gateway(gateway)
         else:
             print(
                 self.world.l10n.format_value("go-failed-message")
             )
+
+    def enter_gateway(self: Self, gateway: Gateway):
+        """Uses gateway to enter a new area."""
+        if gateway.locked:
+            print(self.world.l10n.format_value(
+                "gateway-locked-message",
+                { "gateway": gateway.name, },
+            ))
+            return
+        area = self.world.areas[gateway.target]
+        self.enter_area(area)
 
     def enter_area(self, new_area: Area):
         """Enters a new area."""
