@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any, Self
 
 class Entity:
     """An Entity is an abstract object in the world."""
+    __important_attributes__ = ("name",)
 
     world: World
     name: str
@@ -23,7 +24,12 @@ class Entity:
         return self.description
 
     def __repr__(self: Self) -> str:
-        return f"Entity({self.name}, {self.description})"
+        listed_attrs = []
+        for attr in self.__important_attributes__:
+            if not hasattr(self, attr):
+                raise AttributeError(f"Missing attribute {attr} in {self.__class__.__name__}")
+            listed_attrs.append(f"{attr}={getattr(self, attr)}")
+        return f"{self.__class__.__name__}({', '.join(listed_attrs)})"
 
     def __str__(self: Self) -> str:
         return self.name
