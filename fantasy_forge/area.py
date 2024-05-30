@@ -51,6 +51,10 @@ class Area(Entity):
                     from .gateway import Gateway
 
                     contents_list.append(Gateway(world, entity_dict))
+                case "key":
+                    from .key import Key
+
+                    contents_list.append(Key(world, entity_dict))
                 case default:
                     contents_list.append(Entity(world, entity_dict))
         contents = {entity.name: entity for entity in contents_list}
