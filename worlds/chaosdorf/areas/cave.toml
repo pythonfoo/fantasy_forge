@@ -7,13 +7,16 @@ description = "Hackers has to run for the thousandth time now"
 obvious = true
 
 [[contents]]
-kind = "item"
+kind = "key"
+key_id = "opensesame"
 name = "tv remote"
-description = "the batteries seem to have died"
+description = "the batteries seem to have died. Can you point it at the door?"
 
 [[contents]]
 kind = "gateway"
 name = "door"
+locked = true
+key_list = ["opensesame"]
 description = "there's a drawing of Xenia the fox on it"
 target = "lounge"
 obvious = true
