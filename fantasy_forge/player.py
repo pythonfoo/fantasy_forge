@@ -49,6 +49,7 @@ class Player(Character):
         for item in self.inventory:
             self.seen_entities[item.name] = item
         print(self.area.on_look())
+        # TODO: exempt player from look around
         for entity in self.area.contents.values():
             print(self.world.l10n.format_value(
                 "look-around-single",
