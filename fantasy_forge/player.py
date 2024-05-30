@@ -43,6 +43,7 @@ class Player(Character):
         return f"Player({self.name}, {self.health})"
 
     def look_around(self):
+        """Player looks around the current area."""
         # clear seen items, but re-add inventory items
         self.seen_entities.clear()
         for item in self.inventory:
@@ -134,11 +135,11 @@ class Player(Character):
                 { "target": target.name, },
             ))
             # TODO
-    
+
     def go(self, gateway_name: str):
         """
         Go through a gateway.
-        
+
         This is like enter_area, but takes a string.
         """
         gateway = self.seen_entities.get(gateway_name)
@@ -153,15 +154,16 @@ class Player(Character):
         if gateway_name not in self.area.contents:
             print(self.world.l10n.format_value("item-vanished"))
             self.seen_entities.pop(gateway_name)
-            return 
+            return
         if isinstance(gateway, Gateway):
             self.enter_area(self.world.areas[gateway.target])
         else:
             print(
                 self.world.l10n.format_value("go-failed-message")
             )
-    
+
     def enter_area(self, new_area: Area):
+        """Enters a new area."""
         # leave the previous area
         self.area.contents.pop(self.name)
         self.area = new_area
@@ -183,7 +185,7 @@ class Player(Character):
                 ))
                 self.seen_entities[entity.name] = entity
         # TODO: output better text
-    
+
     def main_loop(self):
         """Runs the game."""
         self.enter_area(self.world.spawn_point)

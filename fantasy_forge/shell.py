@@ -8,6 +8,7 @@ from .item import Item
 
 
 class Shell(Cmd):
+    """Base class for the Cmd shell"""
     player: Player
     prompt = '> '
 
@@ -43,10 +44,12 @@ class Shell(Cmd):
         print(self.player.world.l10n.format_value("shell-invalid-command"))
 
     def do_EOF(self, arg: str) -> bool:
+        """This is called if an EOF occures while parsing the command."""
         return True
 
 class ShellEn(Shell):
     def do_quit(self, arg: str) -> bool:
+        """Quits the shell."""
         return self.do_EOF(arg)
 
     def do_look(self, arg: str):
@@ -113,7 +116,7 @@ class ShellEn(Shell):
         return []
 
     def do_go(self, arg: str):
-        """go <area>"""
+        """go <gateway>"""
         self.player.go(arg)
 
     def complete_go(self, text: str, line: str, begidx: int, endidx: int,):
