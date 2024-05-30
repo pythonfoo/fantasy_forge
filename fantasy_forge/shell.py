@@ -50,6 +50,9 @@ class ShellEn(Shell):
         return self.do_EOF(arg)
 
     def do_look(self, arg: str):
+        """look around
+        look at <entity>
+        """
         if arg.strip() == "around":
             self.player.look_around()
         elif arg.strip().startswith("at"):
@@ -79,6 +82,7 @@ class ShellEn(Shell):
         return []
 
     def do_pick(self, arg: str):
+        """pick [up] <entity>"""
         if arg.startswith("up "):
             arg = arg.removeprefix("up ")
         self.player.pick_up(arg.strip())
@@ -109,6 +113,7 @@ class ShellEn(Shell):
         return []
 
     def do_go(self, arg: str):
+        """go <area>"""
         self.player.go(arg)
 
     def complete_go(self, text: str, line: str, begidx: int, endidx: int,):
@@ -123,6 +128,7 @@ class ShellEn(Shell):
         return completions
 
     def do_inventory(self, arg: str):
+        """shows the contents of the players inventory"""
         print(self.player.inventory.on_look())
 
 if TYPE_CHECKING:
