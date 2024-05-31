@@ -6,6 +6,8 @@ from .item import Item
 class Weapon(Item):
     """A Weapon is an item, which can deal damage to players or NPCs."""
 
+    __important_attributes__ = ("name", "damage")
+
     damage: int
 
     def __init__(self: Self, name: str, description: str, damage: int) -> None:

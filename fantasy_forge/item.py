@@ -9,6 +9,8 @@ from .world import World
 class Item(Entity):
     """An Item is an entity which can be picked up by the player."""
 
+    __important_attributes__ = ("name", "moveable", "carryable")
+
     moveable: bool
     carryable: bool
 

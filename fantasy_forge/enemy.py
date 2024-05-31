@@ -22,9 +22,6 @@ class Enemy(Character):
     def __str__(self: Self) -> str:
         return self.name
 
-    def __repr__(self: Self) -> str:
-        return f"Weapon({self.name}, {self.weapon}, alive={self.alive})"
-
     def attack(self: Self, target: Character):
         if self.weapon is None:
             damage = BASE_DAMAGE

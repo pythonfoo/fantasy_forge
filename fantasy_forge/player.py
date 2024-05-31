@@ -24,6 +24,8 @@ def BARE_HANDS(l10n):
 
 
 class Player(Character):
+    __important_attributes__ = ("name", "area", "health")
+
     area: Area  # the area we are currently in
     seen_entities: dict[str, Entity]
     main_hand: Item | None
@@ -41,9 +43,6 @@ class Player(Character):
         self.seen_entities = {}
         self.main_hand = None
         self.inventory = Inventory(world, BASE_INVENTORY_CAPACITY)
-
-    def __repr__(self: Self) -> str:
-        return f"Player({self.name}, {self.health})"
 
     def look_around(self):
         """Player looks around the current area."""

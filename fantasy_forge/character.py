@@ -8,6 +8,8 @@ from .world import World
 class Character(Entity):
     """A character in the world."""
 
+    __important_attributes__ = ("name", "health", "alive")
+
     health: int
     _alive: bool
 
@@ -17,9 +19,6 @@ class Character(Entity):
         # TODO: implement config_dict like the other classes
         self.health = health
         super().__init__(world, dict(name=name, description=description))
-
-    def __repr__(self: Self) -> str:
-        return f"Character({self.name}, {self.description}, {self.health}, alive={self.alive})"
 
     @property
     def alive(self: Self) -> bool:
