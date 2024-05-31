@@ -23,14 +23,17 @@ def parse_args(argv=argv[1:]):
 def main():
     args = parse_args()
 
+    # init logger
     logger = logging.getLogger(__name__)
     numeric_level = getattr(logging, args.loglevel.upper(), None)
     logging.basicConfig(filename=args.logfile, level=numeric_level, filemode="w")
-
     logger.info("load world %s" % args.world)
+
+    # load world
     world = World.load(args.world)
     player_name = input(world.l10n.format_value("character-name-prompt") + " ")
     player = Player(world, player_name)
 
+    # main loop
     logger.info("starting mainloop for player %s" % player)
     player.main_loop()
