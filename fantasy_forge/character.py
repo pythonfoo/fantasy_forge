@@ -11,7 +11,9 @@ class Character(Entity):
     health: int
     _alive: bool
 
-    def __init__(self: Self, world: World, name: str, description: str, health: int) -> None:
+    def __init__(
+        self: Self, world: World, name: str, description: str, health: int
+    ) -> None:
         # TODO: implement config_dict like the other classes
         self.health = health
         super().__init__(world, dict(name=name, description=description))

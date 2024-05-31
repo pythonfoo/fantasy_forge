@@ -5,8 +5,10 @@ from typing import Any, Self
 from .world import World
 from .item import Item
 
+
 class Key(Item):
     """A Key can be used to unlock Gateways or Container."""
+
     __important_attributes__ = ("name", "key_id")
 
     key_id: str

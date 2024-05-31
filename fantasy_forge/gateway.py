@@ -10,13 +10,18 @@ from .world import World
 
 class Gateway(Entity):
     """A Gateway is a one-way connection to an area."""
+
     __important_attributes__ = ("name", "target", "locked")
 
     target: str  # This is not an area because the target might not be loaded yet.
     locked: bool
     key_list: list[str]
 
-    def __init__(self: Self, world: World, config_dict: dict[str, Any], ):
+    def __init__(
+        self: Self,
+        world: World,
+        config_dict: dict[str, Any],
+    ):
         self.target = config_dict.pop("target")
         self.locked = config_dict.pop("locked", False)
         self.key_list = config_dict.pop("key_list", [])
@@ -25,15 +30,15 @@ class Gateway(Entity):
     def on_look(self: Self) -> str:
         if not self.key_list:
             return self.description
-        return self.description + (" (locked)" if self.locked else "") # TODO: i18n
+        return self.description + (" (locked)" if self.locked else "")  # TODO: l10n
 
     def on_use(self: Self, other: Item | None = None) -> str:
         if other is None:
             return super().on_use()
         if not self.key_list:
-            print("You can't use {self.name} like that.") # TODO: i18n
+            print("You can't use {self.name} like that.")  # TODO: l10n
         if not isinstance(other, Key):
-            print("You need a key.") # TODO: i18n
+            print("You need a key.")  # TODO: l10n
         if self.locked:
             self.on_unlock(other)
         else:

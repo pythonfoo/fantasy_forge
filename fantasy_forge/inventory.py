@@ -37,13 +37,19 @@ class Inventory:
         if len(self) < self.capacity:
             self.contents[item.name] = item
         else:
-            raise Exception(self.world.l10n.format_value(
-                "inventory-capacity",
-                {"capacity": self.capacity, },
-            ))
+            raise Exception(
+                self.world.l10n.format_value(
+                    "inventory-capacity",
+                    {
+                        "capacity": self.capacity,
+                    },
+                )
+            )
 
     def on_look(self: Self) -> str:
         return self.world.l10n.format_value(
             "inventory-look-message",
-            { "items": ", ".join(map(str, self)), },
+            {
+                "items": ", ".join(map(str, self)),
+            },
         )

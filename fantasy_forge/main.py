@@ -11,6 +11,7 @@ def parse_args(argv=argv[1:]):
     parser.add_argument("--world", help="The world to play in", default="chaosdorf")
     return parser.parse_args(argv)
 
+
 def main():
     args = parse_args()
     world = World.load(args.world)

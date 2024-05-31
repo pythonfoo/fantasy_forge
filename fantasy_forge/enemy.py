@@ -31,7 +31,13 @@ class Enemy(Character):
         else:
             damage = self.weapon.damage
         target.health = target.health - damage
-        print(self.world.l10n.format_value(
-            "attack-character-message",
-            { "source": self.name, "target": target.name, "weapon": self.weapon.name, },
-        ))
+        print(
+            self.world.l10n.format_value(
+                "attack-character-message",
+                {
+                    "source": self.name,
+                    "target": target.name,
+                    "weapon": self.weapon.name,
+                },
+            )
+        )

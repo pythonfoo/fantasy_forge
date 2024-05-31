@@ -5,15 +5,18 @@ from typing import TYPE_CHECKING, Any, Self
 
 class Entity:
     """An Entity is an abstract object in the world."""
+
     __important_attributes__ = ("name",)
 
     world: World
     name: str
     description: str
-    obvious: bool # obvious entities are seen when entering the room
+    obvious: bool  # obvious entities are seen when entering the room
 
     def __init__(
-        self: Self, world: World, config_dict: dict[str, Any],
+        self: Self,
+        world: World,
+        config_dict: dict[str, Any],
     ) -> None:
         self.world = world
         self.name = config_dict.pop("name")
@@ -23,9 +26,9 @@ class Entity:
     def on_look(self: Self) -> str:
         return self.description
 
-    def on_use(self: Self, other: Entity| None = None) -> str:
+    def on_use(self: Self, other: Entity | None = None) -> str:
         if other is None:
-            print(f"You can't use {self}.") # TODO i18n
+            print(f"You can't use {self}.")  # TODO i18n
         else:
             print(f"You can't use {self} with {other}.")
 
@@ -33,7 +36,9 @@ class Entity:
         listed_attrs = []
         for attr in self.__important_attributes__:
             if not hasattr(self, attr):
-                raise AttributeError(f"Missing attribute {attr} in {self.__class__.__name__}")
+                raise AttributeError(
+                    f"Missing attribute {attr} in {self.__class__.__name__}"
+                )
             listed_attrs.append(f"{attr}={getattr(self, attr)}")
         return f"{self.__class__.__name__}({', '.join(listed_attrs)})"
 
