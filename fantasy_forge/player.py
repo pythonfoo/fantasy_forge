@@ -7,7 +7,6 @@ from .entity import Entity
 from .gateway import Gateway
 from .inventory import Inventory
 from .item import Item
-from .key import Key
 from .shell import Shell
 from .weapon import Weapon
 from .world import World
