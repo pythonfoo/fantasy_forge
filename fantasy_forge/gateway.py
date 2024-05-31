@@ -32,9 +32,10 @@ class Gateway(Entity):
             return self.description
         return self.description + (" (locked)" if self.locked else "")  # TODO: l10n
 
-    def on_use(self: Self, other: Item | None = None) -> str:
+    def on_use(self: Self, other: Item | None = None):
         if other is None:
-            return super().on_use()
+            super().on_use()
+            return
         if not self.key_list:
             print("You can't use {self.name} like that.")  # TODO: l10n
         if not isinstance(other, Key):

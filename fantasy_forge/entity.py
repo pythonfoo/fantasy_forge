@@ -26,7 +26,7 @@ class Entity:
     def on_look(self: Self) -> str:
         return self.description
 
-    def on_use(self: Self, other: Entity | None = None) -> str:
+    def on_use(self: Self, other: Entity | None = None):
         if other is None:
             print(f"You can't use {self}.")  # TODO i18n
         else:
