@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-import toml
-
 from pathlib import Path
 from typing import Self
 
+import toml
 from fluent.runtime import FluentLocalization, FluentResourceLoader
 
 from .area import Area
