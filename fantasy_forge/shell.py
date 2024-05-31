@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import logging
+
 from cmd import Cmd
 from typing import TYPE_CHECKING
 
 from .gateway import Gateway
 from .item import Item
+
+logger = logging.getLogger(__name__)
 
 
 class Shell(Cmd):
@@ -61,8 +65,11 @@ class ShellEn(Shell):
         """
         if arg.strip() == "around":
             self.player.look_around()
+            logger.debug("%s looks around" % self.player.name)
         elif arg.strip().startswith("at"):
-            self.player.look_at(arg.strip().removeprefix("at").strip())
+            entity_name = arg.strip().removeprefix("at").strip()
+            self.player.look_at(entity_name)
+            logger.debug("%s looks at %s" % (self.player.name, entity_name))
         else:
             self.default(arg)
 
@@ -94,6 +101,7 @@ class ShellEn(Shell):
         if arg.startswith("up "):
             arg = arg.removeprefix("up ")
         self.player.pick_up(arg.strip())
+        logger.debug("%s picks up %s" % (self.player.name, arg.strip()))
 
     def complete_pick(
         self,
@@ -133,6 +141,7 @@ class ShellEn(Shell):
     def do_go(self, arg: str):
         """go <gateway>"""
         self.player.go(arg)
+        logger.debug("%s goes to %s" % (self.player.name, arg))
 
     def complete_go(
         self,
@@ -162,8 +171,16 @@ class ShellEn(Shell):
         if "with" in arg:
             subject, other = arg.split("with")
             self.player.use(subject.strip(), other.strip())
+            logger.debug(
+                "%(player)s uses %(subject)s with %(other)s"
+                % {"player": self.player.name, "subject": subject, "other": other}
+            )
         else:
             self.player.use(arg.strip())
+            logger.debug(
+                "%(player)s uses %(subject)s"
+                % {"player": self.player.name, "subject": subject}
+            )
 
     # TODO: Implement completion for use command
 
