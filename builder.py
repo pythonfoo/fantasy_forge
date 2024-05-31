@@ -5,6 +5,7 @@ from pathlib import Path
 import toml
 
 # TODO: centralized save & load method
+# TODO: auto completion for commands
 
 
 class Builder(Cmd):
@@ -116,10 +117,19 @@ class Builder(Cmd):
         for area_path in self.current_area_dir.glob("*.toml"):
             print(area_path)
 
+    def do_select(self: Self, arg: str):
+        match arg.strip().lower():
+            case "world":
+                self.select_world()
+            case "area":
+                self.select_area()
+
     def select_world(self: Self):
+        # TODO: implement select menu
         pass
 
     def select_area(self: Self):
+        # TODO: implement select menu
         pass
 
     def do_quit(self: Self, arg: str):
