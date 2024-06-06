@@ -40,6 +40,7 @@ class Gateway(Entity):
             print("You can't use {self.name} like that.")  # TODO: l10n
         if not isinstance(other, Key):
             print("You need a key.")  # TODO: l10n
+            return
         if self.locked:
             self.on_unlock(other)
         else:
