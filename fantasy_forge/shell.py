@@ -172,14 +172,15 @@ class ShellEn(Shell):
             subject, other = arg.split("with")
             self.player.use(subject.strip(), other.strip())
             logger.debug(
-                "%(player)s uses %(subject)s with %(other)s"
-                % {"player": self.player.name, "subject": subject, "other": other}
+                "%(player)s uses %(subject)s with %(other)s",
+                {"player": self.player.name, "subject": subject, "other": other}
             )
         else:
-            self.player.use(arg.strip())
+            subject = arg.strip()
+            self.player.use(subject)
             logger.debug(
-                "%(player)s uses %(subject)s"
-                % {"player": self.player.name, "subject": subject}
+                "%(player)s uses %(subject)s",
+                {"player": self.player.name, "subject": subject}
             )
 
     # TODO: Implement completion for use command
