@@ -1,3 +1,4 @@
+"""Generates toml files for new world."""
 from typing import Self
 from cmd import Cmd
 
@@ -34,6 +35,10 @@ class Builder(Cmd):
         match arg.strip().lower():
             case "world":
                 self.new_world()
+            case "area":
+                self.new_area()
+            case _:
+                raise NotImplementedError(f"new {arg} is not yet implemented.")
 
     def new_world(self: Self):
         world_name: str = input("Enter a name for your world: ")
@@ -105,6 +110,8 @@ class Builder(Cmd):
                 self.list_world()
             case "area":
                 self.list_area()
+            case _:
+                raise NotImplementedError(f"new {arg} is not yet implemented.")
 
     def list_world(self: Self):
         for world_path in self.root_dir.iterdir():
