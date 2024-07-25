@@ -28,18 +28,24 @@ class Gateway(Entity):
         super().__init__(world, config_dict)
 
     def on_look(self: Self) -> str:
-        if not self.key_list:
-            return self.description
-        return self.description + (" (locked)" if self.locked else "")  # TODO: l10n
+        text = []
+        if self.key_list and self.locked:
+            text.append(self.world.l10n.format_value("gateway-on-look-locked"))
+        text.append(self.description)
+        return "\n".join(text)
 
     def on_use(self: Self, other: Item | None = None):
         if other is None:
             super().on_use()
             return
         if not self.key_list:
-            print("You can't use {self.name} like that.")  # TODO: l10n
+            print(self.world.l10n.format_value("gateway-no-keys", {
+                "name": self.name,
+            }))
         if not isinstance(other, Key):
-            print("You need a key.")  # TODO: l10n
+            print(self.world.l10n.format_value("gateway-key-needed"), {
+                "name": self.name,
+            })
             return
         if self.locked:
             self.on_unlock(other)
@@ -50,11 +56,17 @@ class Gateway(Entity):
         if key.key_id in self.key_list:
             self.locked = False
             key.used = True
+            print(self.world.l10n.format_value("gateway-unlock-message", {
+                "name": self.name,
+            }))
 
     def on_lock(self: Self, key: Key):
         if key.key_id in self.key_list:
             self.locked = True
             key.used = True
+            print(self.world.l10n.format_value("gateway-lock-message", {
+                "name": self.name,
+            }))
 
     def to_dict(self: Self) -> dict:
         gateway_dict: dict = super().to_dict()

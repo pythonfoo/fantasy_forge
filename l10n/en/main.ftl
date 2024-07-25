@@ -21,6 +21,12 @@ enter-area-message = You are now in { $area }. You see:
 inventory-look-message = In the inventory you find { $items }.
 inventory-capacity-message = Maximum capacity ({ $capacity }) reached.
 inventory-item-not-found-message = Item { $item } couldn't be found.
+gateway-unlock-message = { $name } unlocked.
+gateway-lock-message = { $name } is now locked.
+gateway-locked-message = You can't use { $gateway } because it is locked.
+gateway-key-needed = You need a key.
+gateway-no-keys = You can't use { $name } like that.
+gateway-on-look-locked = It is locked.
 
 void-name = the void
 void-description = a place filled with nothingness
