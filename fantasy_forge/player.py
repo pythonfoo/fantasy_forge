@@ -174,36 +174,34 @@ class Player(Character):
             )
             # TODO
 
-    def use(self, subject: str, other: str | None = None):
-        if subject not in self.inventory:
-            if subject not in self.seen_entities:
-                print(
-                    self.world.l10n.format_value(
-                        "item-does-not-exist",
-                        {"item": subject},
-                    )
+    def use(self, subject_name: str, other_name: str | None = None):
+        subject = self.seen_entities.get(subject_name)
+        if subject is None:
+            print(
+                self.world.l10n.format_value(
+                    "entity-not-seen",
+                    {
+                        "entity": subject_name,
+                    },
                 )
-            subject = self.seen_entities.get(subject)
-        else:
-            subject = self.inventory.get(subject)
-
-        if other is None:
+            )
+            return
+        
+        if other_name is None:
             subject.on_use()
             return
 
-        if other not in self.inventory:
-            if other not in self.seen_entities:
-                print(
-                    self.world.l10n.format_value(
-                        "item-does-not-exist",
-                        {"item": other},
-                    )
+        other = self.seen_entities.get(other_name)
+        if other is None:
+            print(
+                self.world.l10n.format_value(
+                    "entity-not-seen",
+                    {
+                        "entity": other_name,
+                    },
                 )
-                return
-            other = self.seen_entities.get(other)
-        else:
-            other = self.inventory.get(other)
-
+            )
+            return
         # It makes more sense to implement the key logic in the gateway
         other.on_use(other=subject)
 
