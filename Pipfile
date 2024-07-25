@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 "fluent.runtime" = "*"
 toml = "*"
+huepy = "*"
 
 [dev-packages]
 

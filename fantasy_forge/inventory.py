@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Self, Iterator
 
 from .item import Item
-from .world import World
+from .world import World, highlight_interactive
 
 
 class Inventory:
@@ -57,6 +57,9 @@ class Inventory:
         return self.world.l10n.format_value(
             "inventory-look-message",
             {
-                "items": ", ".join(map(str, self)),
+                "items": ", ".join([
+                    highlight_interactive(str(item)).format(None)
+                    for item in self
+                ]),
             },
         )

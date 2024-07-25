@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Self
+from typing import Any, Self
 
+import huepy
 import toml
 from fluent.runtime import FluentLocalization, FluentResourceLoader
+from fluent.runtime.types import FluentNone
 
 from .area import Area
 
@@ -34,9 +36,16 @@ class World:
         with (path / "world.toml").open() as world_file:
             world_toml = toml.load(world_file)
             l10n = FluentLocalization(
-                [world_toml["language"]], ["main.ftl"], fluent_loader
+                locales=[world_toml["language"]],
+                resource_ids=["main.ftl"],
+                resource_loader=fluent_loader,
+                functions={"INTER": highlight_interactive},
             )
             world = World(l10n, world_toml["name"], areas)
             for area_name in world_toml["areas"]:
                 areas[area_name] = Area.load(world, path, area_name)
         return world
+
+def highlight_interactive(text: Any) -> FluentNone:
+    """INTER() for the localization"""
+    return FluentNone(huepy.bold(huepy.green(str(text))))
