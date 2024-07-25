@@ -183,7 +183,46 @@ class ShellEn(Shell):
                 {"player": self.player.name, "subject": subject}
             )
 
-    # TODO: Implement completion for use command
+    def complete_use(
+        self,
+        text: str,
+        line: str,
+        begidx: int,
+        endidx: int,
+    ) -> list[str]:
+        args = line.split(" ")
+        assert args[0] == "use"
+        del args[0]
+        if "with" in args:
+            # we're looking for the object
+            with_index = args.index("with")
+            object_name = " ".join(args[with_index+1:])
+            subject_name = " ".join(args[:with_index])
+            completions = [
+                text + name.removeprefix(object_name).strip() + " "
+                for name in self.player.seen_entities.keys()
+                if name.startswith(object_name) and name != subject_name
+            ]
+            if " " in completions:
+                completions.remove(" ")
+            return completions
+        else:
+            # we're looking for the subject
+            subject_name = " ".join(args).strip()
+            completions = [
+                text + name.removeprefix(subject_name).strip() + " "
+                for name in self.player.seen_entities.keys()
+                if name.startswith(subject_name)
+            ]
+            if " " in completions:
+                completions.remove(" ")
+            # we might already be in the "with"
+            if any((
+                entity_name == subject_name.rstrip("ihtw").strip()
+                for entity_name in self.player.seen_entities
+            )):
+                completions.append("with ")
+            return completions
 
 
 if TYPE_CHECKING:

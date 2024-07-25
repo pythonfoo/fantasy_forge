@@ -30,7 +30,7 @@ class Entity:
         if other is None:
             print(f"You can't use {self}.")  # TODO i18n
         else:
-            print(f"You can't use {self} with {other}.")
+            print(f"You can't use {other} with {self}.")
 
     def __repr__(self: Self) -> str:
         listed_attrs = []
