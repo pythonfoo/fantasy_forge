@@ -1,4 +1,4 @@
-from typing import Self
+from typing import Any, Self
 
 from .character import Character
 from .inventory import Inventory
@@ -14,8 +14,8 @@ class Enemy(Character):
     weapon: Weapon | None
     loot: Inventory
 
-    def __init__(self: Self, world: World, name: str, description: str, health: int):
-        super().__init__(world, name, description, health)
+    def __init__(self: Self, world: World, config_dict: dict[str, Any]):
+        super().__init__(world, config_dict)
         self.weapon = None
         self.loot = Inventory(world, 5)
 
@@ -34,7 +34,7 @@ class Enemy(Character):
                 {
                     "source": self.name,
                     "target": target.name,
-                    "weapon": self.weapon.name,
+                    "weapon": getattr(self.weapon, "name"),
                 },
             )
         )

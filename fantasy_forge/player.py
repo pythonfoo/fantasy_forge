@@ -33,7 +33,12 @@ class Player(Character):
 
     def __init__(self: Self, world: World, name: str, health: int = BASE_PLAYER_HEALTH):
         super().__init__(
-            world, name, world.l10n.format_value("player-description"), health
+            world,
+            dict(
+                name=name,
+                description=world.l10n.format_value("player-description"),
+                health=health,
+            ),
         )
         self.area = Area.empty(world)
         # put us in the void
@@ -186,7 +191,7 @@ class Player(Character):
                 )
             )
             return
-        
+
         if other_name is None:
             subject.on_use()
             return

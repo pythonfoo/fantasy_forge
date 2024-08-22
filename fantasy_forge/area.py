@@ -53,6 +53,14 @@ class Area(Entity):
                     from .key import Key
 
                     contents_list.append(Key(world, entity_dict))
+                case "enemy":
+                    from .enemy import Enemy
+
+                    contents_list.append(Enemy(world, entity_dict))
+                case "weapon":
+                    from .weapon import Weapon
+
+                    contents_list.append(Weapon(world, entity_dict))
                 case default:
                     contents_list.append(Entity(world, entity_dict))
         contents = {entity.name: entity for entity in contents_list}

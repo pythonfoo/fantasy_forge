@@ -1,4 +1,4 @@
-from typing import Self
+from typing import Any, Self
 
 from .entity import Entity
 from .weapon import Weapon
@@ -13,12 +13,9 @@ class Character(Entity):
     health: int
     _alive: bool
 
-    def __init__(
-        self: Self, world: World, name: str, description: str, health: int
-    ) -> None:
-        # TODO: implement config_dict like the other classes
-        self.health = health
-        super().__init__(world, dict(name=name, description=description))
+    def __init__(self: Self, world: World, config_dict: dict[str, Any]) -> None:
+        self.health = config_dict.pop("health")
+        super().__init__(world, config_dict)
 
     @property
     def alive(self: Self) -> bool:

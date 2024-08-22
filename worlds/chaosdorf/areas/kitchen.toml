@@ -6,3 +6,15 @@ kind = "gateway"
 name = "lounge"
 target = "lounge"
 obvious = true
+
+
+[[contents]]
+kind = "enemy"
+name = "mold"
+health = 2
+
+[[contents]]
+kind = "weapon"
+name = "knife"
+damage = 2
+

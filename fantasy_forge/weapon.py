@@ -1,6 +1,7 @@
-from typing import Self
+from typing import Any, Self
 
 from .item import Item
+from .world import World
 
 
 class Weapon(Item):
@@ -10,7 +11,6 @@ class Weapon(Item):
 
     damage: int
 
-    def __init__(self: Self, name: str, description: str, damage: int) -> None:
-        # TODO: implement config_dict like the other classes
-        super().__init__(name, description)
-        self.damage = damage
+    def __init__(self: Self, world: World, config_dict: dict[str, Any]) -> None:
+        self.damage = config_dict.pop("damage")
+        super().__init__(world, config_dict)
