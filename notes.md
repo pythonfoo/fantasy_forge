@@ -20,6 +20,9 @@ Aktionen über die der Spieler mit der Welt interagieren kann. Diese Aktionen k�
 - Deadline für Motivation
 - Zufällige Items
   - Roguelike
+  - zufällige Loot-Drops
+- Enemies können angreifen beim Betreten des Raums
+- Waffen für Enemies
 - Levelkurve
 - Dialogoptionen
 - "untouchable" Attribut für die Character Klasse, damit bestimmte Charactere nicht angegriffen werden können
