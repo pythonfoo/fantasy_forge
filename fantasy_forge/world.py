@@ -39,7 +39,10 @@ class World:
                 locales=[world_toml["language"]],
                 resource_ids=["main.ftl"],
                 resource_loader=fluent_loader,
-                functions={"INTER": highlight_interactive},
+                functions={
+                    "INTER": highlight_interactive,
+                    "NUM": highlight_number,
+                },
             )
             world = World(l10n, world_toml["name"], areas)
             for area_name in world_toml["areas"]:
@@ -49,3 +52,7 @@ class World:
 def highlight_interactive(text: Any) -> FluentNone:
     """INTER() for the localization"""
     return FluentNone(huepy.bold(huepy.green(str(text))))
+
+def highlight_number(text: Any) -> FluentNone:
+    """NUM() for the localization"""
+    return FluentNone(huepy.bold(huepy.orange(str(text))))
