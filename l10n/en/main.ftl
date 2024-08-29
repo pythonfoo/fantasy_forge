@@ -15,12 +15,12 @@ pick-up-failed-message = You can't pick up this item.
 go-failed-message = You can't go there.
 equip-item-message = You equipped { INTER($item) }
 cannot-equip = You can't equip { INTER($weapon) }.
-attack-character-message = { $source } attacks { $target }{ EXISTS($weapon) -> 
+attack-character-message = { INTER($source) } attacks { INTER($target) }{ EXISTS($weapon) -> 
     [true] with { $weapon }
     *[false] { "" }
 }.
-attack-character-alive-message = { $target } remains at { NUM($health) } health points
-attack-character-dead-message = { $target } vanished.
+attack-character-alive-message = { INTER($target) } remains at { NUM($health) } health points
+attack-character-dead-message = { INTER($target) } vanished.
 cannot-attack = Cannot attack { INTER($target) }.
 enter-area-message = You are now in { $area }. You see:
 inventory-look-message = In the inventory you find { $items }.
