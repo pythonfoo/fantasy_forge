@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 from .character import Character
 from .gateway import Gateway
 from .item import Item
+from .weapon import Weapon
 
 logger = logging.getLogger(__name__)
 
@@ -249,6 +250,23 @@ class ShellEn(Shell):
     def do_equip(self, arg: str) -> None:
         """Take an item out of the inventory and place it firmly in your hand."""
         self.player.equip(arg)
+    
+    def complete_equip(
+        self,
+        text: str,
+        line: str,
+        begidx: int,
+        endidx: int,
+    ) -> list[str]:
+        weapon = line.removeprefix("equip ").strip()
+        completions = [
+            text + name.removeprefix(weapon).strip() + " "
+            for name, entity in self.player.seen_entities.items()
+            if name.startswith(weapon) and isinstance(entity, Weapon)
+        ]
+        if " " in completions:
+            completions.remove(" ")
+        return completions
 
 if TYPE_CHECKING:
     from .player import Player
