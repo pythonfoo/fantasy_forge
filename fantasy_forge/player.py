@@ -15,12 +15,12 @@ BASE_INVENTORY_CAPACITY = 10
 BASE_PLAYER_HEALTH = 100
 
 
-def BARE_HANDS(l10n):
-    return Weapon(
-        l10n.format_value("bare-hands-name"),
-        l10n.format_value("bare-hand-description"),
-        BASE_DAMAGE,
-    )
+def BARE_HANDS(world: World):
+    return Weapon(world, {
+        "name": world.l10n.format_value("bare-hands-name"),
+        "description": world.l10n.format_value("bare-hands-description"),
+        "damage": BASE_DAMAGE,
+    })
 
 
 class Player(Character):
@@ -28,7 +28,7 @@ class Player(Character):
 
     area: Area  # the area we are currently in
     seen_entities: dict[str, Entity]
-    main_hand: Item | None
+    main_hand: Weapon | None
     inventory: Inventory
 
     def __init__(self: Self, world: World, name: str, health: int = BASE_PLAYER_HEALTH):
@@ -98,8 +98,8 @@ class Player(Character):
         if item is None:
             print(
                 self.world.l10n.format_value(
-                    "item-does-not-exist",
-                    {"item": item_name},
+                    "entity-does-not-exist",
+                    {"entity": item_name},
                 )
             )
             return
@@ -139,11 +139,31 @@ class Player(Character):
             )
         )
 
-    def attack(self, target: Character) -> None:
+    def attack(self, target_name: str) -> None:
         """Player attacks character using their main hand."""
-        weapon: Item
-        if self.main_hand is None or not hasattr(self.main_hand, "damage"):
-            weapon = BARE_HANDS(self.world.l10n)
+        target = self.seen_entities.get(target_name)
+        if target is None:
+            print(
+                self.world.l10n.format_value(
+                    "entity-does-not-exist",
+                    {"entity": target_name},
+                )
+            )
+            return
+        if not isinstance(target, Character):
+            print(
+                self.world.l10n.format_value(
+                    "cannot-attack",
+                    {"target": target_name}
+                )
+            )
+            return
+        if target_name not in self.area.contents:
+            print(self.world.l10n.format_value("item-vanished"))
+            self.seen_entities.pop(target_name)
+            return
+        if self.main_hand is None:
+            weapon = BARE_HANDS(self.world)
         else:
             weapon = self.main_hand
         print(
@@ -177,7 +197,10 @@ class Player(Character):
                     },
                 )
             )
-            # TODO
+            # if the target is dead, remove it from the area
+            self.area.contents.pop(target.name)
+            self.seen_entities.pop(target.name)
+            # TODO: perhaps drop loot
 
     def use(self, subject_name: str, other_name: str | None = None):
         subject = self.seen_entities.get(subject_name)
@@ -220,8 +243,8 @@ class Player(Character):
         if gateway is None:
             print(
                 self.world.l10n.format_value(
-                    "item-does-not-exist",
-                    {"item": gateway_name},
+                    "entity-does-not-exist",
+                    {"entity": gateway_name},
                 )
             )
             return

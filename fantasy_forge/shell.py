@@ -223,6 +223,10 @@ class ShellEn(Shell):
             )):
                 completions.append("with ")
             return completions
+    
+    def do_attack(self, arg: str) -> None:
+        """Attack another entity."""
+        self.player.attack(arg)
 
 
 if TYPE_CHECKING:
