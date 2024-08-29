@@ -5,6 +5,7 @@ import logging
 from cmd import Cmd
 from typing import TYPE_CHECKING
 
+from .character import Character
 from .gateway import Gateway
 from .item import Item
 
@@ -227,6 +228,23 @@ class ShellEn(Shell):
     def do_attack(self, arg: str) -> None:
         """Attack another entity."""
         self.player.attack(arg)
+    
+    def complete_attack(
+        self,
+        text: str,
+        line: str,
+        begidx: int,
+        endidx: int,
+    ) -> list[str]:
+        target = line.removeprefix("attack ").strip()
+        completions = [
+            text + name.removeprefix(target).strip() + " "
+            for name, entity in self.player.seen_entities.items()
+            if name.startswith(target) and isinstance(entity, Character)
+        ]
+        if " " in completions:
+            completions.remove(" ")
+        return completions
     
     def do_equip(self, arg: str) -> None:
         """Take an item out of the inventory and place it firmly in your hand."""
