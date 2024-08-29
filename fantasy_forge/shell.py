@@ -227,7 +227,10 @@ class ShellEn(Shell):
     def do_attack(self, arg: str) -> None:
         """Attack another entity."""
         self.player.attack(arg)
-
+    
+    def do_equip(self, arg: str) -> None:
+        """Take an item out of the inventory and place it firmly in your hand."""
+        self.player.equip(arg)
 
 if TYPE_CHECKING:
     from .player import Player

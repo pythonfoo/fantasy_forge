@@ -125,16 +125,49 @@ class Player(Character):
         else:
             print(self.world.l10n.format_value("pick-up-failed-message"))
 
-    def equip(self, item_name: str):
-        """Gets an item from player inventory and puts it in the main hand."""
-        item = self.inventory.get(item_name)
-        self.main_hand = item
+    def equip(self, weapon_name: str):
+        """Puts an item in the main hand."""
+        weapon = self.seen_entities.get(weapon_name)
+        if weapon is None:
+            print(
+                self.world.l10n.format_value(
+                    "entity-does-not-exist",
+                    {"entity": weapon_name},
+                )
+            )
+            return
+        if not isinstance(weapon, Weapon):
+            print(
+                self.world.l10n.format_value(
+                    "cannot-equip",
+                    {"weapon": weapon_name}
+                )
+            )
+            return
+        if weapon_name not in self.area.contents and weapon_name not in self.inventory.contents:
+            print(self.world.l10n.format_value("item-vanished"))
+            self.seen_entities.pop(weapon_name)
+            return
+        if weapon not in self.inventory.contents.values():
+            # if it's not already in the inventory, place it there
+            self.inventory.add(weapon)
+            # picking up items keeps them in seen_entities
+            self.area.contents.pop(weapon_name)
+            print(
+                self.world.l10n.format_value(
+                    "pick-up-item-message",
+                    {
+                        "item": weapon.name,
+                    },
+                )
+            )
+        self.main_hand = weapon
         print(
             self.world.l10n.format_value(
                 "equip-item-message",
                 {
                     "player": self.name,
-                    "item": item.name,
+                    "item": weapon.name,
                 },
             )
         )

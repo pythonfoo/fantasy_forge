@@ -48,10 +48,7 @@ class Inventory:
 
     def get(self: Self, item_name: str) -> Item | None:
         """Gets item by name."""
-        for item in self.contents:
-            if item.name == item_name:
-                return item
-        return None
+        return self.contents.get(item_name)
 
     def on_look(self: Self) -> str:
         return self.world.l10n.format_value(
