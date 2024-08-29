@@ -236,6 +236,20 @@ class Player(Character):
             self.area.contents.pop(target.name)
             self.seen_entities.pop(target.name)
             # TODO: perhaps drop loot
+        if self.alive:
+            print(
+                self.world.l10n.format_value(
+                    "player-health-remaining",
+                    {"health": self.health},
+                )
+            )
+        else:
+            print(
+                self.world.l10n.format_value(
+                    "player-died"
+                )
+            )
+            exit()
 
     def use(self, subject_name: str, other_name: str | None = None):
         subject = self.seen_entities.get(subject_name)

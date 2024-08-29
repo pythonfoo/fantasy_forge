@@ -11,10 +11,10 @@ obvious = true
 [[contents]]
 kind = "enemy"
 name = "mold"
-health = 2
+health = 10
 
 [[contents]]
 kind = "weapon"
 name = "knife"
-damage = 2
+damage = 15
 

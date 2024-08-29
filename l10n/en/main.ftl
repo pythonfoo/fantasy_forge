@@ -21,6 +21,8 @@ attack-character-message = { INTER($source) } attacks { INTER($target) }{ EXISTS
 }.
 attack-character-alive-message = { INTER($target) } remains at { NUM($health) } health points
 attack-character-dead-message = { INTER($target) } vanished.
+player-health-remaining = You have { NUM($health) } health remaining.
+player-died = You died.
 cannot-attack = Cannot attack { INTER($target) }.
 enter-area-message = You are now in { $area }. You see:
 inventory-look-message = In the inventory you find { $items }.
