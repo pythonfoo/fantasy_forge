@@ -34,7 +34,7 @@ class Enemy(Character):
                 {
                     "source": self.name,
                     "target": target.name,
-                    "weapon": getattr(self.weapon, "name"),
+                    "weapon": getattr(self.weapon, "name", None),
                 },
             )
         )

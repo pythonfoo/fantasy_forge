@@ -15,7 +15,10 @@ pick-up-failed-message = You can't pick up this item.
 go-failed-message = You can't go there.
 equip-item-message = You equipped { INTER($item) }
 cannot-equip = You can't equip { INTER($weapon) }.
-attack-character-message = { $source } attacks { $target } with { $weapon }
+attack-character-message = { $source } attacks { $target }{ EXISTS($weapon) -> 
+    [true] with { $weapon }
+    *[false] { "" }
+}.
 attack-character-alive-message = { $target } remains at { NUM($health) } health points
 attack-character-dead-message = { $target } vanished.
 cannot-attack = Cannot attack { INTER($target) }.

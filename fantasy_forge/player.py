@@ -212,6 +212,8 @@ class Player(Character):
         target.on_attack(weapon)
 
         if target.alive:
+            # give the enemy an option for revenge
+            target.attack(self)
             print(
                 self.world.l10n.format_value(
                     "attack-character-alive-message",

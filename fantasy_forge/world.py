@@ -42,6 +42,7 @@ class World:
                 functions={
                     "INTER": highlight_interactive,
                     "NUM": highlight_number,
+                    "EXISTS": check_exists,
                 },
             )
             world = World(l10n, world_toml["name"], areas)
@@ -56,3 +57,7 @@ def highlight_interactive(text: Any) -> FluentNone:
 def highlight_number(text: Any) -> FluentNone:
     """NUM() for the localization"""
     return FluentNone(huepy.bold(huepy.orange(str(text))))
+
+def check_exists(obj: Any):
+    """EXISTS() for the localization"""
+    return obj is not None
