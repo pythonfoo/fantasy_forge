@@ -24,6 +24,10 @@ attack-character-dead-message = { INTER($target) } vanished.
 player-health-remaining = You have { NUM($health) } health remaining.
 player-died = You died.
 cannot-attack = Cannot attack { INTER($target) }.
+cannot-use-message = You can't use { EXISTS($other) ->
+    [true] { INTER($other) } with{ " " }
+    *[false] { "" }
+}{ INTER($self) }.
 enter-area-message = You are now in { $area }. You see:
 inventory-look-message = In the inventory you find { $items }.
 inventory-capacity-message = Maximum capacity ({ NUM($capacity) }) reached.

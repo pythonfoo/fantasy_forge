@@ -60,4 +60,4 @@ def highlight_number(text: Any) -> FluentNone:
 
 def check_exists(obj: Any):
     """EXISTS() for the localization"""
-    return obj is not None
+    return str(not isinstance(obj, FluentNone)).lower()

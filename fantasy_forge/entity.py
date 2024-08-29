@@ -27,10 +27,13 @@ class Entity:
         return self.description
 
     def on_use(self: Self, other: Entity | None = None):
-        if other is None:
-            print(f"You can't use {self}.")  # TODO i18n
-        else:
-            print(f"You can't use {other} with {self}.")
+        print(self.world.l10n.format_value(
+            "cannot-use-message",
+            {
+                "self": self.name,
+                "other": getattr(other, "name", None),
+            }
+        ))
 
     def __repr__(self: Self) -> str:
         listed_attrs = []
