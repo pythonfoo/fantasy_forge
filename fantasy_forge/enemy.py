@@ -1,7 +1,7 @@
 from typing import Any, Self
 
 from .character import Character
-from .inventory import Inventory
+from .item import Item
 from .weapon import Weapon
 from .world import World
 
@@ -12,12 +12,14 @@ class Enemy(Character):
     """An enemy is a person which will fight back."""
 
     weapon: Weapon | None
-    loot: Inventory
+    loot: list[Item]
 
     def __init__(self: Self, world: World, config_dict: dict[str, Any]):
         super().__init__(world, config_dict)
         self.weapon = None
-        self.loot = Inventory(world, 5)
+        self.loot = []
+        for item_dict in config_dict.get("loot", []):
+            self.loot.append(Item(world, item_dict))
 
     def __str__(self: Self) -> str:
         return self.name

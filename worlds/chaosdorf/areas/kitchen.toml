@@ -12,6 +12,8 @@ obvious = true
 kind = "enemy"
 name = "mold"
 health = 10
+[[contents.loot]]
+name = "salad"
 
 [[contents]]
 kind = "weapon"

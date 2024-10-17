@@ -16,11 +16,13 @@ go-failed-message = You can't go there.
 equip-item-message = You equipped { INTER($item) }
 cannot-equip = You can't equip { INTER($weapon) }.
 attack-character-message = { INTER($source) } attacks { INTER($target) }{ EXISTS($weapon) -> 
-    [true] with { $weapon }
+    [true] { "" } with { $weapon }
     *[false] { "" }
 }.
 attack-character-alive-message = { INTER($target) } remains at { NUM($health) } health points
 attack-character-dead-message = { INTER($target) } vanished.
+attack-drop-begin = { INTER($target) } dropped { NUM($loot_count) } items:
+attack-drop-single = { INTER($item) }
 player-health-remaining = You have { NUM($health) } health remaining.
 player-died = You died.
 cannot-attack = Cannot attack { INTER($target) }.

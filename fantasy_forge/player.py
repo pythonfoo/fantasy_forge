@@ -16,11 +16,14 @@ BASE_PLAYER_HEALTH = 100
 
 
 def BARE_HANDS(world: World):
-    return Weapon(world, {
-        "name": world.l10n.format_value("bare-hands-name"),
-        "description": world.l10n.format_value("bare-hands-description"),
-        "damage": BASE_DAMAGE,
-    })
+    return Weapon(
+        world,
+        {
+            "name": world.l10n.format_value("bare-hands-name"),
+            "description": world.l10n.format_value("bare-hands-description"),
+            "damage": BASE_DAMAGE,
+        },
+    )
 
 
 class Player(Character):
@@ -137,14 +140,12 @@ class Player(Character):
             )
             return
         if not isinstance(weapon, Weapon):
-            print(
-                self.world.l10n.format_value(
-                    "cannot-equip",
-                    {"weapon": weapon_name}
-                )
-            )
+            print(self.world.l10n.format_value("cannot-equip", {"weapon": weapon_name}))
             return
-        if weapon_name not in self.area.contents and weapon_name not in self.inventory.contents:
+        if (
+            weapon_name not in self.area.contents
+            and weapon_name not in self.inventory.contents
+        ):
             print(self.world.l10n.format_value("item-vanished"))
             self.seen_entities.pop(weapon_name)
             return
@@ -172,6 +173,7 @@ class Player(Character):
             )
         )
 
+    # TODO: Refactor
     def attack(self, target_name: str) -> None:
         """Player attacks character using their main hand."""
         target = self.seen_entities.get(target_name)
@@ -185,10 +187,7 @@ class Player(Character):
             return
         if not isinstance(target, Character):
             print(
-                self.world.l10n.format_value(
-                    "cannot-attack",
-                    {"target": target_name}
-                )
+                self.world.l10n.format_value("cannot-attack", {"target": target_name})
             )
             return
         if target_name not in self.area.contents:
@@ -235,7 +234,25 @@ class Player(Character):
             # if the target is dead, remove it from the area
             self.area.contents.pop(target.name)
             self.seen_entities.pop(target.name)
-            # TODO: perhaps drop loot
+            print(
+                self.world.l10n.format_value(
+                    "attack-drop-begin",
+                    {
+                        "target": target.name,
+                        "loot_count": len(target.loot),
+                    },
+                )
+            )
+            for loot_item in target.loot:
+                self.area.contents[loot_item.name] = loot_item
+                self.seen_entities[loot_item.name] = loot_item
+                print(
+                    self.world.l10n.format_value(
+                        "attack-drop-single",
+                        {"item": loot_item.name},
+                    )
+                )
+
         if self.alive:
             print(
                 self.world.l10n.format_value(
@@ -244,11 +261,7 @@ class Player(Character):
                 )
             )
         else:
-            print(
-                self.world.l10n.format_value(
-                    "player-died"
-                )
-            )
+            print(self.world.l10n.format_value("player-died"))
             exit()
 
     def use(self, subject_name: str, other_name: str | None = None):
