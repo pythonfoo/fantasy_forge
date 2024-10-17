@@ -11,11 +11,8 @@ BASE_DAMAGE = 1
 class Enemy(Character):
     """An enemy is a person which will fight back."""
 
-    weapon: Weapon | None
-
     def __init__(self: Self, world: World, config_dict: dict[str, Any]):
         super().__init__(world, config_dict)
-        self.weapon = None
         for item_dict in config_dict.get("loot", []):
             self.inventory.add(Item(world, item_dict))
 
@@ -23,10 +20,10 @@ class Enemy(Character):
         return self.name
 
     def attack(self: Self, target: Character):
-        if self.weapon is None:
+        if self.main_hand is None:
             damage = BASE_DAMAGE
         else:
-            damage = self.weapon.damage
+            damage = self.main_hand.damage
         target.health = target.health - damage
         print(
             self.world.l10n.format_value(
@@ -34,7 +31,7 @@ class Enemy(Character):
                 {
                     "source": self.name,
                     "target": target.name,
-                    "weapon": getattr(self.weapon, "name", None),
+                    "weapon": getattr(self.main_hand, "name", None),
                 },
             )
         )

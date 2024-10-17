@@ -29,7 +29,6 @@ class Player(Character):
 
     area: Area  # the area we are currently in
     seen_entities: dict[str, Entity]
-    main_hand: Weapon | None
 
     def __init__(self: Self, world: World, name: str, health: int = BASE_PLAYER_HEALTH):
         super().__init__(
@@ -46,7 +45,6 @@ class Player(Character):
         # transition to the next area.
         self.area.contents[self.name] = self
         self.seen_entities = {}
-        self.main_hand = None
 
     def look_around(self):
         """Player looks around the current area."""

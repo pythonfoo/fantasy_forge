@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any, Self
 
 from .entity import Entity
@@ -14,11 +16,13 @@ class Character(Entity):
 
     health: int
     inventory: Inventory
+    main_hand: Weapon | None
     _alive: bool
 
     def __init__(self: Self, world: World, config_dict: dict[str, Any]) -> None:
         self.health = config_dict.pop("health")
         self.inventory = Inventory(world, BASE_INVENTORY_CAPACITY)
+        self.main_hand = None
         super().__init__(world, config_dict)
 
     @property
