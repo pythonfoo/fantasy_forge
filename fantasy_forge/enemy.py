@@ -12,14 +12,12 @@ class Enemy(Character):
     """An enemy is a person which will fight back."""
 
     weapon: Weapon | None
-    loot: list[Item]
 
     def __init__(self: Self, world: World, config_dict: dict[str, Any]):
         super().__init__(world, config_dict)
         self.weapon = None
-        self.loot = []
         for item_dict in config_dict.get("loot", []):
-            self.loot.append(Item(world, item_dict))
+            self.inventory.add(Item(world, item_dict))
 
     def __str__(self: Self) -> str:
         return self.name

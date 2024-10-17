@@ -13,7 +13,7 @@ item-vanished = The item has vanished before your eyes.
 item-is-in-inventory = You already picked up this item.
 pick-up-failed-message = You can't pick up this item.
 go-failed-message = You can't go there.
-equip-item-message = You equipped { INTER($item) }
+equip-item-message = You equipped { INTER($item) }.
 cannot-equip = You can't equip { INTER($weapon) }.
 attack-character-message = { INTER($source) } attacks { INTER($target) }{ EXISTS($weapon) -> 
     [true] { "" } with { $weapon }
