@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Self, Iterator
 
-from .item import Item
-from .world import World, highlight_interactive
+from fantasy_forge.item import Item
+from fantasy_forge.world import World, highlight_interactive
 
 
 class Inventory:

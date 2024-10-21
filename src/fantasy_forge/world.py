@@ -8,7 +8,12 @@ import toml
 from fluent.runtime import FluentLocalization, FluentResourceLoader
 from fluent.runtime.types import FluentNone
 
-from .area import Area
+from fantasy_forge.area import Area
+
+import logging
+
+logger = logging.getLogger(__name__)
+# logger.setLevel(logging.DEBUG)
 
 
 class World:
@@ -28,13 +33,17 @@ class World:
 
     @staticmethod
     def load(name: str) -> World:
-        fluent_loader = FluentResourceLoader("l10n/{locale}")
-        path = Path("worlds") / name
+        locale_path = "data/l10n/{locale}"
+        fluent_loader = FluentResourceLoader(locale_path)
+        path = Path("data/worlds") / name
         if not path.exists():
+            logger.debug(f"Path {path} not found, using {name}")
             path = Path(name)
         areas: dict[str, Area] = dict()
         with (path / "world.toml").open() as world_file:
             world_toml = toml.load(world_file)
+            logger.debug("language")
+            logger.debug(world_toml["language"])
             l10n = FluentLocalization(
                 locales=[world_toml["language"]],
                 resource_ids=["main.ftl"],
@@ -50,13 +59,16 @@ class World:
                 areas[area_name] = Area.load(world, path, area_name)
         return world
 
+
 def highlight_interactive(text: Any) -> FluentNone:
     """INTER() for the localization"""
     return FluentNone(huepy.bold(huepy.green(str(text))))
 
+
 def highlight_number(text: Any) -> FluentNone:
     """NUM() for the localization"""
     return FluentNone(huepy.bold(huepy.orange(str(text))))
+
 
 def check_exists(obj: Any):
     """EXISTS() for the localization"""

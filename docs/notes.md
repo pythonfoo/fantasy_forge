@@ -39,3 +39,23 @@ Schlüssel Objekte können mit verschiedenen anderen Objekten interagieren. So k
 ### Currency Klasse
 
 Um Handel zu ermöglichen soll der Wert von Gegenständen durch eine Währung dargestellt werden. Eine Person kann einen bestimmten Betrag dieser Währung bei sich tragen.
+
+## Aufbau
+
+Derzeitiges Vorhaben:
+
+- ein Repo mit Framework das man per bspw `pipx` installieren und dann spielen kann, batteries included
+- das Repo enthält auch Devtools:
+  - Downloader: Welten werden als Repos nachgeladen, unabhängig von GitHub, eine Beispielwelt wird implizit bei der Initialisierung geladen
+  - einen Wizard: neue Welten können "from scratch" erstellt werden, ähnlich wie `uv init` oder `pdm init`
+- dann brauchen wir eine Versionierung um Kompatibilität zu prüfen
+- syntaktische/semantische Prüfungen wären sinnvoll (sind alle benötigten Keys beim Import da, sind die Werte sinnvoll, …)
+
+## Lootmatching
+
+- bspw haben Waffen einen Schadenswert. Schwierige Level enthalten schwierige Gegner die mit "guten" Waffen einfacher besiegt werden können
+- Lootdropping soll auch ein wenig zufällig sein, aber tendenziell von Gegnern/Leveln abhängen (und sich auch bspw nicht zu häufig wiederholen)
+- sinnvoller, als ausschließlich bei den Gegnern ein feststehendes, mögliches Set an Waffen zu definieren, oder bei den Waffen ein Set an Gegnern, wäre es Lootmatching zu machen
+- dann bräuchte man einen `LootMatcher` der eine Welt nimmt, eine generelle Config, einen Gegner bzw. ein Subjekt und eine Matching-Config wie man das zuordnen möchte, also Wahrscheinlichkeiten, und am Ende hat das Subjekt eine Liste an Items; man kann aber auch über die Wahrscheinlichkeit 0 bzw 1 angeben, dass etwas nicht vorkommt oder vorkommen muss und so explizit auswählen
+
+

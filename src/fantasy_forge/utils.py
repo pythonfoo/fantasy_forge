@@ -1,5 +1,5 @@
-from .area import Area
-from .item import Item
+from fantasy_forge.area import Area
+from fantasy_forge.item import Item
 
 
 def pickup_menu(area: Area) -> Item | None:

@@ -3,8 +3,8 @@ from sys import argv
 
 import logging
 
-from .player import Player
-from .world import World
+from fantasy_forge.player import Player
+from fantasy_forge.world import World
 
 
 def parse_args(argv=argv[1:]):

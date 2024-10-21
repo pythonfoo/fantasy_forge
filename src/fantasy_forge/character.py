@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Any, Self
 
-from .entity import Entity
-from .inventory import Inventory
-from .weapon import Weapon
-from .world import World
+from fantasy_forge.entity import Entity
+from fantasy_forge.inventory import Inventory
+from fantasy_forge.weapon import Weapon
+from fantasy_forge.world import World
 
 BASE_INVENTORY_CAPACITY = 10
 

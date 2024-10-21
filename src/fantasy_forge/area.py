@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any, Iterator, Self
 
 import toml
 
-from .entity import Entity
+from fantasy_forge.entity import Entity
 
 
 class Area(Entity):
@@ -42,23 +42,23 @@ class Area(Entity):
         for entity_dict in area_dict.get("contents", []):
             match entity_dict.get("kind", "entity"):
                 case "item":
-                    from .item import Item
+                    from fantasy_forge.item import Item
 
                     contents_list.append(Item(world, entity_dict))
                 case "gateway":
-                    from .gateway import Gateway
+                    from fantasy_forge.gateway import Gateway
 
                     contents_list.append(Gateway(world, entity_dict))
                 case "key":
-                    from .key import Key
+                    from fantasy_forge.key import Key
 
                     contents_list.append(Key(world, entity_dict))
                 case "enemy":
-                    from .enemy import Enemy
+                    from fantasy_forge.enemy import Enemy
 
                     contents_list.append(Enemy(world, entity_dict))
                 case "weapon":
-                    from .weapon import Weapon
+                    from fantasy_forge.weapon import Weapon
 
                     contents_list.append(Weapon(world, entity_dict))
                 case default:
@@ -88,4 +88,4 @@ class Area(Entity):
 
 
 if TYPE_CHECKING:
-    from .world import World
+    from fantasy_forge.world import World

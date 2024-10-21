@@ -1,14 +1,14 @@
 from typing import Self
 
-from .area import Area
-from .character import Character
-from .enemy import BASE_DAMAGE
-from .entity import Entity
-from .gateway import Gateway
-from .item import Item
-from .shell import Shell
-from .weapon import Weapon
-from .world import World
+from fantasy_forge.area import Area
+from fantasy_forge.character import Character
+from fantasy_forge.enemy import BASE_DAMAGE
+from fantasy_forge.entity import Entity
+from fantasy_forge.gateway import Gateway
+from fantasy_forge.item import Item
+from fantasy_forge.shell import Shell
+from fantasy_forge.weapon import Weapon
+from fantasy_forge.world import World
 
 BASE_PLAYER_HEALTH = 100
 

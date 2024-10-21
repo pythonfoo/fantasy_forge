@@ -1,7 +1,7 @@
 from typing import Self
 
-from .entity import Entity
-from .inventory import Inventory
+from fantasy_forge.entity import Entity
+from fantasy_forge.inventory import Inventory
 
 
 class Container(Entity, Inventory):

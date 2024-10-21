@@ -1,7 +1,7 @@
 from typing import Any, Self
 
-from .item import Item
-from .world import World
+from fantasy_forge.item import Item
+from fantasy_forge.world import World
 
 
 class Weapon(Item):

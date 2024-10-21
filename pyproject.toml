@@ -1,0 +1,21 @@
+[project]
+name = "fantasy-forge"
+version = "0.1.0"
+description = "A textadventure that starts at Chaosdorf and ends wherever we want."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "pythonfoo", email = "pythonfoo@chaosdorf.de" }
+]
+dependencies = ["fluent.runtime", "toml", "huepy"]
+
+[project.scripts]
+fantasy-forge = "fantasy_forge.main:main"
+
+[dev-packages]
+pytest = "*"
+hitchstory = "*"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

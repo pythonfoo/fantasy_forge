@@ -1,9 +1,9 @@
 from typing import Any, Self
 
-from .character import Character
-from .item import Item
-from .weapon import Weapon
-from .world import World
+from fantasy_forge.character import Character
+from fantasy_forge.item import Item
+from fantasy_forge.weapon import Weapon
+from fantasy_forge.world import World
 
 BASE_DAMAGE = 1
 

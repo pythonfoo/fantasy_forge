@@ -54,4 +54,4 @@ class Entity:
 
 
 if TYPE_CHECKING:
-    from .world import World
+    from fantasy_forge.world import World

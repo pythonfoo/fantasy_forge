@@ -5,10 +5,10 @@ import logging
 from cmd import Cmd
 from typing import TYPE_CHECKING
 
-from .character import Character
-from .gateway import Gateway
-from .item import Item
-from .weapon import Weapon
+from fantasy_forge.character import Character
+from fantasy_forge.gateway import Gateway
+from fantasy_forge.item import Item
+from fantasy_forge.weapon import Weapon
 
 logger = logging.getLogger(__name__)
 
@@ -269,4 +269,4 @@ class ShellEn(Shell):
         return completions
 
 if TYPE_CHECKING:
-    from .player import Player
+    from fantasy_forge.player import Player
