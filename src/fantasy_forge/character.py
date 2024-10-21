@@ -9,6 +9,7 @@ from fantasy_forge.world import World
 
 BASE_INVENTORY_CAPACITY = 10
 
+
 class Character(Entity):
     """A character in the world."""
 

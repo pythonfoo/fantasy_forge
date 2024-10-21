@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Any, Self
 
-from fantasy_forge.world import World
 from fantasy_forge.item import Item
+from fantasy_forge.world import World
 
 
 class Key(Item):

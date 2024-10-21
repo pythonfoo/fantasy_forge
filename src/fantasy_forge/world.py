@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 from typing import Any, Self
 
@@ -9,8 +10,6 @@ from fluent.runtime import FluentLocalization, FluentResourceLoader
 from fluent.runtime.types import FluentNone
 
 from fantasy_forge.area import Area
-
-import logging
 
 logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
