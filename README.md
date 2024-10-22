@@ -15,7 +15,10 @@ And to start:
 
 ```bash
 cd fantasy_forge
+# call the module
 uv run -m fantasy_forge
+# or run the command
+uv run fantasy-forge
 ```
 
 You can also set a debug level to write debugging output to `./fantasy_forge.log`.
