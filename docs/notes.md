@@ -28,7 +28,7 @@ Aktionen über die der Spieler mit der Welt interagieren kann. Diese Aktionen k�
 - "untouchable" Attribut für die Character Klasse, damit bestimmte Charactere nicht angegriffen werden können
 - on_death Methode für Character Klasse
 - Versteckte Items/Entitys, die nicht beim look around erscheinen (Attribut "visible")
-- Versteckte Gateways, z.B. trapdoors 
+- Versteckte Gateways, z.B. trapdoors
 - grauer, weißer und schwarzer Hut in der Garderobe
 - Betreten des Hackspace braucht Katzenohren
 
@@ -57,5 +57,3 @@ Derzeitiges Vorhaben:
 - Lootdropping soll auch ein wenig zufällig sein, aber tendenziell von Gegnern/Leveln abhängen (und sich auch bspw nicht zu häufig wiederholen)
 - sinnvoller, als ausschließlich bei den Gegnern ein feststehendes, mögliches Set an Waffen zu definieren, oder bei den Waffen ein Set an Gegnern, wäre es Lootmatching zu machen
 - dann bräuchte man einen `LootMatcher` der eine Welt nimmt, eine generelle Config, einen Gegner bzw. ein Subjekt und eine Matching-Config wie man das zuordnen möchte, also Wahrscheinlichkeiten, und am Ende hat das Subjekt eine Liste an Items; man kann aber auch über die Wahrscheinlichkeit 0 bzw 1 angeben, dass etwas nicht vorkommt oder vorkommen muss und so explizit auswählen
-
-

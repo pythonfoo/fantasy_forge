@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Self, Iterator
+from typing import Iterator, Self
 
 from fantasy_forge.item import Item
 from fantasy_forge.world import World, highlight_interactive
@@ -54,9 +54,8 @@ class Inventory:
         return self.world.l10n.format_value(
             "inventory-look-message",
             {
-                "items": ", ".join([
-                    highlight_interactive(str(item)).format(None)
-                    for item in self
-                ]),
+                "items": ", ".join(
+                    [highlight_interactive(str(item)).format(None) for item in self]
+                ),
             },
         )

@@ -1,7 +1,6 @@
+import logging
 from argparse import ArgumentParser
 from sys import argv
-
-import logging
 
 from fantasy_forge.player import Player
 from fantasy_forge.world import World

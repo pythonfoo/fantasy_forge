@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-
 from cmd import Cmd
 from typing import TYPE_CHECKING
 
@@ -175,14 +174,14 @@ class ShellEn(Shell):
             self.player.use(subject.strip(), other.strip())
             logger.debug(
                 "%(player)s uses %(subject)s with %(other)s",
-                {"player": self.player.name, "subject": subject, "other": other}
+                {"player": self.player.name, "subject": subject, "other": other},
             )
         else:
             subject = arg.strip()
             self.player.use(subject)
             logger.debug(
                 "%(player)s uses %(subject)s",
-                {"player": self.player.name, "subject": subject}
+                {"player": self.player.name, "subject": subject},
             )
 
     def complete_use(
@@ -198,7 +197,7 @@ class ShellEn(Shell):
         if "with" in args:
             # we're looking for the object
             with_index = args.index("with")
-            object_name = " ".join(args[with_index+1:])
+            object_name = " ".join(args[with_index + 1 :])
             subject_name = " ".join(args[:with_index])
             completions = [
                 text + name.removeprefix(object_name).strip() + " "
@@ -219,17 +218,19 @@ class ShellEn(Shell):
             if " " in completions:
                 completions.remove(" ")
             # we might already be in the "with"
-            if any((
-                entity_name == subject_name.rstrip("ihtw").strip()
-                for entity_name in self.player.seen_entities
-            )):
+            if any(
+                (
+                    entity_name == subject_name.rstrip("ihtw").strip()
+                    for entity_name in self.player.seen_entities
+                )
+            ):
                 completions.append("with ")
             return completions
-    
+
     def do_attack(self, arg: str) -> None:
         """Attack another entity."""
         self.player.attack(arg)
-    
+
     def complete_attack(
         self,
         text: str,
@@ -246,11 +247,11 @@ class ShellEn(Shell):
         if " " in completions:
             completions.remove(" ")
         return completions
-    
+
     def do_equip(self, arg: str) -> None:
         """Take an item out of the inventory and place it firmly in your hand."""
         self.player.equip(arg)
-    
+
     def complete_equip(
         self,
         text: str,
@@ -267,6 +268,7 @@ class ShellEn(Shell):
         if " " in completions:
             completions.remove(" ")
         return completions
+
 
 if TYPE_CHECKING:
     from fantasy_forge.player import Player
