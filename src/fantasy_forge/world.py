@@ -10,6 +10,7 @@ from fluent.runtime import FluentLocalization, FluentResourceLoader
 from fluent.runtime.types import FluentNone
 
 from fantasy_forge.area import Area
+from fantasy_forge.config import config
 
 logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
@@ -32,9 +33,8 @@ class World:
 
     @staticmethod
     def load(name: str) -> World:
-        locale_path = "data/l10n/{locale}"
-        fluent_loader = FluentResourceLoader(locale_path)
-        path = Path("data/worlds") / name
+        fluent_loader = FluentResourceLoader(f"{config['data_path']}/l10n/{{locale}}")
+        path = Path(f"{config['data_path']}/worlds") / name
         if not path.exists():
             logger.debug(f"Path {path} not found, using {name}")
             path = Path(name)
