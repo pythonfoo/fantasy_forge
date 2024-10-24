@@ -26,6 +26,10 @@ class Inventory:
         """Iterates over items in inventory."""
         yield from self.contents.values()
 
+    def __contains__(self: Self, other: str) -> bool:
+        """Returns if item is in inventory."""
+        return other in self.contents.keys()
+
     def __repr__(self: Self) -> str:
         output: str = f"Inventory({len(self)}/{self.capacity})\n"
         output += "[" + ", ".join(self.contents.keys()) + "]"
@@ -49,6 +53,12 @@ class Inventory:
     def get(self: Self, item_name: str) -> Item | None:
         """Gets item by name."""
         return self.contents.get(item_name)
+
+    def pop(self: Self, item_name: str) -> Item | None:
+        """Pops item from inventory."""
+        if item_name in self:
+            return self.contents.pop(item_name)
+        return None
 
     def on_look(self: Self) -> str:
         return self.world.l10n.format_value(

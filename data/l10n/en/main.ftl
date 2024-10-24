@@ -30,6 +30,8 @@ cannot-use-message = You can't use { EXISTS($other) ->
     [true] { INTER($other) } with{ " " }
     *[false] { "" }
 }{ INTER($self) }.
+drop-not-found = You can't drop { $item }.
+dropped = You dropped { INTER($item) }.
 enter-area-message = You are now in { $area }. You see:
 inventory-look-message = In the inventory you find { $items }.
 inventory-capacity-message = Maximum capacity ({ NUM($capacity) }) reached.

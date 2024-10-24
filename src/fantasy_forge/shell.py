@@ -269,6 +269,14 @@ class ShellEn(Shell):
             completions.remove(" ")
         return completions
 
+    def do_drop(self, arg: str) -> None:
+        """
+        drop <item>
+
+        drops item from main hand or inventory
+        """
+        self.player.drop(arg)
+
 
 if TYPE_CHECKING:
     from fantasy_forge.player import Player

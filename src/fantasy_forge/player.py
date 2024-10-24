@@ -360,6 +360,31 @@ class Player(Character):
                 self.seen_entities[entity.name] = entity
         # TODO: output better text
 
+    def drop(self, item_name: str):
+        """Drops item from inventory or main hand to the area."""
+        item = self.inventory.pop(item_name)
+        if item is None:
+            print(
+                self.world.l10n.format_value(
+                    "drop-not-found",
+                    {
+                        "item": item_name,
+                    },
+                )
+            )
+            return
+        self.area.contents[item.name] = item  # adds item to current area
+        if self.main_hand is item:  # clears main hand if item was dropped from it
+            self.main_hand = None
+        print(
+            self.world.l10n.format_value(
+                "dropped",
+                {
+                    "item": item_name,
+                },
+            )
+        )
+
     def main_loop(self):
         """Runs the game."""
         self.enter_area(self.world.spawn_point)
