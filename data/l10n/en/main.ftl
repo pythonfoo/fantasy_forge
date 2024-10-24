@@ -19,7 +19,7 @@ attack-character-message = { INTER($source) } attacks { INTER($target) }{ EXISTS
     [true] { "" } with { $weapon }
     *[false] { "" }
 }.
-attack-character-alive-message = { INTER($target) } remains at { NUM($health) } health points
+attack-character-alive-message = { INTER($target) } remains at { NUM($health) } health points.
 attack-character-dead-message = { INTER($target) } vanished.
 attack-drop-begin = { INTER($target) } dropped { NUM($loot_count) } items:
 attack-drop-single = { INTER($item) }

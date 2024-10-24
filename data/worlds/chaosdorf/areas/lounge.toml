@@ -10,31 +10,31 @@ obvious = true
 
 [[contents]]
 name = "table"
-description = ""
+description = "a large dining table, which has been cleaned recently, what joy"
 
 [[contents]]
 name = "sofa"
-description = ""
+description = "a dubious dark couch. Which mysteries does it hold?"
 
 [[contents]]
 name = "server rack"
-description = ""
+description = "blink blink, network lives here"
 
 [[contents]]
 name = "arcade machine"
-description = ""
+description = "pew pew, games live here"
 
 [[contents]]
 name = "music box"
-description = ""
+description = "electronic music plays, a voice says: your feet hurt and your head hurts, but you are having the time of your life"
 
 [[contents]]
 name = "window"
-description = ""
+description = "there is an empty playground behind a fence. The trees outside seem happy"
 
 [[contents]]
 name = "book shelve"
-description = ""
+description = "someone sorted the books in there by color, it looks very nice"
 
 [[contents]]
 kind = "gateway"
