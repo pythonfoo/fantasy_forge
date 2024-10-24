@@ -43,7 +43,7 @@ class Inventory:
         else:
             raise Exception(
                 self.world.l10n.format_value(
-                    "inventory-capacity",
+                    "inventory-capacity-message",
                     {
                         "capacity": self.capacity,
                     },
