@@ -12,10 +12,14 @@ dependencies = ["fluent.runtime", "toml", "huepy"]
 [project.scripts]
 fantasy-forge = "fantasy_forge.main:main"
 
-[dev-packages]
-pytest = "*"
-hitchstory = "*"
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "commandlib>=0.3.5",
+    "hitchstory>=0.24.0",
+    "icommandlib>=0.8.0",
+    "pytest>=8.3.3",
+]
