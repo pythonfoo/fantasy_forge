@@ -61,11 +61,14 @@ class Inventory:
         return None
 
     def on_look(self: Self) -> str:
-        return self.world.l10n.format_value(
-            "inventory-look-message",
-            {
-                "items": ", ".join(
-                    [highlight_interactive(str(item)).format(None) for item in self]
-                ),
-            },
-        )
+        if not self.contents:
+            return self.world.l10n.format_value("inventory-look-empty-message")
+        else:
+            return self.world.l10n.format_value(
+                "inventory-look-message",
+                {
+                    "items": ", ".join(
+                        [highlight_interactive(str(item)).format(None) for item in self]
+                    ),
+                },
+            )

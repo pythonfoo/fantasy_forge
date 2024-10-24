@@ -34,6 +34,7 @@ drop-not-found = You can't drop { $item }.
 dropped = You dropped { INTER($item) }.
 enter-area-message = You are now in { $area }. You see:
 inventory-look-message = In the inventory you find { $items }.
+inventory-look-empty-message = Your inventory is empty.
 inventory-capacity-message = Maximum capacity ({ NUM($capacity) }) reached.
 inventory-item-not-found-message = Item { $item } couldn't be found.
 gateway-unlock-message = { INTER($name) } unlocked.
