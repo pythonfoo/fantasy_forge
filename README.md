@@ -1,7 +1,10 @@
 # Fantasy Forge (working title)
+
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-## Let's Go!
+Fantasy Forge is a framework for creating and playing text adventure games. The game data is stored in toml files. It is planned that the framework will work separately from the game and the content can be exchanged. It is currently still in an early stage of development, if you want to try it out follow the installation instructions.
+
+## Let's Go
 
 If you don't have it, install [uv](https://astral.sh/blog/uv) using [the installer](https://docs.astral.sh/uv/getting-started/installation/) or, if you have it, [pipx](https://github.com/pypa/pipx).
 
