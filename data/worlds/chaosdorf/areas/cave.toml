@@ -13,6 +13,11 @@ name = "tv remote"
 description = "the batteries seem to have died. Can you point it at the door?"
 
 [[contents]]
+kind = "item"
+description = "an old-school fedora out of fine black fabric"
+name = "black hat"
+
+[[contents]]
 kind = "gateway"
 name = "door"
 locked = true

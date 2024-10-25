@@ -14,6 +14,11 @@ target = "hackcenter"
 obvious = true
 
 [[contents]]
+kind = "item"
+name = "white hat"
+description = "a western like hat made out of white leather"
+
+[[contents]]
 kind = "enemy"
 name = "mold"
 health = 10

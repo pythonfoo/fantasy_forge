@@ -18,7 +18,13 @@ description = "a large couch. It seems quite comfortable..."
 [[contents]]
 name = "fridge"
 description = "a fridge full of magic potions"
+obvious = true
 
 [[contents]]
 name = "printer"
 description = "a big paper disgorging device"
+
+[[contents]]
+kind = "item"
+name = "grey hat"
+description = "a grey cap with some strange stickers on it"
