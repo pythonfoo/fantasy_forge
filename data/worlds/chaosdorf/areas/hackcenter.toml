@@ -1,0 +1,24 @@
+name = "hackcenter"
+description = "a space for coding, tinkering, collaborating"
+
+[[contents]]
+kind = "gateway"
+name = "kitchen door"
+target = "kitchen"
+obvious = true
+
+[[contents]]
+name = "table"
+description = "a large table full of devices, cables and blinking lights"
+
+[[contents]]
+name = "sofa"
+description = "a large couch. It seems quite comfortable..."
+
+[[contents]]
+name = "fridge"
+description = "a fridge full of magic potions"
+
+[[contents]]
+name = "printer"
+description = "a big paper disgorging device"
