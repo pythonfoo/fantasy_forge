@@ -196,7 +196,15 @@ class Player(Character):
         current_armour: Armour = self.armour_slots.pop(armour.armour_type)
         # check if armour slot is already filled
         if current_armour is not None:
-            self.inventory.add(current_armour)
+            print(
+                self.world.l10n.format_value(
+                    "unequip-item-message",
+                    {
+                        "player": self.name,
+                        "item": armour.name,
+                    },
+                )
+            )
 
         self.armour_slots[armour.armour_type] = armour
         print(
