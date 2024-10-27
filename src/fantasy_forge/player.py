@@ -192,8 +192,21 @@ class Player(Character):
 
     def equip_armour(self, armour: Armour) -> None:
         """Equips armour piece."""
-        # TODO
-        pass
+        current_armour: Armour = self.armour_slots.pop(armour.armour_type)
+        # check if armour slot is already filled
+        if current_armour is not None:
+            self.inventory.add(current_armour)
+
+        self.armour_slots[armour.armour_type] = armour
+        print(
+            self.world.l10n.format_value(
+                "equip-item-message",
+                {
+                    "player": self.name,
+                    "item": armour.name,
+                },
+            )
+        )
 
     # TODO: Refactor
     def attack(self, target_name: str) -> None:
