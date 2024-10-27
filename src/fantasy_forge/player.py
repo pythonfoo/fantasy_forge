@@ -128,7 +128,7 @@ class Player(Character):
         else:
             print(self.world.l10n.format_value("pick-up-failed-message"))
 
-    def equip(self, weapon_name: str):
+    def equip_weapon(self, weapon_name: str):
         """Puts an item in the main hand."""
         weapon = self.seen_entities.get(weapon_name)
         if weapon is None:
