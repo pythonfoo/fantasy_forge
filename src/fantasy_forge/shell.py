@@ -4,6 +4,7 @@ import logging
 from cmd import Cmd
 from typing import TYPE_CHECKING
 
+from fantasy_forge.armour import Armour
 from fantasy_forge.character import Character
 from fantasy_forge.gateway import Gateway
 from fantasy_forge.item import Item
@@ -165,6 +166,16 @@ class ShellEn(Shell):
         """shows the contents of the players inventory"""
         print(self.player.inventory.on_look())
 
+    def do_armour(self, arg: str):
+        """shows the players armour"""
+        for armour_type, armour_item in self.player.armour_slots.items():
+            if armour_item is None:
+                print(f"{armour_type}: None")
+            else:
+                print(
+                    f"{armour_type}: {armour_item.name} ({armour_item.defense} defense)"
+                )
+
     def do_use(self, arg: str):
         """
         use <subject> [with <other>]
@@ -259,11 +270,11 @@ class ShellEn(Shell):
         begidx: int,
         endidx: int,
     ) -> list[str]:
-        weapon = line.removeprefix("equip ").strip()
+        item = line.removeprefix("equip ").strip()
         completions = [
-            text + name.removeprefix(weapon).strip() + " "
+            text + name.removeprefix(item).strip() + " "
             for name, entity in self.player.seen_entities.items()
-            if name.startswith(weapon) and isinstance(entity, Weapon)
+            if name.startswith(item) and isinstance(entity, (Weapon, Armour))
         ]
         if " " in completions:
             completions.remove(" ")
