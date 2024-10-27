@@ -1,6 +1,7 @@
 from typing import Self
 
 from fantasy_forge.area import Area
+from fantasy_forge.armour import Armour, ARMOUR_TYPES
 from fantasy_forge.character import Character
 from fantasy_forge.enemy import BASE_DAMAGE
 from fantasy_forge.entity import Entity
@@ -29,6 +30,7 @@ class Player(Character):
 
     area: Area  # the area we are currently in
     seen_entities: dict[str, Entity]
+    armour_slots: dict[str, Armour]
 
     def __init__(self: Self, world: World, name: str, health: int = BASE_PLAYER_HEALTH):
         super().__init__(
@@ -45,6 +47,10 @@ class Player(Character):
         # transition to the next area.
         self.area.contents[self.name] = self
         self.seen_entities = {}
+
+        # define armour slots
+        for armour_type in ARMOUR_TYPES:
+            self.armour_slots[armour_type] = None
 
     def look_around(self):
         """Player looks around the current area."""
