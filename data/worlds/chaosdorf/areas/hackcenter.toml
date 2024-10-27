@@ -25,6 +25,8 @@ name = "printer"
 description = "a big paper disgorging device"
 
 [[contents]]
-kind = "item"
+kind = "armour"
 name = "grey hat"
 description = "a grey cap with some strange stickers on it"
+armour_type = "head"
+defense = 5
