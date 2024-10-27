@@ -1,7 +1,7 @@
 from typing import Self
 
 from fantasy_forge.area import Area
-from fantasy_forge.armour import Armour, ARMOUR_TYPES
+from fantasy_forge.armour import ARMOUR_TYPES, Armour
 from fantasy_forge.character import Character
 from fantasy_forge.enemy import BASE_DAMAGE
 from fantasy_forge.entity import Entity
@@ -128,40 +128,57 @@ class Player(Character):
         else:
             print(self.world.l10n.format_value("pick-up-failed-message"))
 
-    def equip_weapon(self, weapon_name: str):
-        """Puts an item in the main hand."""
-        weapon = self.seen_entities.get(weapon_name)
-        if weapon is None:
+    def equip(self, item_name: str):
+        """Equips item."""
+        item = self.seen_entities.get(item_name)
+        # check if item was already seen
+        if item is None:
             print(
                 self.world.l10n.format_value(
                     "entity-does-not-exist",
-                    {"entity": weapon_name},
+                    {"entity": item_name},
                 )
             )
             return
-        if not isinstance(weapon, Weapon):
-            print(self.world.l10n.format_value("cannot-equip", {"weapon": weapon_name}))
-            return
+        # item must be in the area or the inventory to be equiped
         if (
-            weapon_name not in self.area.contents
-            and weapon_name not in self.inventory.contents
+            item_name not in self.area.contents
+            and item_name not in self.inventory.contents
         ):
             print(self.world.l10n.format_value("item-vanished"))
-            self.seen_entities.pop(weapon_name)
+            self.seen_entities.pop(item_name)
             return
-        if weapon not in self.inventory.contents.values():
+
+        # by equipping the item is implicitly picked up
+        if item not in self.inventory.contents.values():
             # if it's not already in the inventory, place it there
-            self.inventory.add(weapon)
+            self.inventory.add(item)
             # picking up items keeps them in seen_entities
-            self.area.contents.pop(weapon_name)
+            self.area.contents.pop(item_name)
             print(
                 self.world.l10n.format_value(
                     "pick-up-item-message",
                     {
-                        "item": weapon.name,
+                        "item": item.name,
                     },
                 )
             )
+        if isinstance(item, Weapon):
+            self.equip_weapon(item)
+        elif isinstance(item, Armour):
+            self.equip_armour(item)
+        else:
+            print(
+                self.world.l10n.format_value(
+                    "cannot-equip",
+                    {
+                        "weapon": item.name,
+                    },
+                )
+            )
+
+    def equip_weapon(self, weapon: Weapon):
+        """Equips weapon."""
         self.main_hand = weapon
         print(
             self.world.l10n.format_value(
@@ -172,6 +189,11 @@ class Player(Character):
                 },
             )
         )
+
+    def equip_armour(self, armour: Armour) -> None:
+        """Equips armour piece."""
+        # TODO
+        pass
 
     # TODO: Refactor
     def attack(self, target_name: str) -> None:

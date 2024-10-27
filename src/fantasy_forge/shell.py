@@ -249,8 +249,8 @@ class ShellEn(Shell):
         return completions
 
     def do_equip(self, arg: str) -> None:
-        """Take an item out of the inventory and place it firmly in your hand."""
-        self.player.equip_weapon(arg)
+        """Take an item out of the inventory and put it on."""
+        self.player.equip(arg)
 
     def complete_equip(
         self,
