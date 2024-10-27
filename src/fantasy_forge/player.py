@@ -53,6 +53,15 @@ class Player(Character):
         for armour_type in ARMOUR_TYPES:
             self.armour_slots[armour_type] = None
 
+    @property
+    def defense(self) -> int:
+        defense_sum: int = 0
+        armour_item: Armour
+        for armour_item in self.armour_slots.keys():
+            if armour_item is not None:
+                defense_sum += armour_item.defense
+        return defense_sum
+
     def look_around(self):
         """Player looks around the current area."""
         # clear seen items, but re-add inventory items
@@ -197,14 +206,14 @@ class Player(Character):
         # check if armour slot is already filled
         if current_armour is not None:
             print(
-            self.world.l10n.format_value(
-                "unequip-item-message",
-                {
-                    "player": self.name,
-                    "item": armour.name,
-                },
+                self.world.l10n.format_value(
+                    "unequip-item-message",
+                    {
+                        "player": self.name,
+                        "item": armour.name,
+                    },
+                )
             )
-        )
 
         self.armour_slots[armour.armour_type] = armour
         print(
