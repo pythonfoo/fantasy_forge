@@ -63,6 +63,7 @@ class Area(Entity):
                     contents_list.append(Weapon(world, entity_dict))
                 case "armour":
                     from fantasy_forge.armour import Armour
+
                     contents_list.append(Armour(world, entity_dict))
 
                 case default:
