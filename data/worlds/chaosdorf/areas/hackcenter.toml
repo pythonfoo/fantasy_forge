@@ -8,12 +8,20 @@ target = "kitchen"
 obvious = true
 
 [[contents]]
+kind = "gateway"
+name = "floor door"
+target = "floor"
+obvious = true
+
+[[contents]]
 name = "table"
 description = "a large table full of devices, cables and blinking lights"
+obvious = true
 
 [[contents]]
 name = "sofa"
 description = "a large couch. It seems quite comfortable..."
+obvious = true
 
 [[contents]]
 name = "fridge"
@@ -23,6 +31,7 @@ obvious = true
 [[contents]]
 name = "printer"
 description = "a big paper disgorging device"
+obvious = true
 
 [[contents]]
 kind = "item"

@@ -1,0 +1,64 @@
+name = "floor"
+description = "a long floor with various doors, a wardrobe, and some dimmed lights"
+
+[[contents]]
+kind = "gateway"
+name = "hackcenter door"
+target = "hackcenter"
+obvious = true
+
+[[contents]]
+kind = "gateway"
+name = "everyones toilet door"
+target = "everyones_toilet"
+obvious = true
+
+[[contents]]
+kind = "gateway"
+name = "flinta toilet door"
+target = "flinta_toilet"
+obvious = true
+
+[[contents]]
+kind = "gateway"
+name = "premium toilet door"
+target = "premium_toilet"
+obvious = true
+
+[[contents]]
+kind = "gateway"
+name = "wetlab door"
+target = "wetlab"
+obvious = true
+
+[[contents]]
+kind = "gateway"
+name = "conference room door"
+target = "conference_room"
+obvious = true
+
+[[contents]]
+kind = "gateway"
+name = "elab door"
+target = "elab"
+obvious = true
+
+[[contents]]
+name = "wardrobe"
+description = "a wardrobe filled with some jackets, a bicycle helmet, and some coat-hangers"
+
+[[contents]]
+name = "lamps"
+description = "the dimmed lamps give off a cozy vibe"
+
+[[contents]]
+name = "buzzer"
+description = "you can buzz people in, but should you?"
+
+[[contents]]
+name = "trash wardrobe"
+description = "a wardrobe where some bulk garbage lives it's last breath, unless …"
+
+[[contents]]
+name = "ladder"
+description = "a giant sturdy ladder, which manages to be in the way but isn't"
