@@ -57,3 +57,14 @@ Derzeitiges Vorhaben:
 - Lootdropping soll auch ein wenig zufällig sein, aber tendenziell von Gegnern/Leveln abhängen (und sich auch bspw nicht zu häufig wiederholen)
 - sinnvoller, als ausschließlich bei den Gegnern ein feststehendes, mögliches Set an Waffen zu definieren, oder bei den Waffen ein Set an Gegnern, wäre es Lootmatching zu machen
 - dann bräuchte man einen `LootMatcher` der eine Welt nimmt, eine generelle Config, einen Gegner bzw. ein Subjekt und eine Matching-Config wie man das zuordnen möchte, also Wahrscheinlichkeiten, und am Ende hat das Subjekt eine Liste an Items; man kann aber auch über die Wahrscheinlichkeit 0 bzw 1 angeben, dass etwas nicht vorkommt oder vorkommen muss und so explizit auswählen
+
+## from Objects to Quests to a Story
+
+So we have rooms and enemies and things in rooms. So we could start by adding some objects that "do more" than having a description. And doors that can only be opened with certain keys … and then have puzzle games, right? Also quests/tasks/puzzles would help to create a better file/level structure.
+
+Completely fictional ideas for quests:
+
+- lice at Chaosdorf, collect them all to contain the outbreak
+- talk with our landlord about DMX and collect DMX controller and DMX lights
+- there is a mouse at Chaosdorf and you have to remove all openly stored food, catch the mouse to release it outside (being outside gives endless possibilities)
+- and somehow quests should follow a story that we can implement … it doesn't have to be long, but it should be somewhat entertaining
