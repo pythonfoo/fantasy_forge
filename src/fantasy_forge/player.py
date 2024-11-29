@@ -13,8 +13,7 @@ from fantasy_forge.world import World
 
 BASE_PLAYER_HEALTH = 100
 
-
-def BARE_HANDS(world: World):
+def bare_hands(world: World):
     return Weapon(
         world,
         {
@@ -248,7 +247,7 @@ class Player(Character):
             self.seen_entities.pop(target_name)
             return
         if self.main_hand is None:
-            weapon = BARE_HANDS(self.world)
+            weapon = bare_hands(self.world)
         else:
             weapon = self.main_hand
         print(
