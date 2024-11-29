@@ -49,7 +49,7 @@ class Player(Character):
         self.seen_entities = {}
 
         # define armour slots
-        self.armour_slots: dict[str, Armour] = dict()
+        self.armour_slots: dict[str, Armour|None] = {}
         for armour_type in ARMOUR_TYPES:
             self.armour_slots[armour_type] = None
 
