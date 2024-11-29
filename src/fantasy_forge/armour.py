@@ -34,13 +34,8 @@ class Armour(Item):
 
     @staticmethod
     def from_dict(world: World, armour_dict: dict) -> Armour:
-        armour_type: str = armour_dict.get("armour_type", "torso")
-        defense: int = armour_dict.get("defense", 0)
         armour: Armour = Armour(
             world,
-            armour_dict["name"],
-            armour_dict.get("description", ""),
-            armour_type,
-            defense,
+            armour_dict
         )
         return armour
