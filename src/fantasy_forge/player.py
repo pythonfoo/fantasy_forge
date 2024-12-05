@@ -226,6 +226,26 @@ class Player(Character):
             )
         )
 
+    def unequip(self, item_name: str):
+        """Unequips weapon or armour."""
+        item = self.seen_entities.get(item_name)
+        # TODO: Validate Item was already seen
+        # TODO: Validate Item is in inventory
+        if self.main_hand is item:
+            self.main_hand = None
+        for armour_type, armour_item in self.armour_slots.items():
+            if armour_item is item:
+                self.armour_slots[armour_type] = None
+        print(
+            self.world.l10n.format_value(
+                "unequip-item-message",
+                {
+                    "player": self.name,
+                    "item": item.name,
+                },
+            )
+        )
+
     # TODO: Refactor
     def attack(self, target_name: str) -> None:
         """Player attacks character using their main hand."""

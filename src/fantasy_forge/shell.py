@@ -280,6 +280,10 @@ class ShellEn(Shell):
             completions.remove(" ")
         return completions
 
+    def do_unequip(self, arg: str) -> None:
+        """Unequips item or armour."""
+        self.player.unequip(arg)
+
     def do_drop(self, arg: str) -> None:
         """
         drop <item>
