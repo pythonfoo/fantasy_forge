@@ -169,12 +169,12 @@ class ShellEn(Shell):
     def do_armour(self, arg: str):
         """shows the players armour"""
         for armour_type, armour_item in self.player.armour_slots.items():
-            if armour_item is None:
-                print(f"{armour_type}: None")
-            else:
-                print(
-                    f"{armour_type}: {armour_item.name} ({armour_item.defense} defense)"
-                )
+            print(self.player.world.l10n.format_value("armour-detail", {
+                "type": armour_type,
+                "item": armour_item,
+                "item-name": getattr(armour_item, "name", None),
+                "item-defense":getattr(armour_item, "defense", None),
+            }))
 
     def do_use(self, arg: str):
         """
