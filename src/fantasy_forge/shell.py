@@ -4,6 +4,7 @@ import logging
 from cmd import Cmd
 from typing import TYPE_CHECKING
 
+from fantasy_forge.armour import Armour
 from fantasy_forge.character import Character
 from fantasy_forge.gateway import Gateway
 from fantasy_forge.item import Item
@@ -165,6 +166,16 @@ class ShellEn(Shell):
         """shows the contents of the players inventory"""
         print(self.player.inventory.on_look())
 
+    def do_armour(self, arg: str):
+        """shows the players armour"""
+        for armour_type, armour_item in self.player.armour_slots.items():
+            print(self.player.world.l10n.format_value("armour-detail", {
+                "type": armour_type,
+                "item": armour_item,
+                "item-name": getattr(armour_item, "name", None),
+                "item-defense":getattr(armour_item, "defense", None),
+            }))
+
     def do_use(self, arg: str):
         """
         use <subject> [with <other>]
@@ -249,7 +260,7 @@ class ShellEn(Shell):
         return completions
 
     def do_equip(self, arg: str) -> None:
-        """Take an item out of the inventory and place it firmly in your hand."""
+        """Take an item out of the inventory and put it on."""
         self.player.equip(arg)
 
     def complete_equip(
@@ -259,11 +270,11 @@ class ShellEn(Shell):
         begidx: int,
         endidx: int,
     ) -> list[str]:
-        weapon = line.removeprefix("equip ").strip()
+        item = line.removeprefix("equip ").strip()
         completions = [
-            text + name.removeprefix(weapon).strip() + " "
+            text + name.removeprefix(item).strip() + " "
             for name, entity in self.player.seen_entities.items()
-            if name.startswith(weapon) and isinstance(entity, Weapon)
+            if name.startswith(item) and isinstance(entity, (Weapon, Armour))
         ]
         if " " in completions:
             completions.remove(" ")

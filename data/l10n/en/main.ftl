@@ -14,6 +14,7 @@ item-is-in-inventory = You already picked up this item.
 pick-up-failed-message = You can't pick up this item.
 go-failed-message = You can't go there.
 equip-item-message = You equipped { INTER($item) }.
+unequip-item-message = You took of { INTER($item)} and took it in your inventory.
 cannot-equip = You can't equip { INTER($weapon) }.
 attack-character-message = { INTER($source) } attacks { INTER($target) }{ EXISTS($weapon) ->
     [true] { "" } with { $weapon }
@@ -30,6 +31,10 @@ cannot-use-message = You can't use { EXISTS($other) ->
     [true] { INTER($other) } with{ " " }
     *[false] { "" }
 }{ INTER($self) }.
+armour-detail = {$type}: {EXISTS($item) ->
+    [true] {$item-name} ({NUM($item-defense)} defense)
+    *[false] Nothing
+}.
 drop-not-found = You can't drop { $item }.
 dropped = You dropped { INTER($item) }.
 enter-area-message = You are now in { $area }. You see:

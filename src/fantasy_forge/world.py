@@ -17,6 +17,9 @@ logger = logging.getLogger(__name__)
 
 class World:
     """A world contains many rooms. It's where the game happens."""
+    l10n: FluentLocalization
+    areas: dict[str, Area]
+    name: str
 
     def __init__(
         self: Self, l10n: FluentLocalization, name: str, areas: dict[str, Area]

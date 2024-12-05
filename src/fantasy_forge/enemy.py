@@ -2,7 +2,6 @@ from typing import Any, Self
 
 from fantasy_forge.character import Character
 from fantasy_forge.item import Item
-from fantasy_forge.weapon import Weapon
 from fantasy_forge.world import World
 
 BASE_DAMAGE = 1

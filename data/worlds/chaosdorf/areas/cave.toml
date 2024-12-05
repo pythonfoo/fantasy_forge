@@ -13,9 +13,11 @@ name = "tv remote"
 description = "the batteries seem to have died. Can you point it at the door?"
 
 [[contents]]
-kind = "item"
-description = "an old-school fedora out of fine black fabric"
+kind = "armour"
 name = "black hat"
+description = "an old-school fedora out of fine black fabric"
+armour_type = "head"
+defense = 5
 
 [[contents]]
 kind = "gateway"
