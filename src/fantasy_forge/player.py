@@ -390,7 +390,8 @@ class Player(Character):
     def enter_area(self, new_area: Area):
         """Enters a new area."""
         # leave the previous area
-        self.area.contents.pop(self.name)
+        self.leave_area()
+        # enter new area
         self.area = new_area
         # clear seen items, but re-add inventory items
         self.seen_entities.clear()
@@ -418,6 +419,10 @@ class Player(Character):
                 )
                 self.seen_entities[entity.name] = entity
         # TODO: output better text
+
+    def leave_area(self):
+        """Leave current area."""
+        self.area.contents.pop(self.name)
 
     def drop(self, item_name: str):
         """Drops item from inventory or main hand to the area."""
@@ -448,8 +453,8 @@ class Player(Character):
         """Runs the game."""
         self.enter_area(self.world.spawn_point)
         Shell(self).cmdloop()
-        # afterwards, leave the current area for the void
-        self.enter_area(Area.empty(self.world))
+        # afterwards, leave the current area
+        self.leave_area()
         quit_message = random.choice(
             [
                 "quit-game-message-light",
