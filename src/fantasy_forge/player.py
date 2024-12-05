@@ -1,3 +1,4 @@
+import random
 from typing import Self
 
 from fantasy_forge.area import Area
@@ -449,9 +450,21 @@ class Player(Character):
         Shell(self).cmdloop()
         # afterwards, leave the current area for the void
         self.enter_area(Area.empty(self.world))
+        quit_message = random.choice(
+            [
+                "quit-game-message-light",
+                "quit-game-message-dark",
+                "quit-game-message-turtles",
+                "quit-game-message-fractals",
+                "quit-game-message-treasure",
+                "quit-game-message-cat",
+                "quit-game-message-dog",
+                "quit-game-message-dream",
+            ]
+        )
         print(
             self.world.l10n.format_value(
-                "quit-game-message",
+                quit_message,
                 {},
             )
         )

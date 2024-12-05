@@ -1,0 +1,12 @@
+name = "everyones toilet"
+description = "a toilet for everyone"
+
+[[contents]]
+kind = "gateway"
+name = "door"
+target = "floor"
+obvious = true
+
+[[contents]]
+name = "toilet"
+description = "a toilet"
