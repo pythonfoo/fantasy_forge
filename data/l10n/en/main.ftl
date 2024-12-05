@@ -31,6 +31,10 @@ cannot-use-message = You can't use { EXISTS($other) ->
     [true] { INTER($other) } with{ " " }
     *[false] { "" }
 }{ INTER($self) }.
+armour-detail = {$type}: {EXISTS($item) ->
+    [true] {$item-name} ({NUM($item-defense)} defense)
+    *[false] Nothing
+}.
 drop-not-found = You can't drop { $item }.
 dropped = You dropped { INTER($item) }.
 enter-area-message = You are now in { $area }. You see:
