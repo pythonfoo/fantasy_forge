@@ -20,18 +20,20 @@ class World:
     l10n: FluentLocalization
     areas: dict[str, Area]
     name: str
+    spawn: str  # area name to spawn in
 
     def __init__(
-        self: Self, l10n: FluentLocalization, name: str, areas: dict[str, Area]
+        self: Self, l10n: FluentLocalization, name: str, areas: dict[str, Area], spawn: str
     ):
         self.l10n = l10n
         self.name = name
         self.areas = areas
+        self.spawn = spawn
 
     @property
     def spawn_point(self) -> Area:
-        assert len(self.areas) > 0, "World has no areas"
-        return self.areas[list(self.areas.keys())[0]]  # TODO
+        """Returns spawnpoint as area."""
+        return self.areas[self.spawn]
 
     @staticmethod
     def load(name: str) -> World:
@@ -56,7 +58,8 @@ class World:
                     "EXISTS": check_exists,
                 },
             )
-            world = World(l10n, world_toml["name"], areas)
+            world_spawn: str = world_toml["spawn"]
+            world = World(l10n, world_toml["name"], areas, world_spawn)
             for area_name in world_toml["areas"]:
                 areas[area_name] = Area.load(world, path, area_name)
         return world
