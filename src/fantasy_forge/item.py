@@ -34,13 +34,5 @@ class Item(Entity):
 
     @staticmethod
     def from_dict(world: World, item_dict: dict) -> Item:
-        moveable = item_dict.get("moveable", True)
-        carryable = item_dict.get("carryable", True)
-        item: Item = Item(
-            world,
-            item_dict["name"],
-            item_dict.get("description", ""),
-            moveable,
-            carryable,
-        )
+        item: Item = Item(world, item_dict)
         return item
