@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Self
 import toml
 
 from fantasy_forge.area import Area
-from fantasy_forge.utils import get_locale
+from fantasy_forge.utils import get_fluent_locale
 
 logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
@@ -44,7 +44,7 @@ class World:
             world_toml = toml.load(world_file)
             language: str = world_toml["language"]
             world_name: str = world_toml["name"]
-            l10n: FluentLocalization = get_locale(language)
+            l10n: FluentLocalization = get_fluent_locale(language)
             logger.debug("language")
             logger.debug(language)
             world_spawn: str = world_toml["spawn"]

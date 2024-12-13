@@ -23,7 +23,7 @@ def check_exists(obj: Any):
     return str(not isinstance(obj, FluentNone)).lower()
 
 
-def get_locale(locale: str = DEFAULT_LOCALE) -> FluentLocalization:
+def get_fluent_locale(locale: str = DEFAULT_LOCALE) -> FluentLocalization:
     locale_path: Path = LOCALE_FOLDER / locale
     fluent_loader: FluentResourceLoader = FluentResourceLoader(locale_path)
     l10n = FluentLocalization(
