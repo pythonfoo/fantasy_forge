@@ -2,14 +2,12 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Any, Self
+from typing import TYPE_CHECKING, Self
 
-import huepy
 import toml
-from fluent.runtime import FluentLocalization, FluentResourceLoader
-from fluent.runtime.types import FluentNone
 
 from fantasy_forge.area import Area
+from fantasy_forge.utils import get_locale
 
 logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
@@ -37,8 +35,6 @@ class World:
 
     @staticmethod
     def load(name: str) -> World:
-        locale_path = "data/l10n/{locale}"
-        fluent_loader = FluentResourceLoader(locale_path)
         path = Path("data/worlds") / name
         if not path.exists():
             logger.debug(f"Path {path} not found, using {name}")
@@ -46,35 +42,16 @@ class World:
         areas: dict[str, Area] = dict()
         with (path / "world.toml").open() as world_file:
             world_toml = toml.load(world_file)
+            language: str = world_toml["language"]
+            world_name: str = world_toml["name"]
+            l10n: FluentLocalization = get_locale(language)
             logger.debug("language")
-            logger.debug(world_toml["language"])
-            l10n = FluentLocalization(
-                locales=[world_toml["language"]],
-                resource_ids=["main.ftl"],
-                resource_loader=fluent_loader,
-                functions={
-                    "INTER": highlight_interactive,
-                    "NUM": highlight_number,
-                    "EXISTS": check_exists,
-                },
-            )
+            logger.debug(language)
             world_spawn: str = world_toml["spawn"]
-            world = World(l10n, world_toml["name"], areas, world_spawn)
+            world = World(l10n, world_name, areas, world_spawn)
             for area_name in world_toml["areas"]:
                 areas[area_name] = Area.load(world, path, area_name)
         return world
 
-
-def highlight_interactive(text: Any) -> FluentNone:
-    """INTER() for the localization"""
-    return FluentNone(huepy.bold(huepy.green(str(text))))
-
-
-def highlight_number(text: Any) -> FluentNone:
-    """NUM() for the localization"""
-    return FluentNone(huepy.bold(huepy.orange(str(text))))
-
-
-def check_exists(obj: Any):
-    """EXISTS() for the localization"""
-    return str(not isinstance(obj, FluentNone)).lower()
+if TYPE_CHECKING:
+    from fluent.runtime import FluentLocalization
