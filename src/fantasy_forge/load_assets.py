@@ -11,6 +11,7 @@ from fantasy_forge.inventory import Inventory
 from fantasy_forge.item import Item
 from fantasy_forge.key import Key
 from fantasy_forge.player import Player
+from fantasy_forge.utils import WORLDS_FOLDER
 from fantasy_forge.weapon import Weapon
 
 logger = logging.getLogger(__name__)
@@ -29,3 +30,10 @@ ASSET_TYPES: dict[str, type] = {
     "players": Player,
     "weapons": Weapon,
 }
+
+
+def init_flat_folder_structure(world_name: str):
+    world_path = WORLDS_FOLDER / world_name
+    world_path.mkdir()
+    for cls_dir, cls in ASSET_TYPES.items():
+        (world_path / cls_dir).mkdir()
