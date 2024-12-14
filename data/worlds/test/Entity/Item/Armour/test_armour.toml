@@ -1,0 +1,7 @@
+name = "test armour"
+description = "armour is an item which can be worn by the player"
+obvious = true
+moveable = true
+carryable = true
+armour_type = "head"
+defense = 10

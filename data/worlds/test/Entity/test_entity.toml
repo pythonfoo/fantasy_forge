@@ -1,0 +1,3 @@
+name = "test entity"
+description = "an entity is an abstract thing"
+obvious = true
