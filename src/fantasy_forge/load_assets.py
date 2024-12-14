@@ -47,13 +47,16 @@ def init_nested_folder_structure(world_name: str):
     asset_type: type
     for asset_type in ASSET_TYPES.values():
         current: type = asset_type
-        path_str: str = current.__name__
+        type_hierachy: list[type] = [current]
+
         while True:
             bases: tuple[type, ...] = current.__bases__
             if object in bases:
                 break
             else:
                 current = bases[0]
-                path_str = f"{current.__name__}/{path_str}"
-        path = world_path / path_str
+                type_hierachy.insert(0, current)
+
+        path_str: str = "/".join((t.__name__ for t in type_hierachy))
+        path: Path = world_path / path_str
         path.mkdir(parents=True, exist_ok=True)
