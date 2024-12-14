@@ -1,0 +1,30 @@
+name = "confeerence room"
+description = "a room with a giant tv, a conference table, and a window."
+
+[[contents]]
+kind = "gateway"
+name = "door"
+target = "floor"
+obvious = true
+
+[[contents]]
+name = "table"
+description = "a somewhat boring conference table."
+
+
+[[contents]]
+name = "window"
+description = "the window faces the street. A colorful softly breathing sign says 'Chaosdorf' and invites passerbys in"
+
+[[contents]]
+name = "tv"
+description = "a giant tv, which is currently turned off"
+
+[[contents]]
+name = "beanie bag"
+description = "this looks comfy"
+obvious = false
+
+[[contents]]
+name = "storage"
+description = "storage closets are lining one wall. What office joy"

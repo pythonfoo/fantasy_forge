@@ -1,0 +1,16 @@
+name = "elab"
+description = "an adequately messy electronics lab with a soldering station, 3d-printers, some workstations, and a lot of wires"
+
+[[contents]]
+kind = "gateway"
+name = "door"
+target = "floor"
+obvious = true
+
+[[contents]]
+name = "table"
+description = "a table with a soldering station and some wires"
+
+[[contents]]
+name = "3d printer"
+description = "does this thing work? The print head seems to be clogged."

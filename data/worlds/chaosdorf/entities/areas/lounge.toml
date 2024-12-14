@@ -1,0 +1,43 @@
+name = "Lounge"
+description = "a place to eat and socialize"
+
+[[contents]]
+kind = "gateway"
+name = "cave door"
+description = "it has a sign on it which says 'sauna'"
+target = "cave"
+obvious = true
+
+[[contents]]
+name = "table"
+description = "a large dining table, which has been cleaned recently, what joy"
+
+[[contents]]
+name = "sofa"
+description = "a dubious dark couch. Which mysteries does it hold?"
+
+[[contents]]
+name = "server rack"
+description = "blink blink, network lives here"
+
+[[contents]]
+name = "arcade machine"
+description = "pew pew, games live here"
+
+[[contents]]
+name = "music box"
+description = "electronic music plays, a voice says: your feet hurt and your head hurts, but you are having the time of your life"
+
+[[contents]]
+name = "window"
+description = "there is an empty playground behind a fence. The trees outside seem happy"
+
+[[contents]]
+name = "book shelve"
+description = "someone sorted the books in there by color, it looks very nice"
+
+[[contents]]
+kind = "gateway"
+name = "kitchen"
+target = "kitchen"
+obvious = true
