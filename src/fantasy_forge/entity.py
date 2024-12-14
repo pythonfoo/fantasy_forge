@@ -52,6 +52,11 @@ class Entity:
         entity_dict: dict = {"name": self.name, "description": self.description}
         return entity_dict
 
+    @classmethod
+    def from_dict(cls, entity_dict: dict, l10n: FluentLocalization) -> Self:
+        entity = cls(entity_dict, l10n)
+        return entity
+
 
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization

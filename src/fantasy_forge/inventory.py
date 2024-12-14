@@ -73,6 +73,12 @@ class Inventory:
                 },
             )
 
+    @classmethod
+    def from_dict(cls, inventory_dict: dict, l10n: FluentLocalization) -> Self:
+        capacity = inventory_dict.get("capacity", 10)
+        inventory: Inventory = cls(capacity, l10n)
+        return inventory
+
 
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization
