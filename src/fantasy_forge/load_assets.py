@@ -33,22 +33,27 @@ ASSET_TYPES: dict[str, type] = {
 
 
 def init_flat_folder_structure(world_name: str):
+    """Generates flat directory structure for asset types."""
     world_path = WORLDS_FOLDER / world_name
     world_path.mkdir()
-    for cls_dir, cls in ASSET_TYPES.items():
+    for cls_dir in ASSET_TYPES:
         (world_path / cls_dir).mkdir()
 
+
 def init_nested_folder_structure(world_name: str):
-    world_path = WORLDS_DIR / world_name
-    for c in CONSTRUCTORS.values():
-        current = c
-        tmp = f"{current.__name__}"
+    """Generates nested directory structure based on class inheritance."""
+    world_path = WORLDS_FOLDER / world_name
+
+    asset_type: type
+    for asset_type in ASSET_TYPES.values():
+        current: type = asset_type
+        path_str: str = current.__name__
         while True:
-            bases = current.__bases__
+            bases: tuple[type, ...] = current.__bases__
             if object in bases:
                 break
             else:
                 current = bases[0]
-                tmp = f"{current.__name__}/{tmp}"
-        path = world_path / tmp
+                path_str = f"{current.__name__}/{path_str}"
+        path = world_path / path_str
         path.mkdir(parents=True, exist_ok=True)
