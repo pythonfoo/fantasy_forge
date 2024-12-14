@@ -37,3 +37,18 @@ def init_flat_folder_structure(world_name: str):
     world_path.mkdir()
     for cls_dir, cls in ASSET_TYPES.items():
         (world_path / cls_dir).mkdir()
+
+def init_nested_folder_structure(world_name: str):
+    world_path = WORLDS_DIR / world_name
+    for c in CONSTRUCTORS.values():
+        current = c
+        tmp = f"{current.__name__}"
+        while True:
+            bases = current.__bases__
+            if object in bases:
+                break
+            else:
+                current = bases[0]
+                tmp = f"{current.__name__}/{tmp}"
+        path = world_path / tmp
+        path.mkdir(parents=True, exist_ok=True)
