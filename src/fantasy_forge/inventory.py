@@ -72,7 +72,11 @@ class Inventory:
                     ),
                 },
             )
-
+    @staticmethod
+    def from_dict(inventory_dict: dict, l10n: FluentLocalization) -> Item:
+        capacity = inventory_dict.get("capacity", 10)
+        inventory: Inventory = Inventory(capacity, l10n)
+        return inventory
 
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization
