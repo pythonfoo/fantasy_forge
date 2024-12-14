@@ -1,6 +1,5 @@
 from pathlib import Path
 from typing import IO, Any, Iterator
-
 import toml
 from fluent.runtime import FluentLocalization
 
@@ -30,8 +29,7 @@ CONSTRUCTORS: dict[str, Any] = {
     "items": Item,
     "keys": Key,
     "player": Player,
-    "weapons": Weapon,
-    "world": World,
+    "weapons": Weapon
 }
 
 WORLDS_DIR: Path = Path("data/worlds")
@@ -59,3 +57,9 @@ def load_assets(world_name: str) -> Iterator[Entity]:
 
         obj = constructor.from_dict(content, l10n)
         yield obj
+
+def init_flat_folder_structure(world_name: str):
+    world_path = WORLDS_DIR / world_name
+    world_path.mkdir()
+    for cls_dir, cls in CONSTRUCTORS.items():
+        (world_path / cls_dir).mkdir()
