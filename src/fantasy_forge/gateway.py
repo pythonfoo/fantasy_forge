@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-from typing import Any, Self
+from typing import Any, Self, TYPE_CHECKING
 
 from fantasy_forge.entity import Entity
 from fantasy_forge.item import Item
 from fantasy_forge.key import Key
-from fantasy_forge.world import World
 
 
 class Gateway(Entity):
@@ -17,15 +16,11 @@ class Gateway(Entity):
     locked: bool
     key_list: list[str]
 
-    def __init__(
-        self: Self,
-        world: World,
-        config_dict: dict[str, Any],
-    ):
+    def __init__(self: Self, config_dict: dict[str, Any], l10n: FluentLocalization):
         self.target = config_dict.pop("target")
         self.locked = config_dict.pop("locked", False)
         self.key_list = config_dict.pop("key_list", [])
-        super().__init__(world, config_dict)
+        super().__init__(config_dict, l10n)
 
     def on_look(self: Self) -> str:
         text = []
@@ -90,3 +85,7 @@ class Gateway(Entity):
         gateway_dict: dict = super().to_dict()
         gateway_dict["target"] = self.target
         return gateway_dict
+
+
+if TYPE_CHECKING:
+    from fluent.runtime import FluentLocalization

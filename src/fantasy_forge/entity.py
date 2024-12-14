@@ -8,20 +8,18 @@ class Entity:
 
     __important_attributes__ = ("name",)
 
-    world: World
     name: str
     description: str
     obvious: bool  # obvious entities are seen when entering the room
+    l10n: FluentLocalization
 
     def __init__(
-        self: Self,
-        world: World,
-        config_dict: dict[str, Any],
+        self: Self, config_dict: dict[str, Any], l10n: FluentLocalization
     ) -> None:
-        self.world = world
         self.name = config_dict.pop("name")
         self.description = config_dict.pop("description", "")
         self.obvious = config_dict.pop("obvious", False)
+        self.l10n = l10n
 
     def on_look(self: Self) -> str:
         return self.description
@@ -56,4 +54,4 @@ class Entity:
 
 
 if TYPE_CHECKING:
-    from fantasy_forge.world import World
+    from fluent.runtime import FluentLocalization

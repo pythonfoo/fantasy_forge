@@ -1,7 +1,8 @@
-from typing import Any, Self
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Self
 
 from fantasy_forge.item import Item
-from fantasy_forge.world import World
 
 
 class Weapon(Item):
@@ -11,6 +12,12 @@ class Weapon(Item):
 
     damage: int
 
-    def __init__(self: Self, world: World, config_dict: dict[str, Any]) -> None:
+    def __init__(
+        self: Self, config_dict: dict[str, Any], l10n: FluentLocalization
+    ) -> None:
         self.damage = config_dict.pop("damage")
-        super().__init__(world, config_dict)
+        super().__init__(config_dict, l10n)
+
+
+if TYPE_CHECKING:
+    from fluent.runtime import FluentLocalization

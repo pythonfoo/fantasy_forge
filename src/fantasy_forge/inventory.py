@@ -1,23 +1,22 @@
 from __future__ import annotations
 
-from typing import Iterator, Self
+from typing import Iterator, Self, TYPE_CHECKING
 
 from fantasy_forge.item import Item
 from fantasy_forge.localization import highlight_interactive
-from fantasy_forge.world import World
 
 
 class Inventory:
     """An Inventory contains multiple items."""
 
-    world: World
     capacity: int
     contents: dict[str, Item]
+    l10n: FluentLocalization
 
-    def __init__(self: Self, world: World, capacity: int):
-        self.world = world
+    def __init__(self: Self, capacity: int, l10n: FluentLocalization):
         self.capacity = capacity
         self.contents = {}
+        self.l10n = l10n
 
     def __len__(self: Self) -> int:
         """Returns current capacity."""
@@ -73,3 +72,7 @@ class Inventory:
                     ),
                 },
             )
+
+
+if TYPE_CHECKING:
+    from fluent.runtime import FluentLocalization
