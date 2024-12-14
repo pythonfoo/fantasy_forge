@@ -1,5 +1,8 @@
 from pathlib import Path
-from typing import Any
+from typing import IO, Any
+
+import toml
+from fluent.runtime import FluentLocalization
 
 from fantasy_forge.area import Area
 from fantasy_forge.armour import Armour
@@ -38,10 +41,18 @@ world_path = world_folder / name
 # load world.toml
 world: World = World.load(name)
 
+l10n: FluentLocalization = world.l10n
+
 # load assets
 path: Path
 for path in world_path.glob("**/*.toml"):
     constructor = CONSTRUCTORS.get(path.parent.name)
     if constructor is None:
-        constructor = CONSTRUCTORS.get(path.stem)
-    print(f"{constructor} {path.name}")
+        print(f"skipped {path.name}")
+        continue
+
+    io: IO
+    with path.open("r", encoding="UTF-8") as io:
+        content: dict = toml.load(io)
+
+    obj = constructor.from_dict(content, l10n)
