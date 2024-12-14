@@ -169,12 +169,17 @@ class ShellEn(Shell):
     def do_armour(self, arg: str):
         """shows the players armour"""
         for armour_type, armour_item in self.player.armour_slots.items():
-            print(self.player.world.l10n.format_value("armour-detail", {
-                "type": armour_type,
-                "item": armour_item,
-                "item-name": getattr(armour_item, "name", None),
-                "item-defense":getattr(armour_item, "defense", None),
-            }))
+            print(
+                self.player.world.l10n.format_value(
+                    "armour-detail",
+                    {
+                        "type": armour_type,
+                        "item": armour_item,
+                        "item-name": getattr(armour_item, "name", None),
+                        "item-defense": getattr(armour_item, "defense", None),
+                    },
+                )
+            )
 
     def do_use(self, arg: str):
         """

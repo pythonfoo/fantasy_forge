@@ -17,18 +17,18 @@ from fantasy_forge.world import World
 
 CONSTRUCTORS: dict[str, Any] = {
     "areas": Area,
-    "armour":Armour,
-    "characters":Character,
-    "container":Container,
-    "enemies":Enemy,
-    "entities":Entity,
-    "gateways":Gateway,
-    "inventories":Inventory,
-    "items":Item,
-    "keys":Key,
-    "player":Player,
-    "weapons":Weapon,
-    "world":World,
+    "armour": Armour,
+    "characters": Character,
+    "container": Container,
+    "enemies": Enemy,
+    "entities": Entity,
+    "gateways": Gateway,
+    "inventories": Inventory,
+    "items": Item,
+    "keys": Key,
+    "player": Player,
+    "weapons": Weapon,
+    "world": World,
 }
 
 name = "chaosdorf"
@@ -39,7 +39,7 @@ world_path = world_folder / name
 world: World = World.load(name)
 
 # load assets
-path : Path
+path: Path
 for path in world_path.glob("**/*.toml"):
     constructor = CONSTRUCTORS.get(path.parent.name)
     if constructor is None:

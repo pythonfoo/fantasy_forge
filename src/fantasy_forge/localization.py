@@ -8,6 +8,7 @@ from fluent.runtime.types import FluentNone
 LOCALE_FOLDER: Path = Path("data/l10n/")
 DEFAULT_LOCALE: str = "en"
 
+
 def highlight_interactive(text: Any) -> FluentNone:
     """INTER() for the localization"""
     return FluentNone(huepy.bold(huepy.green(str(text))))
@@ -30,4 +31,3 @@ def get_fluent_locale(locale: str = DEFAULT_LOCALE) -> FluentLocalization:
         locales=locale, resource_ids=["main.ftl"], resource_loader=fluent_loader
     )
     return l10n
-

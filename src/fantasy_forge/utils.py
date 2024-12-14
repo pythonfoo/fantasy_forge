@@ -22,12 +22,14 @@ def pickup_menu(area: Area) -> Item | None:
         selection_index = int(selection)
         return pickup_items[selection_index]
 
+
 def dump_entity(entity: Entity, path: Path):
     entity_dict = entity.to_dict()
     assert path.exists()
     io: IO
     with path.open("w", encoding="UTF-8") as io:
         json.dump(entity_dict, io)
+
 
 def load_entity(path: Path) -> Entity:
     assert path.exists()

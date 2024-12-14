@@ -14,6 +14,7 @@ from fantasy_forge.world import World
 
 BASE_PLAYER_HEALTH = 100
 
+
 def bare_hands(world: World):
     return Weapon(
         world,
@@ -49,7 +50,7 @@ class Player(Character):
         self.seen_entities = {}
 
         # define armour slots
-        self.armour_slots: dict[str, Armour|None] = {}
+        self.armour_slots: dict[str, Armour | None] = {}
         for armour_type in ARMOUR_TYPES:
             self.armour_slots[armour_type] = None
 

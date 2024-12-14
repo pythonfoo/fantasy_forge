@@ -15,13 +15,18 @@ logger = logging.getLogger(__name__)
 
 class World:
     """A world contains many rooms. It's where the game happens."""
+
     l10n: FluentLocalization
     areas: dict[str, Area]
     name: str
     spawn: str  # area name to spawn in
 
     def __init__(
-        self: Self, l10n: FluentLocalization, name: str, areas: dict[str, Area], spawn: str
+        self: Self,
+        l10n: FluentLocalization,
+        name: str,
+        areas: dict[str, Area],
+        spawn: str,
     ):
         self.l10n = l10n
         self.name = name
@@ -50,6 +55,7 @@ class World:
             world_spawn: str = world_toml["spawn"]
             world = World(l10n, world_name, areas, world_spawn)
         return world
+
 
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization
