@@ -40,5 +40,6 @@ class Character(Entity):
         character = Character(character_dict, l10n)
         return character
 
+
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization

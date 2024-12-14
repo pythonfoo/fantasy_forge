@@ -32,5 +32,6 @@ class Key(Item):
         key: Key = Key(key_dict, l10n)
         return key
 
+
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization
