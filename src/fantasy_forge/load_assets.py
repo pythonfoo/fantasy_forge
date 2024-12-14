@@ -53,12 +53,15 @@ def load_assets(world_name: str) -> Iterator[Entity]:
     for path in world_path.glob("**/*.toml"):
         asset_type: type
         parent: str = path.parent.name
+
+        # infer type from parent directory
         if parent in asset_type_names:
             asset_type = globals().get(parent)
         else:
             print(f"skipped {path.name}")
             continue
 
+        # parse asset from toml file
         io: IO
         with path.open("r", encoding="UTF-8") as io:
             content: dict = toml.load(io)
