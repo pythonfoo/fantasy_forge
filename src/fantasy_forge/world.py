@@ -49,8 +49,6 @@ class World:
             logger.debug(language)
             world_spawn: str = world_toml["spawn"]
             world = World(l10n, world_name, areas, world_spawn)
-            for area_name in world_toml["areas"]:
-                areas[area_name] = Area.load(world, path, area_name)
         return world
 
 if TYPE_CHECKING:
