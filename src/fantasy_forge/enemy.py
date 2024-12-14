@@ -1,20 +1,22 @@
-from typing import Any, Self
+from __future__ import annotations
 
-from fantasy_forge.character import bare_hands, Character
+from typing import TYPE_CHECKING, Any, Self
+
+from fantasy_forge.character import Character, bare_hands
 from fantasy_forge.item import Item
-from fantasy_forge.world import World
-
-
 
 
 class Enemy(Character):
     """An enemy is a person which will fight back."""
 
-    def __init__(self: Self, world: World, config_dict: dict[str, Any]):
-        super().__init__(world, config_dict)
+    def __init__(self: Self, config_dict: dict[str, Any], l10n: FluentLocalization):
+        super().__init__(config_dict, l10n)
         for item_dict in config_dict.get("loot", []):
-            self.inventory.add(Item(world, item_dict))
+            self.inventory.add(Item(item_dict, l10n))
 
     def __str__(self: Self) -> str:
         return self.name
 
+
+if TYPE_CHECKING:
+    from fluent.runtime import FluentLocalization

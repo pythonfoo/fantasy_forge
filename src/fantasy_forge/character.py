@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-from typing import Any, Self
+from typing import TYPE_CHECKING, Any, Self
 
 from fantasy_forge.entity import Entity
 from fantasy_forge.inventory import Inventory
 from fantasy_forge.weapon import Weapon
-from fantasy_forge.world import World
 
 BASE_INVENTORY_CAPACITY = 10
 BASE_DAMAGE = 1
+
 
 def bare_hands(world: World):
     return Weapon(
@@ -20,6 +20,7 @@ def bare_hands(world: World):
         },
     )
 
+
 class Character(Entity):
     """A character in the world."""
 
@@ -30,11 +31,13 @@ class Character(Entity):
     main_hand: Weapon | None
     _alive: bool
 
-    def __init__(self: Self, world: World, config_dict: dict[str, Any]) -> None:
+    def __init__(
+        self: Self, config_dict: dict[str, Any], l10n: FluentLocalization
+    ) -> None:
         self.health = config_dict.pop("health")
-        self.inventory = Inventory(world, BASE_INVENTORY_CAPACITY)
+        self.inventory = Inventory(BASE_INVENTORY_CAPACITY, l10n)
         self.main_hand = None
-        super().__init__(world, config_dict)
+        super().__init__(config_dict, l10n)
 
     @property
     def alive(self: Self) -> bool:
@@ -46,9 +49,9 @@ class Character(Entity):
             weapon = bare_hands(self.world)
         else:
             weapon = self.main_hand
-        target.on_attack(weapon)     
+        target.on_attack(weapon)
         print(
-            self.world.l10n.format_value(
+            self.l10n.format_value(
                 "attack-character-message",
                 {
                     "source": self.name,
@@ -63,20 +66,20 @@ class Character(Entity):
 
     def _on_death(self: Self, player: Player):
         """
-            Automatic on death call. 
+        Automatic on death call.
         """
         assert not self.alive, "On_death called while entity is alive"
         print(
-                self.world.l10n.format_value(
-                    "attack-character-dead-message",
-                    {
-                        "target": self.name,
-                    },
-                )
+            self.l10n.format_value(
+                "attack-character-dead-message",
+                {
+                    "target": self.name,
+                },
             )
+        )
         # Populate area with loot
         print(
-            self.world.l10n.format_value(
+            self.l10n.format_value(
                 "attack-drop-begin",
                 {
                     "target": self.name,
@@ -88,7 +91,7 @@ class Character(Entity):
             player.area.contents[loot_item.name] = loot_item
             player.seen_entities[loot_item.name] = loot_item
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "attack-drop-single",
                     {"item": loot_item.name},
                 )
@@ -96,9 +99,9 @@ class Character(Entity):
         # if the target is dead, remove it from the area and drop their inventory
         del player.area.contents[self.name]
         del player.seen_entities[self.name]
-        
+
         # remove entity from area
 
 
-
-
+if TYPE_CHECKING:
+    from fluent.runtime import FluentLocalization

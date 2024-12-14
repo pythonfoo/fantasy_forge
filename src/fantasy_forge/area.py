@@ -14,8 +14,8 @@ class Area(Entity):
     __important_attributes__ = ("name",)
     contents: dict[str, Entity]
 
-    def __init__(self: Self, world: World, config_dict: dict[str, Any]):
-        super().__init__(world, config_dict)
+    def __init__(self: Self, config_dict: dict[str, Any], l10n: FluentLocalization):
+        super().__init__(config_dict, l10n)
         self.contents: dict = {}
 
     def __iter__(self: Self) -> Iterator:
@@ -23,7 +23,7 @@ class Area(Entity):
             yield obj
 
     def on_look(self: Self) -> str:
-        return self.world.l10n.format_value(
+        return self.l10n.format_value(
             "look-around-begin",
             {
                 "area-name": self.name,
@@ -37,39 +37,39 @@ class Area(Entity):
         return area_dict
 
     @staticmethod
-    def from_dict(world: World, area_dict: dict) -> Area:
+    def from_dict(area_dict: dict, l10n: FluentLocalization) -> Area:
         contents_list: list[Entity] = []
         for entity_dict in area_dict.get("contents", []):
             match entity_dict.get("kind", "entity"):
                 case "item":
                     from fantasy_forge.item import Item
 
-                    contents_list.append(Item(world, entity_dict))
+                    contents_list.append(Item(entity_dict, l10n))
                 case "gateway":
                     from fantasy_forge.gateway import Gateway
 
-                    contents_list.append(Gateway(world, entity_dict))
+                    contents_list.append(Gateway(entity_dict, l10n))
                 case "key":
                     from fantasy_forge.key import Key
 
-                    contents_list.append(Key(world, entity_dict))
+                    contents_list.append(Key(entity_dict, l10n))
                 case "enemy":
                     from fantasy_forge.enemy import Enemy
 
-                    contents_list.append(Enemy(world, entity_dict))
+                    contents_list.append(Enemy(entity_dict, l10n))
                 case "weapon":
                     from fantasy_forge.weapon import Weapon
 
-                    contents_list.append(Weapon(world, entity_dict))
+                    contents_list.append(Weapon(entity_dict, l10n))
                 case "armour":
                     from fantasy_forge.armour import Armour
 
-                    contents_list.append(Armour(world, entity_dict))
+                    contents_list.append(Armour(entity_dict, l10n))
 
                 case default:
-                    contents_list.append(Entity(world, entity_dict))
+                    contents_list.append(Entity(entity_dict, l10n))
         contents = {entity.name: entity for entity in contents_list}
-        area = Area(world, area_dict)
+        area = Area(area_dict, l10n)
         area.contents = contents
         return area
 
@@ -78,19 +78,19 @@ class Area(Entity):
         path = root_path / "areas" / f"{name}.toml"
         with path.open() as area_file:
             area_toml = toml.load(area_file)
-        return Area.from_dict(world, area_toml)
+        return Area.from_dict(area_toml, world.l10n)
 
     @staticmethod
-    def empty(world: World) -> Area:
+    def empty(l10n: FluentLocalization) -> Area:
         """Return an empty area, this is a placeholder."""
         return Area(
-            world,
             dict(
-                name=world.l10n.format_value("void-name"),
-                description=world.l10n.format_value("void-description"),
+                name=l10n.format_value("void-name"),
+                description=l10n.format_value("void-description"),
             ),
+            l10n,
         )
 
 
 if TYPE_CHECKING:
-    from fantasy_forge.world import World
+    from fluent.runtime import FluentLocalization

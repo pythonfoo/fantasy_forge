@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from typing import Any, Self
+from typing import TYPE_CHECKING, Any, Self
 
 from fantasy_forge.entity import Entity
-from fantasy_forge.world import World
 
 
 class Item(Entity):
@@ -14,10 +13,12 @@ class Item(Entity):
     moveable: bool
     carryable: bool
 
-    def __init__(self: Self, world: World, config_dict: dict[str, Any]) -> None:
+    def __init__(
+        self: Self, config_dict: dict[str, Any], l10n: FluentLocalization
+    ) -> None:
         self.moveable = config_dict.pop("moveable", True)
         self.carryable = config_dict.pop("carryable", True)
-        super().__init__(world, config_dict)
+        super().__init__(config_dict, l10n)
 
     def __repr__(self: Self) -> str:
         return f"Item({self.name}, {self.description}, moveable={self.moveable}, carryable={self.carryable})"
@@ -33,6 +34,10 @@ class Item(Entity):
         return item_dict
 
     @staticmethod
-    def from_dict(world: World, item_dict: dict) -> Item:
-        item: Item = Item(world, item_dict)
+    def from_dict(item_dict: dict, l10n: FluentLocalization) -> Item:
+        item: Item = Item(item_dict, l10n)
         return item
+
+
+if TYPE_CHECKING:
+    from fluent.runtime import FluentLocalization

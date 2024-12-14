@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-from typing import Any, Self
+from typing import TYPE_CHECKING, Any, Self
 
 from fantasy_forge.entity import Entity
 from fantasy_forge.item import Item
 from fantasy_forge.key import Key
-from fantasy_forge.world import World
 
 
 class Gateway(Entity):
@@ -17,20 +16,16 @@ class Gateway(Entity):
     locked: bool
     key_list: list[str]
 
-    def __init__(
-        self: Self,
-        world: World,
-        config_dict: dict[str, Any],
-    ):
+    def __init__(self: Self, config_dict: dict[str, Any], l10n: FluentLocalization):
         self.target = config_dict.pop("target")
         self.locked = config_dict.pop("locked", False)
         self.key_list = config_dict.pop("key_list", [])
-        super().__init__(world, config_dict)
+        super().__init__(config_dict, l10n)
 
     def on_look(self: Self) -> str:
         text = []
         if self.key_list and self.locked:
-            text.append(self.world.l10n.format_value("gateway-on-look-locked"))
+            text.append(self.l10n.format_value("gateway-on-look-locked"))
         text.append(self.description)
         return "\n".join(text)
 
@@ -40,7 +35,7 @@ class Gateway(Entity):
             return
         if not self.key_list:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "gateway-no-keys",
                     {
                         "name": self.name,
@@ -49,10 +44,12 @@ class Gateway(Entity):
             )
         if not isinstance(other, Key):
             print(
-                self.world.l10n.format_value("gateway-key-needed",
-                {
-                    "name": self.name,
-                },)
+                self.l10n.format_value(
+                    "gateway-key-needed",
+                    {
+                        "name": self.name,
+                    },
+                )
             )
             return
         if self.locked:
@@ -65,7 +62,7 @@ class Gateway(Entity):
             self.locked = False
             key.used = True
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "gateway-unlock-message",
                     {
                         "name": self.name,
@@ -78,7 +75,7 @@ class Gateway(Entity):
             self.locked = True
             key.used = True
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "gateway-lock-message",
                     {
                         "name": self.name,
@@ -90,3 +87,7 @@ class Gateway(Entity):
         gateway_dict: dict = super().to_dict()
         gateway_dict["target"] = self.target
         return gateway_dict
+
+
+if TYPE_CHECKING:
+    from fluent.runtime import FluentLocalization
