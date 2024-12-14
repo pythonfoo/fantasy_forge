@@ -1,5 +1,6 @@
 from pathlib import Path
-from typing import IO, Any, Iterator
+from typing import IO, Iterator
+
 import toml
 from fluent.runtime import FluentLocalization
 
@@ -17,38 +18,44 @@ from fantasy_forge.player import Player
 from fantasy_forge.weapon import Weapon
 from fantasy_forge.world import World
 
-ASSET_TYPES: dict[str, Any] = {
-    "areas": Area,
-    "armour": Armour,
-    "characters": Character,
-    "container": Container,
-    "enemies": Enemy,
-    "entities": Entity,
-    "gateways": Gateway,
-    "inventories": Inventory,
-    "items": Item,
-    "keys": Key,
-    "player": Player,
-    "weapons": Weapon,
-}
+ASSET_TYPES: tuple[type] = (
+    Area,
+    Armour,
+    Character,
+    Container,
+    Enemy,
+    Entity,
+    Gateway,
+    Inventory,
+    Item,
+    Key,
+    Player,
+    Weapon,
+)
 
 WORLDS_DIR: Path = Path("data/worlds")
 
 
+# TODO: save assets in world object
+
 def load_assets(world_name: str) -> Iterator[Entity]:
-    # TODO: save assets in world object
     world_path = WORLDS_DIR / world_name
 
     # load world.toml
     world: World = World.load(world_name)
 
+    # load localization
     l10n: FluentLocalization = world.l10n
 
     # load assets
     path: Path
+    asset_type_names = [at.__name__ for at in ASSET_TYPES]
     for path in world_path.glob("**/*.toml"):
-        constructor = ASSET_TYPES.get(path.parent.name)
-        if constructor is None:
+        asset_type: type
+        parent: str = path.parent.name
+        if parent in asset_type_names:
+            asset_type = globals().get(parent)
+        else:
             print(f"skipped {path.name}")
             continue
 
@@ -56,7 +63,7 @@ def load_assets(world_name: str) -> Iterator[Entity]:
         with path.open("r", encoding="UTF-8") as io:
             content: dict = toml.load(io)
 
-        obj = constructor.from_dict(content, l10n)
+        obj = asset_type.from_dict(content, l10n)
         yield obj
 
 
@@ -73,7 +80,7 @@ def init_nested_folder_structure(world_name: str):
     world_path = WORLDS_DIR / world_name
 
     asset_type: type
-    for asset_type in ASSET_TYPES.values():
+    for asset_type in ASSET_TYPES:
         current: type = asset_type
         type_hierachy: list[type] = [current]
 
