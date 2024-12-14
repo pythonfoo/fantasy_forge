@@ -86,6 +86,11 @@ class Gateway(Entity):
         gateway_dict["target"] = self.target
         return gateway_dict
 
+    @staticmethod
+    def from_dict(gateway_dict, l10n) -> Gateway:
+        gateway: Gateway = Gateway(gateway_dict, l10n)
+        return gateway
+
 
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization
