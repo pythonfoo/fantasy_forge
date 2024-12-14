@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import IO, Any
+from typing import IO, Any, Iterator
 
 import toml
 from fluent.runtime import FluentLocalization
@@ -34,25 +34,28 @@ CONSTRUCTORS: dict[str, Any] = {
     "world": World,
 }
 
-name = "chaosdorf"
-world_folder: Path = Path("data/worlds")
-world_path = world_folder / name
+WORLDS_DIR: Path = Path("data/worlds")
 
-# load world.toml
-world: World = World.load(name)
+def load_assets(world_name: str) -> Iterator[Entity]:
+    # TODO: save assets in world object
+    world_path = WORLDS_DIR / world_name
 
-l10n: FluentLocalization = world.l10n
+    # load world.toml
+    world: World = World.load(world_name)
 
-# load assets
-path: Path
-for path in world_path.glob("**/*.toml"):
-    constructor = CONSTRUCTORS.get(path.parent.name)
-    if constructor is None:
-        print(f"skipped {path.name}")
-        continue
+    l10n: FluentLocalization = world.l10n
 
-    io: IO
-    with path.open("r", encoding="UTF-8") as io:
-        content: dict = toml.load(io)
+    # load assets
+    path: Path
+    for path in world_path.glob("**/*.toml"):
+        constructor = CONSTRUCTORS.get(path.parent.name)
+        if constructor is None:
+            print(f"skipped {path.name}")
+            continue
 
-    obj = constructor.from_dict(content, l10n)
+        io: IO
+        with path.open("r", encoding="UTF-8") as io:
+            content: dict = toml.load(io)
+
+        obj = constructor.from_dict(content, l10n)
+        yield obj
