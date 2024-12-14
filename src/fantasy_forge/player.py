@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import random
-from typing import Self
+from typing import TYPE_CHECKING, Self
 
 from fantasy_forge.area import Area
 from fantasy_forge.armour import ARMOUR_TYPES, Armour
@@ -9,7 +11,6 @@ from fantasy_forge.gateway import Gateway
 from fantasy_forge.item import Item
 from fantasy_forge.shell import Shell
 from fantasy_forge.weapon import Weapon
-from fantasy_forge.world import World
 
 BASE_PLAYER_HEALTH = 100
 
@@ -439,3 +440,7 @@ class Player(Character):
                 {},
             )
         )
+
+
+if TYPE_CHECKING:
+    from fantasy_forge.world import World
