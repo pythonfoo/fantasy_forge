@@ -10,5 +10,5 @@ class Container(Entity, Inventory):
 
     def __init__(self: Self, world: World, config_dict: dict[str, Any]):
         capacity: int = config_dict.get("capacity", 10)
-        super(Container, self).__init__(world, capacity)
-        super(Entity, self).__init__(world, config_dict)
+        Entity.__init__(world, capacity)
+        Inventory.__init__(world, config_dict)
