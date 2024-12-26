@@ -13,8 +13,8 @@ class Container(Entity, Inventory):
         self: Self, config_dict: dict[str, Any], l10n: FluentLocalization
     ) -> None:
         capacity: int = config_dict.get("capacity", 10)
-        Entity.__init__(capacity, l10n)
-        Inventory.__init__(config_dict, l10n)
+        Inventory.__init__(self, capacity, l10n)
+        Entity.__init__(self, config_dict, l10n)
 
 
 if TYPE_CHECKING:
