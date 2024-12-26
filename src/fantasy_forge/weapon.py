@@ -18,6 +18,11 @@ class Weapon(Item):
         self.damage = config_dict.pop("damage")
         super().__init__(config_dict, l10n)
 
+    @staticmethod
+    def from_dict(weapon_dict: dict, l10n: FluentLocalization) -> Weapon:
+        weapon: Weapon = Weapon(weapon_dict, l10n)
+        return weapon
+
 
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization
