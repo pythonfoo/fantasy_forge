@@ -14,7 +14,12 @@ class Container(Entity, Inventory):
     ) -> None:
         capacity: int = config_dict.get("capacity", 10)
         super(Container, self).__init__(capacity, l10n)
-        super(Entity, self).__init__(config_dict, l10n)
+        super(Container, self).__init__(config_dict, l10n)
+
+    @staticmethod
+    def from_dict(container_dict, l10n) -> Container:
+        container: Container = Container(container_dict, l10n)
+        return container
 
 
 if TYPE_CHECKING:
