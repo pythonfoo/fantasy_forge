@@ -37,17 +37,10 @@ WORLDS_DIR: Path = Path("data/worlds")
 
 
 # TODO: save assets in world object
-
-def load_assets(world_name: str) -> Iterator[Entity]:
+def iter_assets(world_name: str) -> Iterator[tuple[type, Path]]:
     world_path = WORLDS_DIR / world_name
 
-    # load world.toml
-    world: World = World.load(world_name)
-
-    # load localization
-    l10n: FluentLocalization = world.l10n
-
-    # load assets
+    # iterate through world dir
     path: Path
     asset_type_names = [at.__name__ for at in ASSET_TYPES]
     for path in world_path.glob("**/*.toml"):
@@ -60,7 +53,16 @@ def load_assets(world_name: str) -> Iterator[Entity]:
         else:
             print(f"skipped {path.name}")
             continue
+        yield (asset_type, path)
 
+def load_assets(world_name: str) -> Iterator[Entity]:
+    # load world.toml
+    world: World = World.load(world_name)
+
+    # load localization
+    l10n: FluentLocalization = world.l10n
+
+    for asset_type, path in iter_assets(world_name):
         # parse asset from toml file
         io: IO
         with path.open("r", encoding="UTF-8") as io:
