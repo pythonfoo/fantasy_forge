@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import questionary
 import toml
 
 from fantasy_forge.folder_structure import (
@@ -8,7 +8,7 @@ from fantasy_forge.folder_structure import (
     asset2path,
 )
 from fantasy_forge.utils import WORLDS_FOLDER, clean_filename
-# TODO: use questionairy for type parsing
+
 
 def bool_from_str(str_data: str) -> bool:
     match str_data.casefold():
@@ -25,8 +25,16 @@ def get_asset_data(asset_type: ASSET_TYPE) -> dict:
     attr_name: str
     attr_type: type
     for attr_name, attr_type in asset_type.__attributes__.items():
-        raw = input(f"{attr_type.__name__:>8} {attr_name}: ")
-        data = PARSER[attr_type](raw)
+        prompt = f"{attr_name}: "
+        match attr_type.__name__:
+            case "bool":
+                data = questionary.confirm(prompt).ask()
+            case "int":
+                raw = questionary.text(prompt).ask()
+                assert raw.isdigit()
+                data = int(raw)
+            case _:
+                data = questionary.text(prompt).ask()
         config_dict[attr_name] = data
     return config_dict
 
@@ -34,16 +42,20 @@ def get_asset_data(asset_type: ASSET_TYPE) -> dict:
 def main():
     # select world
     # TODO: allow world selection through argument parser
-    world_name: str = input("World name: ")
+    world_list = [path.name for path in WORLDS_FOLDER.iterdir()]
+    world_name = questionary.select(
+        "World name: ", choices=world_list, default="test"
+    ).ask()
+
     world_path: Path = WORLDS_FOLDER / world_name
     assert world_path.exists()
 
-    while True:
+    running: bool = True
+    while running:
         # select asset type
-        asset_type_inp: str = input("Asset type: ")
-        if not asset_type_inp:
-            break
-
+        asset_type_inp: str = questionary.select(
+            "Asset type: ", choices=list(ASSET_TYPE_DICT.keys()), default="Entity"
+        ).ask()
         asset_type: ASSET_TYPE = ASSET_TYPE_DICT[asset_type_inp]
 
         # input asset specific data
@@ -57,20 +69,23 @@ def main():
         asset_path: Path = asset2path(world_name, asset_type)
         filepath = asset_path / Path(filename)
 
-        # TODO: implement a "safe" non-writing mode, selectable via ArgumentParser
-        with filepath.open("w", encoding="utf-8") as f:
-            content = toml.dumps(config_dict)
-            f.write(content)
+        save = questionary.confirm(
+            "Do you want to save this asset?", default=True
+        ).ask()
+        if save:
+            with filepath.open("w", encoding="utf-8") as f:
+                content = toml.dumps(config_dict)
+                f.write(content)
 
-        print(f"your {asset_type.__name__!r} was saved at {filepath}")
+            print(f"your {asset_type.__name__!r} was saved at: ")
+            questionary.print(f"{filepath}", style="italic")
+        else:
+            print(f"your {asset_type.__name__!r} wasn't saved")
+
         print()
 
+        running = questionary.confirm("Do you want to continue?").ask()
 
-PARSER = {
-    int: int,
-    str: str,
-    bool: bool_from_str,
-}
 
 if __name__ == "__main__":
     main()
