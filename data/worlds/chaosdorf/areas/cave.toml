@@ -1,0 +1,29 @@
+name = "Cave"
+description = "a comfy room with sofas and a tv"
+
+[[contents]]
+name = "tv"
+description = "Hackers has to run for the thousandth time now"
+obvious = true
+
+[[contents]]
+kind = "key"
+key_id = "opensesame"
+name = "tv remote"
+description = "the batteries seem to have died. Can you point it at the door?"
+
+[[contents]]
+kind = "armour"
+name = "black hat"
+description = "an old-school fedora out of fine black fabric"
+armour_type = "head"
+defense = 5
+
+[[contents]]
+kind = "gateway"
+name = "door"
+locked = true
+key_list = ["opensesame"]
+description = "there's a drawing of Xenia the fox on it"
+target = "lounge"
+obvious = true

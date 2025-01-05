@@ -1,0 +1,8 @@
+name = "wetlab"
+description = "a place to work with all kinds of liquids and paints"
+
+[[contents]]
+kind = "gateway"
+name = "door"
+target = "floor"
+obvious = true

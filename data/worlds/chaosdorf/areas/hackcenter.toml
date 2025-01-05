@@ -1,0 +1,41 @@
+name = "hackcenter"
+description = "a space for coding, tinkering, collaborating"
+
+[[contents]]
+kind = "gateway"
+name = "kitchen door"
+target = "kitchen"
+obvious = true
+
+[[contents]]
+kind = "gateway"
+name = "floor door"
+target = "floor"
+obvious = true
+
+[[contents]]
+name = "table"
+description = "a large table full of devices, cables and blinking lights"
+obvious = true
+
+[[contents]]
+name = "sofa"
+description = "a large couch. It seems quite comfortable..."
+obvious = true
+
+[[contents]]
+name = "fridge"
+description = "a fridge full of magic potions"
+obvious = true
+
+[[contents]]
+name = "printer"
+description = "a big paper disgorging device"
+obvious = true
+
+[[contents]]
+kind = "armour"
+name = "grey hat"
+description = "a grey cap with some strange stickers on it"
+armour_type = "head"
+defense = 5

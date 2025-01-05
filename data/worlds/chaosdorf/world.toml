@@ -1,0 +1,4 @@
+name = "Chaosdorf"
+language = "en"
+areas = ["cave", "lounge", "kitchen", "hackcenter", "floor", "elab", "conference-room", "everyones-toilet", "flinta-toilet", "premium-toilet", "wetlab"]
+spawn = "cave"
