@@ -27,6 +27,10 @@ class Key(Item):
         """Compares key ids."""
         return self.key_id == other.key_id
 
+    def __hash__(self) -> int:
+        """Returns hash of key id."""
+        return hash(self.key_id)
+
 
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization
