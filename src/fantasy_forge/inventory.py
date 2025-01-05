@@ -73,10 +73,10 @@ class Inventory:
                 },
             )
 
-    @staticmethod
-    def from_dict(inventory_dict: dict, l10n: FluentLocalization) -> Inventory:
+    @classmethod
+    def from_dict(cls, inventory_dict: dict, l10n: FluentLocalization) -> Self:
         capacity = inventory_dict.get("capacity", 10)
-        inventory: Inventory = Inventory(capacity, l10n)
+        inventory: Inventory = cls(capacity, l10n)
         return inventory
 
 
