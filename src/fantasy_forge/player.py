@@ -22,10 +22,16 @@ class Player(Character):
     __important_attributes__ = ("name", "area", "health")
 
     area: Area  # the area we are currently in
+    world: World
     seen_entities: dict[str, Entity]
     armour_slots: dict[str, Armour]
 
-    def __init__(self: Self, world: World, name: str, health: int = BASE_PLAYER_HEALTH):
+    def __init__(
+        self: Self,
+        world: World,
+        name: str,
+        health: int = BASE_PLAYER_HEALTH,
+    ):
         super().__init__(
             dict(
                 name=name,
@@ -420,8 +426,6 @@ class Player(Character):
 
     def main_loop(self):
         """Runs the game."""
-        # TODO: enter spawn area in Shell preloop
-        self.enter_area(self.world.spawn_point)
         Shell(self).cmdloop()
         # afterward, leave the current area
         self.leave_area()
