@@ -1,5 +1,5 @@
 import random
-from typing import Self
+from typing import Self, TYPE_CHECKING
 
 from fantasy_forge.area import Area
 from fantasy_forge.armour import ARMOUR_TYPES, Armour
@@ -12,17 +12,20 @@ from fantasy_forge.shell import Shell
 from fantasy_forge.weapon import Weapon
 from fantasy_forge.world import World
 
+if TYPE_CHECKING:
+    from fluent.runtime import FluentLocalization
+
 BASE_PLAYER_HEALTH = 100
 
 
-def bare_hands(world: World):
+def bare_hands(l10n: FluentLocalization):
     return Weapon(
-        world,
         {
-            "name": world.l10n.format_value("bare-hands-name"),
-            "description": world.l10n.format_value("bare-hands-description"),
+            "name": l10n.format_value("bare-hands-name"),
+            "description": l10n.format_value("bare-hands-description"),
             "damage": BASE_DAMAGE,
         },
+        l10n
     )
 
 
@@ -33,16 +36,20 @@ class Player(Character):
     seen_entities: dict[str, Entity]
     armour_slots: dict[str, Armour]
 
-    def __init__(self: Self, world: World, name: str, health: int = BASE_PLAYER_HEALTH):
+    def __init__(self: Self,
+                 world: World,
+                 name: str,
+                 health: int = BASE_PLAYER_HEALTH
+                 ):
         super().__init__(
-            world,
             dict(
                 name=name,
                 description=world.l10n.format_value("player-description"),
                 health=health,
             ),
+            world.l10n
         )
-        self.area = Area.empty(world)
+        self.area = Area.empty(self.l10n)
         # put us in the void
         # We will (hopefully) never see this, but it's important for the
         # transition to the next area.
@@ -74,7 +81,7 @@ class Player(Character):
             if entity is self:
                 continue
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "look-around-single",
                     {
                         "object": entity.name,
@@ -88,7 +95,7 @@ class Player(Character):
         entity = self.seen_entities.get(name)
         if entity is None:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "entity-not-seen",
                     {
                         "entity": name,
@@ -97,7 +104,7 @@ class Player(Character):
             )
             return
         print(
-            self.world.l10n.format_value(
+            self.l10n.format_value(
                 "look-at-message",
                 {
                     "object": entity.name,
@@ -111,7 +118,7 @@ class Player(Character):
         item = self.seen_entities.get(item_name)
         if item is None:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "entity-does-not-exist",
                     {"entity": item_name},
                 )
@@ -119,9 +126,9 @@ class Player(Character):
             return
         if item_name not in self.area.contents:
             if item_name in self.inventory.contents:
-                print(self.world.l10n.format_value("item-is-in-inventory"))
+                print(self.l10n.format_value("item-is-in-inventory"))
                 return
-            print(self.world.l10n.format_value("item-vanished"))
+            print(self.l10n.format_value("item-vanished"))
             self.seen_entities.pop(item_name)
             return
         if isinstance(item, Item) and item.carryable:
@@ -129,7 +136,7 @@ class Player(Character):
             # picking up items keeps them in seen_entities
             self.area.contents.pop(item_name)
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "pick-up-item-message",
                     {
                         "item": item.name,
@@ -137,7 +144,7 @@ class Player(Character):
                 )
             )
         else:
-            print(self.world.l10n.format_value("pick-up-failed-message"))
+            print(self.l10n.format_value("pick-up-failed-message"))
 
     def equip(self, item_name: str):
         """Equips item."""
@@ -145,7 +152,7 @@ class Player(Character):
         # check if item was already seen
         if item is None:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "entity-does-not-exist",
                     {"entity": item_name},
                 )
@@ -156,7 +163,7 @@ class Player(Character):
             item_name not in self.area.contents
             and item_name not in self.inventory.contents
         ):
-            print(self.world.l10n.format_value("item-vanished"))
+            print(self.l10n.format_value("item-vanished"))
             self.seen_entities.pop(item_name)
             return
 
@@ -167,7 +174,7 @@ class Player(Character):
             # picking up items keeps them in seen_entities
             self.area.contents.pop(item_name)
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "pick-up-item-message",
                     {
                         "item": item.name,
@@ -180,7 +187,7 @@ class Player(Character):
             self.equip_armour(item)
         else:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "cannot-equip",
                     {
                         "weapon": item.name,
@@ -192,7 +199,7 @@ class Player(Character):
         """Equips weapon."""
         self.main_hand = weapon
         print(
-            self.world.l10n.format_value(
+            self.l10n.format_value(
                 "equip-item-message",
                 {
                     "player": self.name,
@@ -207,7 +214,7 @@ class Player(Character):
         # check if armour slot is already filled
         if current_armour is not None:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "unequip-item-message",
                     {
                         "player": self.name,
@@ -218,7 +225,7 @@ class Player(Character):
 
         self.armour_slots[armour.armour_type] = armour
         print(
-            self.world.l10n.format_value(
+            self.l10n.format_value(
                 "equip-item-message",
                 {
                     "player": self.name,
@@ -238,7 +245,7 @@ class Player(Character):
             if armour_item is item:
                 self.armour_slots[armour_type] = None
         print(
-            self.world.l10n.format_value(
+            self.l10n.format_value(
                 "unequip-item-message",
                 {
                     "player": self.name,
@@ -253,7 +260,7 @@ class Player(Character):
         target = self.seen_entities.get(target_name)
         if target is None:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "entity-does-not-exist",
                     {"entity": target_name},
                 )
@@ -261,19 +268,19 @@ class Player(Character):
             return
         if not isinstance(target, Character):
             print(
-                self.world.l10n.format_value("cannot-attack", {"target": target_name})
+                self.l10n.format_value("cannot-attack", {"target": target_name})
             )
             return
         if target_name not in self.area.contents:
-            print(self.world.l10n.format_value("item-vanished"))
+            print(self.l10n.format_value("item-vanished"))
             self.seen_entities.pop(target_name)
             return
         if self.main_hand is None:
-            weapon = bare_hands(self.world)
+            weapon = bare_hands(self.l10n)
         else:
             weapon = self.main_hand
         print(
-            self.world.l10n.format_value(
+            self.l10n.format_value(
                 "attack-character-message",
                 {
                     "source": self.name,
@@ -288,7 +295,7 @@ class Player(Character):
             # give the enemy an option for revenge
             target.attack(self)
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "attack-character-alive-message",
                     {
                         "target": target.name,
@@ -298,7 +305,7 @@ class Player(Character):
             )
         else:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "attack-character-dead-message",
                     {
                         "target": target.name,
@@ -309,7 +316,7 @@ class Player(Character):
             self.area.contents.pop(target.name)
             self.seen_entities.pop(target.name)
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "attack-drop-begin",
                     {
                         "target": target.name,
@@ -321,7 +328,7 @@ class Player(Character):
                 self.area.contents[loot_item.name] = loot_item
                 self.seen_entities[loot_item.name] = loot_item
                 print(
-                    self.world.l10n.format_value(
+                    self.l10n.format_value(
                         "attack-drop-single",
                         {"item": loot_item.name},
                     )
@@ -329,20 +336,20 @@ class Player(Character):
 
         if self.alive:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "player-health-remaining",
                     {"health": self.health},
                 )
             )
         else:
-            print(self.world.l10n.format_value("player-died"))
+            print(self.l10n.format_value("player-died"))
             exit()
 
     def use(self, subject_name: str, other_name: str | None = None):
         subject = self.seen_entities.get(subject_name)
         if subject is None:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "entity-not-seen",
                     {
                         "entity": subject_name,
@@ -358,7 +365,7 @@ class Player(Character):
         other = self.seen_entities.get(other_name)
         if other is None:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "entity-not-seen",
                     {
                         "entity": other_name,
@@ -378,26 +385,26 @@ class Player(Character):
         gateway = self.seen_entities.get(gateway_name)
         if gateway is None:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "entity-does-not-exist",
                     {"entity": gateway_name},
                 )
             )
             return
         if gateway_name not in self.area.contents:
-            print(self.world.l10n.format_value("item-vanished"))
+            print(self.l10n.format_value("item-vanished"))
             self.seen_entities.pop(gateway_name)
             return
         if isinstance(gateway, Gateway):
             self.enter_gateway(gateway)
         else:
-            print(self.world.l10n.format_value("go-failed-message"))
+            print(self.l10n.format_value("go-failed-message"))
 
     def enter_gateway(self: Self, gateway: Gateway):
         """Uses gateway to enter a new area."""
         if gateway.locked:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "gateway-locked-message",
                     {
                         "gateway": gateway.name,
@@ -421,7 +428,7 @@ class Player(Character):
         # enter the new one
         self.area.contents[self.name] = self
         print(
-            self.world.l10n.format_value(
+            self.l10n.format_value(
                 "enter-area-message",
                 {
                     "area": self.area.name,
@@ -431,7 +438,7 @@ class Player(Character):
         for entity in self.area.contents.values():
             if entity.obvious:
                 print(
-                    self.world.l10n.format_value(
+                    self.l10n.format_value(
                         "look-around-single",
                         {
                             "object": entity.name,
@@ -450,7 +457,7 @@ class Player(Character):
         item = self.inventory.pop(item_name)
         if item is None:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "drop-not-found",
                     {
                         "item": item_name,
@@ -462,7 +469,7 @@ class Player(Character):
         if self.main_hand is item:  # clears main hand if item was dropped from it
             self.main_hand = None
         print(
-            self.world.l10n.format_value(
+            self.l10n.format_value(
                 "dropped",
                 {
                     "item": item_name,
@@ -489,7 +496,7 @@ class Player(Character):
             ]
         )
         print(
-            self.world.l10n.format_value(
+            self.l10n.format_value(
                 quit_message,
                 {},
             )
