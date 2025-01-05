@@ -475,8 +475,6 @@ class Player(Character):
 
     def main_loop(self):
         """Runs the game."""
-        # TODO: enter spawn area in Shell preloop
-        self.enter_area(self.world.spawn_point)
         Shell(self).cmdloop()
         # afterward, leave the current area
         self.leave_area()
