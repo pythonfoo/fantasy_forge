@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from typing import TypeAlias, Union
 
 from fantasy_forge.area import Area
 from fantasy_forge.armour import Armour
@@ -17,7 +18,22 @@ from fantasy_forge.utils import WORLDS_FOLDER
 
 logger = logging.getLogger(__name__)
 
-ASSET_TYPES: dict[str, type] = {
+ASSET_TYPE: TypeAlias = Union[
+    Area,
+    Armour,
+    Character,
+    Container,
+    Enemy,
+    Entity,
+    Gateway,
+    Inventory,
+    Item,
+    Key,
+    Player,
+    Weapon
+]
+
+ASSET_TYPE_DICT: dict[str, ASSET_TYPE] = {
     "Area": Area,
     "Armour": Armour,
     "Character": Character,
@@ -38,7 +54,7 @@ def init_flat_folder_structure(world_name: str):
     world_path = WORLDS_FOLDER / world_name
     world_path.mkdir()
     asset_type: str
-    for asset_type in ASSET_TYPES:
+    for asset_type in ASSET_TYPE_DICT:
         (world_path / asset_type).mkdir()
 
 
@@ -46,13 +62,13 @@ def init_nested_folder_structure(world_name: str):
     """Generates nested directory structure based on class inheritance."""
     world_path = WORLDS_FOLDER / world_name
 
-    asset_type: type
-    for asset_type in ASSET_TYPES.values():
-        current: type = asset_type
-        type_hierarchy: list[type] = [current]
+    asset_type: ASSET_TYPE
+    for asset_type in ASSET_TYPE_DICT.values():
+        current: ASSET_TYPE = asset_type
+        type_hierarchy: list[ASSET_TYPE] = [current]
 
         while True:
-            bases: tuple[type, ...] = current.__bases__
+            bases: tuple[ASSET_TYPE, ...] = current.__bases__
             if object in bases:
                 break
             else:
