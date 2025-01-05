@@ -57,8 +57,6 @@ def init_flat_folder_structure(world_name: str):
 
 def init_nested_folder_structure(world_name: str):
     """Generates nested directory structure based on class inheritance."""
-    world_path = WORLDS_FOLDER / world_name
-
     asset_type: ASSET_TYPE
     for asset_type in ASSET_TYPE_DICT.values():
         path = asset2path(world_name, asset_type)
