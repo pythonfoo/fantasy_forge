@@ -1,4 +1,4 @@
-name = "test world"
+name = "test"
 language = "en"
 areas = ["test area"]
 spawn = "test area"
