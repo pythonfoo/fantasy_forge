@@ -20,9 +20,6 @@ class Item(Entity):
         self.carryable = config_dict.pop("carryable", True)
         super().__init__(config_dict, l10n)
 
-    def __repr__(self: Self) -> str:
-        return f"Item({self.name}, {self.description}, moveable={self.moveable}, carryable={self.carryable})"
-
     def on_pickup(self: Self):
         # TODO
         pass
