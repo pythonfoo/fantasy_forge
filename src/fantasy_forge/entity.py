@@ -2,11 +2,15 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Self
 
-
 class Entity:
     """An Entity is an abstract object in the world."""
 
     __important_attributes__ = ("name",)
+    __attributes__: dict[str, type] = {
+            "name": str,
+            "description": str,
+            "obvious": bool
+        }
 
     name: str
     description: str

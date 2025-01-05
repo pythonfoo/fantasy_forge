@@ -13,6 +13,8 @@ class Inventory:
     contents: dict[str, Item]
     l10n: FluentLocalization
 
+    __attributes__ = {"capacity": int}
+
     def __init__(self: Self, capacity: int, l10n: FluentLocalization):
         self.capacity = capacity
         self.contents = {}

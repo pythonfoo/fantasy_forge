@@ -17,6 +17,7 @@ class Armour(Item):
     defense: int
 
     __important_attributes__ = ("name", "armour_type", "defense")
+    __attributes__ = {**Item.__attributes__, "armour_type": str, "defense": int}
 
     def __init__(self, config_dict, l10n: FluentLocalization):
         a_type: str = config_dict.pop("armour_type")

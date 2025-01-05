@@ -11,6 +11,7 @@ class Gateway(Entity):
     """A Gateway is a one-way connection to an area."""
 
     __important_attributes__ = ("name", "target", "locked")
+    __attributes__ = {**Entity.__attributes__, "target": str, "locked": bool, "key_list": list}
 
     target: str  # This is not an area because the target might not be loaded yet.
     locked: bool
