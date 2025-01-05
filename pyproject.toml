@@ -12,6 +12,7 @@ dependencies = [
  "toml",
  "huepy",
  "fuzzywuzzy>=0.18.0",
+ "questionary",
 ]
 
 [project.scripts]
