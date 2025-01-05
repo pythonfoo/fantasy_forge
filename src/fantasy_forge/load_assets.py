@@ -13,6 +13,7 @@ from fantasy_forge.item import Item
 from fantasy_forge.key import Key
 from fantasy_forge.player import Player
 from fantasy_forge.weapon import Weapon
+from fantasy_forge.utils import WORLDS_FOLDER
 
 logger = logging.getLogger(__name__)
 
@@ -31,12 +32,10 @@ ASSET_TYPES: dict[str, type] = {
     "Weapon": Weapon,
 }
 
-WORLDS_DIR: Path = Path("data/worlds")
-
 
 def init_flat_folder_structure(world_name: str):
     """Generates flat directory structure for asset types."""
-    world_path = WORLDS_DIR / world_name
+    world_path = WORLDS_FOLDER / world_name
     world_path.mkdir()
     asset_type: str
     for asset_type in ASSET_TYPES:
@@ -45,7 +44,7 @@ def init_flat_folder_structure(world_name: str):
 
 def init_nested_folder_structure(world_name: str):
     """Generates nested directory structure based on class inheritance."""
-    world_path = WORLDS_DIR / world_name
+    world_path = WORLDS_FOLDER / world_name
 
     asset_type: type
     for asset_type in ASSET_TYPES.values():
