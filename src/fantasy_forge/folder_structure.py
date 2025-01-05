@@ -64,17 +64,20 @@ def init_nested_folder_structure(world_name: str):
 
     asset_type: ASSET_TYPE
     for asset_type in ASSET_TYPE_DICT.values():
-        current: ASSET_TYPE = asset_type
-        type_hierarchy: list[ASSET_TYPE] = [current]
-
-        while True:
-            bases: tuple[ASSET_TYPE, ...] = current.__bases__
-            if object in bases:
-                break
-            else:
-                current = bases[0]
-                type_hierarchy.insert(0, current)
-
-        path_str: str = "/".join((t.__name__ for t in type_hierarchy))
-        path: Path = world_path / path_str
+        path = asset2path(world_name, asset_type)
         path.mkdir(parents=True, exist_ok=True)
+
+def asset2path(world_name: str, asset_type: ASSET_TYPE) -> Path:
+    world_path = WORLDS_FOLDER / world_name
+
+    current: ASSET_TYPE = asset_type
+    type_hierarchy: list[ASSET_TYPE] = [current]
+    while True:
+        bases: tuple[ASSET_TYPE, ...] = current.__bases__
+        if object in bases:
+            break
+        current = bases[0]
+        type_hierarchy.insert(0, current)
+    path_str: str = "/".join((t.__name__ for t in type_hierarchy))
+    path: Path = world_path / path_str
+    return path
