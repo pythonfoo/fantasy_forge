@@ -236,8 +236,6 @@ class Player(Character):
     def unequip(self, item_name: str):
         """Unequips weapon or armour."""
         item = self.seen_entities.get(item_name)
-        # TODO: Validate Item was already seen
-        # TODO: Validate Item is in inventory
         if self.main_hand is item:
             self.main_hand = None
         for armour_type, armour_item in self.armour_slots.items():
