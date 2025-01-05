@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 
 from fantasy_forge.area import Area
 from fantasy_forge.armour import Armour
@@ -36,8 +37,9 @@ def init_flat_folder_structure(world_name: str):
     """Generates flat directory structure for asset types."""
     world_path = WORLDS_FOLDER / world_name
     world_path.mkdir()
-    for cls_dir in ASSET_TYPES:
-        (world_path / cls_dir).mkdir()
+    asset_type: type
+    for asset_type in ASSET_TYPES:
+        (world_path / asset_type.__name__).mkdir()
 
 
 def init_nested_folder_structure(world_name: str):
@@ -47,7 +49,7 @@ def init_nested_folder_structure(world_name: str):
     asset_type: type
     for asset_type in ASSET_TYPES.values():
         current: type = asset_type
-        type_hierachy: list[type] = [current]
+        type_hierarchy: list[type] = [current]
 
         while True:
             bases: tuple[type, ...] = current.__bases__
@@ -55,8 +57,8 @@ def init_nested_folder_structure(world_name: str):
                 break
             else:
                 current = bases[0]
-                type_hierachy.insert(0, current)
+                type_hierarchy.insert(0, current)
 
-        path_str: str = "/".join((t.__name__ for t in type_hierachy))
+        path_str: str = "/".join((t.__name__ for t in type_hierarchy))
         path: Path = world_path / path_str
         path.mkdir(parents=True, exist_ok=True)
