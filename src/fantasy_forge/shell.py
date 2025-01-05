@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-import fuzzywuzzy.process
 import logging
 from cmd import Cmd
 from typing import TYPE_CHECKING
+
+import fuzzywuzzy.process
 
 from fantasy_forge.armour import Armour
 from fantasy_forge.character import Character
@@ -21,12 +22,12 @@ class Shell(Cmd):
     prompt = "> "
 
     def __new__(cls, player: Player) -> Shell:
-        match player.world.l10n.locales[0]:
+        match player.l10n.locales[0]:
             case "en":
                 shell_type = ShellEn
             case default:
                 raise RuntimeError(
-                    player.world.l10n.format_value(
+                    player.l10n.format_value(
                         "unknown-language-error",
                         {
                             "language": default,
@@ -49,20 +50,22 @@ class Shell(Cmd):
         return [name + " " for name in super().completenames(text, *ignored)]
 
     def default(self, line: str):
-
         if len(line) < 3:
             """Display an error message, because the command was invalid."""
-            print(self.player.world.l10n.format_value("shell-invalid-command"))
+            print(self.player.l10n.format_value("shell-invalid-command"))
 
         else:
             """Check for potential typos and recommend closest command"""
             commands = [x[3:] for x in self.get_names() if x.startswith("do_")]
             possibilities = fuzzywuzzy.process.extract(line, commands)
             closest_cmd, closest_ratio = possibilities[0]
-            print(self.player.world.l10n.format_value("shell-invalid-command"), f"Did you mean '{closest_cmd}'?")
+            print(
+                self.player.l10n.format_value("shell-invalid-command"),
+                f"Did you mean '{closest_cmd}'?",
+            )
 
     def do_EOF(self, arg: str) -> bool:
-        """This is called if an EOF occures while parsing the command."""
+        """This is called if an EOF occurs while parsing the command."""
         return True
 
 
@@ -183,12 +186,17 @@ class ShellEn(Shell):
     def do_armour(self, arg: str):
         """shows the players armour"""
         for armour_type, armour_item in self.player.armour_slots.items():
-            print(self.player.world.l10n.format_value("armour-detail", {
-                "type": armour_type,
-                "item": armour_item,
-                "item-name": getattr(armour_item, "name", None),
-                "item-defense":getattr(armour_item, "defense", None),
-            }))
+            print(
+                self.player.l10n.format_value(
+                    "armour-detail",
+                    {
+                        "type": armour_type,
+                        "item": armour_item,
+                        "item-name": getattr(armour_item, "name", None),
+                        "item-defense": getattr(armour_item, "defense", None),
+                    },
+                )
+            )
 
     def do_use(self, arg: str):
         """
