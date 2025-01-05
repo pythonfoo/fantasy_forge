@@ -57,5 +57,6 @@ class Entity:
         entity = cls(entity_dict, l10n)
         return entity
 
+
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization

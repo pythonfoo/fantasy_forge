@@ -11,6 +11,7 @@ from fantasy_forge.entity import Entity
 
 logger = logging.getLogger(__name__)
 
+
 class Area(Entity):
     """An Area is a place in the world, containing NPCs, Items and connections to other areas."""
 
@@ -39,8 +40,8 @@ class Area(Entity):
         area_dict["contents"] = self.contents
         return area_dict
 
-    @staticmethod
-    def from_dict(area_dict: dict, l10n: FluentLocalization) -> Area:
+    @classmethod
+    def from_dict(cls, area_dict: dict, l10n: FluentLocalization) -> Area:
         contents_list: list[Entity] = []
         for entity_dict in area_dict.get("contents", []):
             match entity_dict.get("kind", "entity"):
@@ -73,7 +74,7 @@ class Area(Entity):
                     logger.info("could not determine %s used Entity instead" % default)
                     contents_list.append(Entity(entity_dict, l10n))
         contents = {entity.name: entity for entity in contents_list}
-        area = Area(area_dict, l10n)
+        area = cls(area_dict, l10n)
         area.contents = contents
         return area
 

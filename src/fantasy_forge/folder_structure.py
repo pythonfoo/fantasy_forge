@@ -28,7 +28,7 @@ ASSET_TYPE: TypeAlias = Union[
     Inventory,
     Item,
     Key,
-    Weapon
+    Weapon,
 ]
 
 ASSET_TYPE_DICT: dict[str, ASSET_TYPE] = {
