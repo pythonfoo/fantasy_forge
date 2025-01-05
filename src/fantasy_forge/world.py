@@ -23,6 +23,7 @@ class World:
     name: str
     areas: dict[str, Area]
     spawn: str  # area name to spawn in
+    assets: dict[str, list[ASSET_TYPE]]  # store of all loaded assets
 
     def __init__(
         self: Self,
@@ -36,8 +37,8 @@ class World:
         self.areas = areas
         self.spawn = spawn
 
-        self.assets: dict[str, list] = defaultdict(list)
-        self.load_assets()
+        self.assets = defaultdict(list)
+        self._load_assets()
 
     @property
     def spawn_point(self) -> Area:
@@ -71,7 +72,7 @@ class World:
             world = World(l10n, world_name, areas, world_spawn)
         return world
 
-    def load_assets(self):
+    def _load_assets(self):
         world_path = WORLDS_FOLDER / self.name
 
         # iterate through world dir
