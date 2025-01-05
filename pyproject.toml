@@ -7,7 +7,7 @@ requires-python = ">=3.10"
 authors = [
     { name = "pythonfoo", email = "pythonfoo@chaosdorf.de" }
 ]
-dependencies = ["fluent.runtime", "toml", "huepy"]
+dependencies = ["fluent.runtime", "toml", "huepy", "questionary"]
 
 [project.scripts]
 fantasy-forge = "fantasy_forge.main:main"
