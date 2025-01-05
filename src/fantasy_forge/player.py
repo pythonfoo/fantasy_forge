@@ -12,6 +12,9 @@ from fantasy_forge.item import Item
 from fantasy_forge.shell import Shell
 from fantasy_forge.weapon import Weapon
 
+if TYPE_CHECKING:
+    from fantasy_forge.world import World
+
 BASE_PLAYER_HEALTH = 100
 
 
@@ -32,7 +35,7 @@ class Player(Character):
             world.l10n,
         )
         self.world = world
-        self.area = Area.empty(world.l10n)
+        self.area = Area.empty(self.l10n)
         # put us in the void
         # We will (hopefully) never see this, but it's important for the
         # transition to the next area.
@@ -341,6 +344,7 @@ class Player(Character):
 
     def enter_gateway(self: Self, gateway: Gateway):
         """Uses gateway to enter a new area."""
+        # TODO: separate world from Player
         if gateway.locked:
             print(
                 self.l10n.format_value(
@@ -418,6 +422,7 @@ class Player(Character):
 
     def main_loop(self):
         """Runs the game."""
+        # TODO: enter spawn area in Shell preloop
         self.enter_area(self.world.spawn_point)
         Shell(self).cmdloop()
         # afterwards, leave the current area
@@ -440,7 +445,3 @@ class Player(Character):
                 {},
             )
         )
-
-
-if TYPE_CHECKING:
-    from fantasy_forge.world import World
