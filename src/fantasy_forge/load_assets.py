@@ -18,27 +18,26 @@ from fantasy_forge.player import Player
 from fantasy_forge.weapon import Weapon
 from fantasy_forge.world import World
 
-ASSET_TYPES: tuple[type, ...] = (
-    Area,
-    Armour,
-    Character,
-    Container,
-    Enemy,
-    Entity,
-    Gateway,
-    Inventory,
-    Item,
-    Key,
-    Player,
-    Weapon,
-)
+ASSET_TYPES: dict[str, type] = {
+    "Area": Area,
+    "Armour": Armour,
+    "Character": Character,
+    "Container": Container,
+    "Enemy": Enemy,
+    "Entity": Entity,
+    "Gateway": Gateway,
+    "Inventory": Inventory,
+    "Item": Item,
+    "Key": Key,
+    "Player": Player,
+    "Weapon": Weapon,
+}
 
 WORLDS_DIR: Path = Path("data/worlds")
 
 
 def iter_assets(world_name: str) -> Iterator[tuple[type, Path]]:
     world_path = WORLDS_DIR / world_name
-    asset_type_names: list[str] = [at.__name__ for at in ASSET_TYPES]
 
     # iterate through world dir
     path: Path
@@ -47,8 +46,8 @@ def iter_assets(world_name: str) -> Iterator[tuple[type, Path]]:
         parent: str = path.parent.name
 
         # infer type from parent directory
-        if parent in asset_type_names:
-            asset_type = globals().get(parent)
+        if parent in ASSET_TYPES.keys():
+            asset_type = ASSET_TYPES[parent]
         else:
             # TODO: proper logging
             print(f"skipped {path.name}")
@@ -83,9 +82,9 @@ def init_flat_folder_structure(world_name: str):
     """Generates flat directory structure for asset types."""
     world_path = WORLDS_DIR / world_name
     world_path.mkdir()
-    asset_type: type
+    asset_type: str
     for asset_type in ASSET_TYPES:
-        (world_path / asset_type.__name__).mkdir()
+        (world_path / asset_type).mkdir()
 
 
 def init_nested_folder_structure(world_name: str):
@@ -93,7 +92,7 @@ def init_nested_folder_structure(world_name: str):
     world_path = WORLDS_DIR / world_name
 
     asset_type: type
-    for asset_type in ASSET_TYPES:
+    for asset_type in ASSET_TYPES.values():
         current: type = asset_type
         type_hierarchy: list[type] = [current]
 
