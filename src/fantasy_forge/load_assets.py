@@ -37,9 +37,9 @@ def init_flat_folder_structure(world_name: str):
     """Generates flat directory structure for asset types."""
     world_path = WORLDS_FOLDER / world_name
     world_path.mkdir()
-    asset_type: type
+    asset_type: str
     for asset_type in ASSET_TYPES:
-        (world_path / asset_type.__name__).mkdir()
+        (world_path / asset_type).mkdir()
 
 
 def init_nested_folder_structure(world_name: str):
