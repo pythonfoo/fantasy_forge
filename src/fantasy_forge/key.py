@@ -27,6 +27,10 @@ class Key(Item):
         """Compares key ids."""
         return self.key_id == other.key_id
 
+    def __hash__(self) -> int:
+        """Returns hash of key id."""
+        return hash(self.key_id)
+
     @staticmethod
     def from_dict(key_dict, l10n) -> Key:
         key: Key = Key(key_dict, l10n)
