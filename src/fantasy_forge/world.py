@@ -40,19 +40,28 @@ class World:
 
     @staticmethod
     def load(name: str) -> World:
-        path = Path("data/worlds") / name
-        if not path.exists():
-            logger.debug(f"Path {path} not found, using {name}")
-            path = Path(name)
+        world_path = Path("data/worlds") / name
+
+        if not world_path.exists():
+            logger.debug(f"Path {world_path} not found, using {name}")
+            world_path = Path(name)
+
         areas: dict[str, Area] = dict()
-        with (path / "world.toml").open() as world_file:
-            world_toml = toml.load(world_file)
-            language: str = world_toml["language"]
-            world_name: str = world_toml["name"]
+
+        world_toml_path: Path = world_path / "world.toml"
+        with world_toml_path.open() as world_file:
+            world_toml_data: dict = toml.load(world_file)
+
+            world_name: str = world_toml_data["name"]
+            assert world_name == name
+
+            # load language for localization
+            language: str = world_toml_data["language"]
             l10n: FluentLocalization = get_fluent_locale(language)
             logger.debug("language")
             logger.debug(language)
-            world_spawn: str = world_toml["spawn"]
+
+            world_spawn: str = world_toml_data["spawn"]
             world = World(l10n, world_name, areas, world_spawn)
         return world
 
