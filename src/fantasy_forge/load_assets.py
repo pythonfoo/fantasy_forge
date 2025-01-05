@@ -18,7 +18,7 @@ from fantasy_forge.player import Player
 from fantasy_forge.weapon import Weapon
 from fantasy_forge.world import World
 
-ASSET_TYPES: tuple[type] = (
+ASSET_TYPES: tuple[type, ...] = (
     Area,
     Armour,
     Character,
@@ -36,13 +36,12 @@ ASSET_TYPES: tuple[type] = (
 WORLDS_DIR: Path = Path("data/worlds")
 
 
-# TODO: save assets in world object
 def iter_assets(world_name: str) -> Iterator[tuple[type, Path]]:
     world_path = WORLDS_DIR / world_name
+    asset_type_names: list[str] = [at.__name__ for at in ASSET_TYPES]
 
     # iterate through world dir
     path: Path
-    asset_type_names = [at.__name__ for at in ASSET_TYPES]
     for path in world_path.glob("**/*.toml"):
         asset_type: type
         parent: str = path.parent.name
@@ -51,10 +50,14 @@ def iter_assets(world_name: str) -> Iterator[tuple[type, Path]]:
         if parent in asset_type_names:
             asset_type = globals().get(parent)
         else:
+            # TODO: proper logging
             print(f"skipped {path.name}")
             continue
-        yield (asset_type, path)
 
+        yield asset_type, path
+
+
+# TODO: save assets in world object
 def load_assets(world_name: str) -> Iterator[Entity]:
     # load world.toml
     world: World = World.load(world_name)
@@ -68,16 +71,21 @@ def load_assets(world_name: str) -> Iterator[Entity]:
         with path.open("r", encoding="UTF-8") as io:
             content: dict = toml.load(io)
 
-        obj = asset_type.from_dict(content, l10n)
-        yield obj
+        if hasattr(asset_type, "from_dict"):
+            obj = asset_type.from_dict(content, l10n)
+            yield obj
+        else:
+            # TODO: proper logging
+            print(f"skipped {asset_type}")
 
 
 def init_flat_folder_structure(world_name: str):
     """Generates flat directory structure for asset types."""
     world_path = WORLDS_DIR / world_name
     world_path.mkdir()
-    for cls_dir in ASSET_TYPES:
-        (world_path / cls_dir).mkdir()
+    asset_type: type
+    for asset_type in ASSET_TYPES:
+        (world_path / asset_type.__name__).mkdir()
 
 
 def init_nested_folder_structure(world_name: str):
@@ -87,7 +95,7 @@ def init_nested_folder_structure(world_name: str):
     asset_type: type
     for asset_type in ASSET_TYPES:
         current: type = asset_type
-        type_hierachy: list[type] = [current]
+        type_hierarchy: list[type] = [current]
 
         while True:
             bases: tuple[type, ...] = current.__bases__
@@ -95,8 +103,8 @@ def init_nested_folder_structure(world_name: str):
                 break
             else:
                 current = bases[0]
-                type_hierachy.insert(0, current)
+                type_hierarchy.insert(0, current)
 
-        path_str: str = "/".join((t.__name__ for t in type_hierachy))
+        path_str: str = "/".join((t.__name__ for t in type_hierarchy))
         path: Path = world_path / path_str
         path.mkdir(parents=True, exist_ok=True)
