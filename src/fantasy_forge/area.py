@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import logging
+
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Iterator, Self
 
@@ -7,6 +9,7 @@ import toml
 
 from fantasy_forge.entity import Entity
 
+logger = logging.getLogger(__name__)
 
 class Area(Entity):
     """An Area is a place in the world, containing NPCs, Items and connections to other areas."""
@@ -67,6 +70,7 @@ class Area(Entity):
                     contents_list.append(Armour(entity_dict, l10n))
 
                 case default:
+                    logger.info("could not determine %s used Entity instead" % default)
                     contents_list.append(Entity(entity_dict, l10n))
         contents = {entity.name: entity for entity in contents_list}
         area = Area(area_dict, l10n)
