@@ -25,6 +25,7 @@ class Character(Entity):
     """A character in the world."""
 
     __important_attributes__ = ("name", "health", "alive")
+    __attributes__ = {**Entity.__attributes__, "health": int, "alive": bool}
 
     health: int
     inventory: Inventory

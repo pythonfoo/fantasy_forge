@@ -4,11 +4,11 @@ from typing import TYPE_CHECKING, Any, Self
 
 from fantasy_forge.entity import Entity
 
-
 class Item(Entity):
     """An Item is an entity which can be picked up by the player."""
 
     __important_attributes__ = ("name", "moveable", "carryable")
+    __attributes__ = {**Entity.__attributes__, "moveable": bool, "carryable": bool}
 
     moveable: bool
     carryable: bool
@@ -19,9 +19,6 @@ class Item(Entity):
         self.moveable = config_dict.pop("moveable", True)
         self.carryable = config_dict.pop("carryable", True)
         super().__init__(config_dict, l10n)
-
-    def __repr__(self: Self) -> str:
-        return f"Item({self.name}, {self.description}, moveable={self.moveable}, carryable={self.carryable})"
 
     def on_pickup(self: Self):
         # TODO

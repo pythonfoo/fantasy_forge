@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Iterator, Self
 
+from fantasy_forge.entity import Entity
 from fantasy_forge.item import Item
 from fantasy_forge.localization import highlight_interactive
 
@@ -12,6 +13,9 @@ class Inventory:
     capacity: int
     contents: dict[str, Item]
     l10n: FluentLocalization
+
+    __important_attributes__ = ("name", "capacity")
+    __attributes__ = {**Entity.__attributes__, "capacity": int}
 
     def __init__(self: Self, capacity: int, l10n: FluentLocalization):
         self.capacity = capacity
@@ -29,11 +33,6 @@ class Inventory:
     def __contains__(self: Self, other: str) -> bool:
         """Returns if item is in inventory."""
         return other in self.contents.keys()
-
-    def __repr__(self: Self) -> str:
-        output: str = f"Inventory({len(self)}/{self.capacity})\n"
-        output += "[" + ", ".join(self.contents.keys()) + "]"
-        return output
 
     def add(self: Self, item: Item) -> None:
         """Adds Item to inventory with respect to capacity."""

@@ -8,6 +8,7 @@ from fantasy_forge.inventory import Inventory
 
 class Container(Entity, Inventory):
     __important_attributes__ = ("name", "capacity")
+    __attributes__ = {**Entity.__attributes__, **Inventory.__attributes__}
 
     def __init__(
         self: Self, config_dict: dict[str, Any], l10n: FluentLocalization

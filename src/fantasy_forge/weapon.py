@@ -9,6 +9,7 @@ class Weapon(Item):
     """A Weapon is an item, which can deal damage to players or NPCs."""
 
     __important_attributes__ = ("name", "damage")
+    __attributes__ = {**Item.__attributes__, "damage": int}
 
     damage: int
 
