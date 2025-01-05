@@ -33,6 +33,7 @@ ASSET_TYPES: dict[str, type] = {
 
 WORLDS_DIR: Path = Path("data/worlds")
 
+
 def init_flat_folder_structure(world_name: str):
     """Generates flat directory structure for asset types."""
     world_path = WORLDS_DIR / world_name

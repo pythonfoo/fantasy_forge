@@ -23,7 +23,7 @@ def bare_hands(l10n: FluentLocalization):
             "description": l10n.format_value("bare-hands-description"),
             "damage": BASE_DAMAGE,
         },
-        l10n
+        l10n,
     )
 
 
@@ -34,18 +34,19 @@ class Player(Character):
     seen_entities: dict[str, Entity]
     armour_slots: dict[str, Armour]
 
-    def __init__(self: Self,
-                 l10n: FluentLocalization,
-                 name: str,
-                 health: int = BASE_PLAYER_HEALTH
-                 ):
+    def __init__(
+        self: Self,
+        l10n: FluentLocalization,
+        name: str,
+        health: int = BASE_PLAYER_HEALTH,
+    ):
         super().__init__(
             dict(
                 name=name,
                 description=l10n.format_value("player-description"),
                 health=health,
             ),
-            l10n
+            l10n,
         )
         self.area = Area.empty(self.l10n)
         # put us in the void
@@ -265,9 +266,7 @@ class Player(Character):
             )
             return
         if not isinstance(target, Character):
-            print(
-                self.l10n.format_value("cannot-attack", {"target": target_name})
-            )
+            print(self.l10n.format_value("cannot-attack", {"target": target_name}))
             return
         if target_name not in self.area.contents:
             print(self.l10n.format_value("item-vanished"))
