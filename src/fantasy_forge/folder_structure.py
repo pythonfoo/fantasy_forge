@@ -12,7 +12,6 @@ from fantasy_forge.gateway import Gateway
 from fantasy_forge.inventory import Inventory
 from fantasy_forge.item import Item
 from fantasy_forge.key import Key
-from fantasy_forge.player import Player
 from fantasy_forge.weapon import Weapon
 from fantasy_forge.utils import WORLDS_FOLDER
 
@@ -29,7 +28,6 @@ ASSET_TYPE: TypeAlias = Union[
     Inventory,
     Item,
     Key,
-    Player,
     Weapon
 ]
 
@@ -44,7 +42,6 @@ ASSET_TYPE_DICT: dict[str, ASSET_TYPE] = {
     "Inventory": Inventory,
     "Item": Item,
     "Key": Key,
-    "Player": Player,
     "Weapon": Weapon,
 }
 
