@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import IO, Iterator
 
@@ -17,6 +18,8 @@ from fantasy_forge.key import Key
 from fantasy_forge.player import Player
 from fantasy_forge.weapon import Weapon
 from fantasy_forge.world import World
+
+logger = logging.getLogger(__name__)
 
 ASSET_TYPES: dict[str, type] = {
     "Area": Area,
@@ -49,8 +52,7 @@ def iter_assets(world_name: str) -> Iterator[tuple[type, Path]]:
         if parent in ASSET_TYPES.keys():
             asset_type = ASSET_TYPES[parent]
         else:
-            # TODO: proper logging
-            print(f"skipped {path.name}")
+            logger.info("skipped " + path.name)
             continue
 
         yield asset_type, path
@@ -74,8 +76,8 @@ def load_assets(world_name: str) -> Iterator[Entity]:
             obj = asset_type.from_dict(content, l10n)
             yield obj
         else:
-            # TODO: proper logging
             print(f"skipped {asset_type}")
+            logger.info("skipped " + asset_type.__name__)
 
 
 def init_flat_folder_structure(world_name: str):
