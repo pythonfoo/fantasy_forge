@@ -10,7 +10,7 @@ import toml
 from fantasy_forge.area import Area
 from fantasy_forge.localization import get_fluent_locale
 from fantasy_forge.load_assets import ASSET_TYPES
-from fantasy_forge.utils import WORLDS_DIR
+from fantasy_forge.utils import WORLDS_FOLDER
 
 logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
@@ -46,7 +46,7 @@ class World:
 
     @staticmethod
     def load(name: str) -> World:
-        world_path = WORLDS_DIR/ name
+        world_path = WORLDS_FOLDER / name
 
         if not world_path.exists():
             logger.debug(f"Path {world_path} not found, using {name}")
@@ -72,7 +72,7 @@ class World:
         return world
 
     def load_assets(self):
-        world_path = WORLDS_DIR / self.name
+        world_path = WORLDS_FOLDER / self.name
 
         # iterate through world dir
         toml_path: Path
