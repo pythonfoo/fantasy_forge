@@ -156,7 +156,7 @@ class Player(Character):
                 )
             )
             return
-        # item must be in the area or the inventory to be equiped
+        # item must be in the area or the inventory to be equipped
         if (
             item_name not in self.area.contents
             and item_name not in self.inventory.contents
@@ -289,7 +289,7 @@ class Player(Character):
         )
         target.on_attack(weapon)
 
-        if target.alive:
+        if target.alive and hasattr(target, "attack"):
             # give the enemy an option for revenge
             target.attack(self)
             print(
@@ -481,7 +481,7 @@ class Player(Character):
         # TODO: enter spawn area in Shell preloop
         self.enter_area(self.world.spawn_point)
         Shell(self).cmdloop()
-        # afterwards, leave the current area
+        # afterward, leave the current area
         self.leave_area()
         quit_message = random.choice(
             [
