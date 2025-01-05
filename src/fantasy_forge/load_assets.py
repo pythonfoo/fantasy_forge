@@ -1,9 +1,5 @@
 import logging
 from pathlib import Path
-from typing import IO, Iterator
-
-import toml
-from fluent.runtime import FluentLocalization
 
 from fantasy_forge.area import Area
 from fantasy_forge.armour import Armour
@@ -17,7 +13,6 @@ from fantasy_forge.item import Item
 from fantasy_forge.key import Key
 from fantasy_forge.player import Player
 from fantasy_forge.weapon import Weapon
-from fantasy_forge.world import World
 
 logger = logging.getLogger(__name__)
 
@@ -37,48 +32,6 @@ ASSET_TYPES: dict[str, type] = {
 }
 
 WORLDS_DIR: Path = Path("data/worlds")
-
-
-def iter_assets(world_name: str) -> Iterator[tuple[type, Path]]:
-    world_path = WORLDS_DIR / world_name
-
-    # iterate through world dir
-    path: Path
-    for path in world_path.glob("**/*.toml"):
-        asset_type: type
-        parent: str = path.parent.name
-
-        # infer type from parent directory
-        if parent in ASSET_TYPES.keys():
-            asset_type = ASSET_TYPES[parent]
-        else:
-            logger.info("skipped " + path.name)
-            continue
-
-        yield asset_type, path
-
-
-# TODO: save assets in world object
-def load_assets(world_name: str) -> Iterator[Entity]:
-    # load world.toml
-    world: World = World.load(world_name)
-
-    # load localization
-    l10n: FluentLocalization = world.l10n
-
-    for asset_type, path in iter_assets(world_name):
-        # parse asset from toml file
-        io: IO
-        with path.open("r", encoding="UTF-8") as io:
-            content: dict = toml.load(io)
-
-        if hasattr(asset_type, "from_dict"):
-            obj = asset_type.from_dict(content, l10n)
-            yield obj
-        else:
-            print(f"skipped {asset_type}")
-            logger.info("skipped " + asset_type.__name__)
-
 
 def init_flat_folder_structure(world_name: str):
     """Generates flat directory structure for asset types."""
