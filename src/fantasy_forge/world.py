@@ -8,7 +8,7 @@ from typing import IO, TYPE_CHECKING, Self
 import toml
 
 from fantasy_forge.area import Area
-from fantasy_forge.load_assets import ASSET_TYPES
+from fantasy_forge.folder_structure import ASSET_TYPES
 from fantasy_forge.localization import get_fluent_locale
 from fantasy_forge.utils import WORLDS_FOLDER
 
