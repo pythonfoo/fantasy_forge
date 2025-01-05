@@ -33,11 +33,6 @@ class Item(Entity):
         item_dict["carryable"] = self.carryable
         return item_dict
 
-    @staticmethod
-    def from_dict(item_dict: dict, l10n: FluentLocalization) -> Item:
-        item: Item = Item(item_dict, l10n)
-        return item
-
 
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization

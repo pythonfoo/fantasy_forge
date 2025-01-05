@@ -31,11 +31,6 @@ class Armour(Item):
         armour_dict["defense"] = self.defense
         return armour_dict
 
-    @staticmethod
-    def from_dict(armour_dict: dict, l10n: FluentLocalization) -> Armour:
-        armour: Armour = Armour(armour_dict, l10n)
-        return armour
-
 
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization

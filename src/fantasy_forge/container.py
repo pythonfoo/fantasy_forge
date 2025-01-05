@@ -16,11 +16,6 @@ class Container(Entity, Inventory):
         Inventory.__init__(self, capacity, l10n)
         Entity.__init__(self, config_dict, l10n)
 
-    @staticmethod
-    def from_dict(container_dict, l10n) -> Container:
-        container: Container = Container(container_dict, l10n)
-        return container
-
 
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization

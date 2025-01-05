@@ -35,11 +35,6 @@ class Character(Entity):
     def on_attack(self: Self, weapon: Weapon):
         self.health -= weapon.damage
 
-    @staticmethod
-    def from_dict(character_dict, l10n) -> Character:
-        character = Character(character_dict, l10n)
-        return character
-
 
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization

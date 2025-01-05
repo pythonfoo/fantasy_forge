@@ -36,11 +36,6 @@ class Enemy(Character):
             )
         )
 
-    @staticmethod
-    def from_dict(enemy_dict: dict, l10n: FluentLocalization) -> Enemy:
-        enemy = Enemy(enemy_dict, l10n)
-        return enemy
-
 
 if TYPE_CHECKING:
     from fluent.runtime import FluentLocalization
