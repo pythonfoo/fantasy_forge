@@ -5,7 +5,8 @@ import huepy
 from fluent.runtime import FluentLocalization, FluentResourceLoader
 from fluent.runtime.types import FluentNone
 
-LOCALE_FOLDER: Path = Path("data/l10n/")
+from fantasy_forge.utils import LOCALE_FOLDER
+
 DEFAULT_LOCALE: str = "en"
 
 
