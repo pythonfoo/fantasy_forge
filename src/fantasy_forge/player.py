@@ -1,5 +1,7 @@
 import random
-from typing import Self, TYPE_CHECKING
+from typing import Self
+
+from fluent.runtime import FluentLocalization
 
 from fantasy_forge.area import Area
 from fantasy_forge.armour import ARMOUR_TYPES, Armour
@@ -10,10 +12,6 @@ from fantasy_forge.gateway import Gateway
 from fantasy_forge.item import Item
 from fantasy_forge.shell import Shell
 from fantasy_forge.weapon import Weapon
-from fantasy_forge.world import World
-
-if TYPE_CHECKING:
-    from fluent.runtime import FluentLocalization
 
 BASE_PLAYER_HEALTH = 100
 
@@ -37,17 +35,17 @@ class Player(Character):
     armour_slots: dict[str, Armour]
 
     def __init__(self: Self,
-                 world: World,
+                 l10n: FluentLocalization,
                  name: str,
                  health: int = BASE_PLAYER_HEALTH
                  ):
         super().__init__(
             dict(
                 name=name,
-                description=world.l10n.format_value("player-description"),
+                description=l10n.format_value("player-description"),
                 health=health,
             ),
-            world.l10n
+            l10n
         )
         self.area = Area.empty(self.l10n)
         # put us in the void
@@ -402,6 +400,7 @@ class Player(Character):
 
     def enter_gateway(self: Self, gateway: Gateway):
         """Uses gateway to enter a new area."""
+        # TODO: separate world from Player
         if gateway.locked:
             print(
                 self.l10n.format_value(
@@ -479,6 +478,7 @@ class Player(Character):
 
     def main_loop(self):
         """Runs the game."""
+        # TODO: enter spawn area in Shell preloop
         self.enter_area(self.world.spawn_point)
         Shell(self).cmdloop()
         # afterwards, leave the current area
