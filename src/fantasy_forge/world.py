@@ -40,6 +40,10 @@ class World:
         self.assets = defaultdict(list)
         self._load_assets()
 
+        # populate areas dict
+        for area in self.assets["Area"]:
+            self.areas[area.name] = area
+
     @property
     def spawn_point(self) -> Area:
         """Returns spawnpoint as area."""
@@ -62,7 +66,6 @@ class World:
         assert world_name == name
         
         areas: dict[str, Area] = dict()
-        # TODO: load all areas
 
         # load language for localization
         language: str = world_toml_data["language"]
