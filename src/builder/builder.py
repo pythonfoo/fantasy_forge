@@ -22,7 +22,14 @@ logger = logging.getLogger(__name__)
 
 class Builder(cmd.Cmd):
     world: World
-    world_dir: Path
+
+    @property
+    def world_name(self) -> str:
+        return self.world.name
+
+    @property
+    def world_dir(self) -> Path:
+        return WORLDS_FOLDER / clean_filename(self.world_name)
 
     def preloop(self):
         select = questionary.select(
@@ -36,7 +43,6 @@ class Builder(cmd.Cmd):
         else:
             exit(1)
         self.world = world
-        self.world_dir = WORLDS_FOLDER / clean_filename(world.name)
         super().preloop()
 
     def precmd(self, line):
@@ -51,7 +57,6 @@ class Builder(cmd.Cmd):
                 self.do_save()
                 world = new_world()
                 self.world = world
-                self.world_dir = WORLDS_FOLDER / clean_filename(world.name)
             case "area":
                 config_dict = get_asset_data(Area)
                 area = Area(config_dict, self.world.l10n)
