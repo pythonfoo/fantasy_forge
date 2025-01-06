@@ -10,16 +10,6 @@ from fantasy_forge.folder_structure import (
 from fantasy_forge.utils import WORLDS_FOLDER, clean_filename
 
 
-def bool_from_str(str_data: str) -> bool:
-    match str_data.casefold():
-        case "true" | "y":
-            return True
-        case "false" | "n":
-            return False
-        case _:
-            return False
-
-
 def get_asset_data(asset_type: ASSET_TYPE) -> dict:
     config_dict: dict = {}
     attr_name: str
