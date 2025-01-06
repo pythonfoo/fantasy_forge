@@ -130,6 +130,16 @@ class BuilderShell(cmd.Cmd):
             # print spawn
             print(f"current spawn: {self.world.spawn}")
 
+    def _populate_area(self, area: Area):
+        """Adds assets from world into an area."""
+        assets_to_add = questionary.checkbox(
+            "Choose the assets",
+            choices=[str(asset) for asset in self.world.iter_assets()],
+        ).ask()
+        for asset_name in assets_to_add:
+            asset = self.world.get_asset(asset_name)
+            area.contents[asset_name] = asset
+
 
 def new_world() -> World:
     name = questionary.text("Choose a name for your new world: ").ask()
