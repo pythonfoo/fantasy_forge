@@ -67,9 +67,24 @@ class Builder(cmd.Cmd):
         """Edits an existing element."""
         pass
 
-    def do_list(self):
-        """Lists all the elements."""
-        pass
+    def do_list(self, line: str):
+        """Lists all the elements of a kind."""
+        match line:
+            case "world":
+                for world_dir in WORLDS_FOLDER.iterdir():
+                    print(world_dir)
+            case "area":
+                for area_name, area in self.world.areas.items():
+                    print(area_name, repr(area))
+            case _:
+                asset_type: ASSET_TYPE
+                if line.title() in ASSET_TYPE_DICT:
+                    asset_type = ASSET_TYPE_DICT[line.title()]
+                else:
+                    asset_type = select_asset_type()
+                for asset in self.world.assets[asset_type.__name__]:
+                    print(asset.name, repr(asset))
+
 
     def do_save(self, line):
         """Save the current world to filesystem."""
