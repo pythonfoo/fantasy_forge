@@ -2,34 +2,34 @@ from __future__ import annotations
 
 from typing import Iterator, Self, TYPE_CHECKING
 
-from fantasy_forge.item import Item
+from fantasy_forge.entity import Entity
 from fantasy_forge.localization import highlight_interactive
 
 
-class Inventory:
-    """An Inventory contains multiple items."""
+class Inventory(Entity):
+    """An Inventory contains multiple entities."""
 
     capacity: int
-    contents: dict[str, Item]
+    contents: dict[str, Entity]
     l10n: FluentLocalization
 
-    __attributes__ = {"capacity": int}
+    __attributes__ = {**Entity.__attributes__, "capacity": int}
 
-    def __init__(self: Self, capacity: int, l10n: FluentLocalization):
-        self.capacity = capacity
+    def __init__(self: Self, config_dict: dict, l10n: FluentLocalization):
+        self.capacity = config_dict.pop("capacity")
         self.contents = {}
-        self.l10n = l10n
+        super().__init__(config_dict, l10n)
 
     def __len__(self: Self) -> int:
         """Returns current capacity."""
         return len(self.contents)
 
-    def __iter__(self: Self) -> Iterator[Item]:
-        """Iterates over items in inventory."""
+    def __iter__(self: Self) -> Iterator[Entity]:
+        """Iterates over entities in inventory."""
         yield from self.contents.values()
 
     def __contains__(self: Self, other: str) -> bool:
-        """Returns if item is in inventory."""
+        """Returns if entity is in inventory."""
         return other in self.contents.keys()
 
     def __repr__(self: Self) -> str:
@@ -37,11 +37,11 @@ class Inventory:
         output += "[" + ", ".join(self.contents.keys()) + "]"
         return output
 
-    def add(self: Self, item: Item) -> None:
+    def add(self: Self, entity: Entity) -> None:
         """Adds Item to inventory with respect to capacity."""
-        assert item.name not in self.contents
+        assert entity.name not in self.contents
         if len(self) < self.capacity:
-            self.contents[item.name] = item
+            self.contents[entity.name] = entity
         else:
             raise Exception(
                 self.world.l10n.format_value(
@@ -52,14 +52,14 @@ class Inventory:
                 )
             )
 
-    def get(self: Self, item_name: str) -> Item | None:
+    def get(self: Self, entity_name: str) -> Entity | None:
         """Gets item by name."""
-        return self.contents.get(item_name)
+        return self.contents.get(entity_name)
 
-    def pop(self: Self, item_name: str) -> Item | None:
+    def pop(self: Self, entity_name: str) -> Entity | None:
         """Pops item from inventory."""
-        if item_name in self:
-            return self.contents.pop(item_name)
+        if entity_name in self:
+            return self.contents.pop(entity_name)
         return None
 
     def on_look(self: Self) -> str:
@@ -77,14 +77,9 @@ class Inventory:
 
     def to_dict(self) -> dict:
         """Returns inventory as a dictionary."""
-        inventory_dict: dict = {"capacity": self.capacity}
+        entity_dict: dict = super().to_dict()
+        inventory_dict: dict = {**entity_dict, "capacity": self.capacity}
         return inventory_dict
-
-    @classmethod
-    def from_dict(cls, inventory_dict: dict, l10n: FluentLocalization) -> Self:
-        capacity = inventory_dict.get("capacity", 10)
-        inventory: Inventory = cls(capacity, l10n)
-        return inventory
 
 
 if TYPE_CHECKING:
