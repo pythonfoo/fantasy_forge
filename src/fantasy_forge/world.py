@@ -118,6 +118,9 @@ class World:
     def __iter__(self) -> Iterator[ASSET_TYPE]:
         yield from self.store.values()
 
+    def __contains__(self, asset_key: str):
+        return asset_key in self.store
+
     def __getitem__(self, asset_key: str) -> ASSET_TYPE | None:
         return self.store.get(asset_key)
 
