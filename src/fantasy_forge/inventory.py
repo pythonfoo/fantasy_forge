@@ -33,11 +33,6 @@ class Inventory(Entity):
         """Returns if entity is in inventory."""
         return other in self.contents.keys()
 
-    def __repr__(self: Self) -> str:
-        output: str = f"Inventory({len(self)}/{self.capacity})\n"
-        output += "[" + ", ".join(self.contents.keys()) + "]"
-        return output
-
     def add(self: Self, entity: Entity) -> None:
         """Adds Item to inventory with respect to capacity."""
         assert entity.name not in self.contents
