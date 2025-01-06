@@ -29,6 +29,10 @@ def get_fluent_locale(locale: str = DEFAULT_LOCALE) -> FluentLocalization:
     locale_path: Path = LOCALE_FOLDER / locale
     fluent_loader: FluentResourceLoader = FluentResourceLoader(str(locale_path))
     l10n = FluentLocalization(
-        locales=[locale, ], resource_ids=["main.ftl"], resource_loader=fluent_loader
+        locales=[
+            locale,
+        ],
+        resource_ids=["main.ftl"],
+        resource_loader=fluent_loader,
     )
     return l10n
