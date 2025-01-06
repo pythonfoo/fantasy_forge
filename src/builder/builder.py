@@ -20,7 +20,7 @@ from fantasy_forge.world import World
 logger = logging.getLogger(__name__)
 
 
-class Builder(cmd.Cmd):
+class BuilderShell(cmd.Cmd):
     world: World
 
     @property
@@ -167,5 +167,5 @@ def select_asset_type() -> ASSET_TYPE:
 
 
 if __name__ == "__main__":
-    builder = Builder()
+    builder = BuilderShell()
     builder.cmdloop()
