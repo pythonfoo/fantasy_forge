@@ -58,12 +58,18 @@ class BuilderShell(cmd.Cmd):
                 world = new_world()
                 self.world = world
             case "area":
+                print("Let's create a new area.")
                 config_dict = get_asset_data(Area)
                 area = Area(config_dict, self.world.l10n)
                 area_name = area.name
                 self.world.areas[area_name] = area
             case _:
-                asset_type: ASSET_TYPE = select_asset_type()
+                asset_type: ASSET_TYPE
+                if line.title() in ASSET_TYPE_DICT:
+                    asset_type = ASSET_TYPE_DICT[line.title()]
+                else:
+                    asset_type = select_asset_type()
+                print(f"Let's create a new {asset_type.__name__}.")
                 config_dict: dict = get_asset_data(asset_type)
                 asset = asset_type(config_dict, self.world.l10n)
                 self.world.assets[asset_type.__name__].append(asset)
@@ -93,7 +99,6 @@ class BuilderShell(cmd.Cmd):
                     asset_type = select_asset_type()
                 for asset in self.world.assets[asset_type.__name__]:
                     print(repr(asset))
-
 
     def do_save(self, line):
         """Save the current world to filesystem."""
