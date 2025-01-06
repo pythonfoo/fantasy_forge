@@ -75,6 +75,11 @@ class Inventory:
                 },
             )
 
+    def to_dict(self) -> dict:
+        """Returns inventory as a dictionary."""
+        inventory_dict: dict = {"capacity": self.capacity}
+        return inventory_dict
+
     @classmethod
     def from_dict(cls, inventory_dict: dict, l10n: FluentLocalization) -> Self:
         capacity = inventory_dict.get("capacity", 10)
