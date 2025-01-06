@@ -5,12 +5,14 @@ import logging
 from pathlib import Path
 
 import questionary
+import toml
 from fluent.runtime import FluentLocalization
 
 from fantasy_forge.area import Area
 from fantasy_forge.folder_structure import (
     ASSET_TYPE,
     ASSET_TYPE_DICT,
+    asset2path,
     init_nested_folder_structure,
 )
 from fantasy_forge.localization import get_fluent_locale
@@ -107,8 +109,9 @@ class BuilderShell(cmd.Cmd):
 
     def do_save(self, line):
         """Save the current world to filesystem."""
-        # save all assets in world
-        # save world.toml
+        for asset in self.world.iter_assets():
+            save_asset(self.world, asset)
+        # TODO: save world.toml
         pass
 
     def do_status(self, line: str):
@@ -186,6 +189,14 @@ def select_asset_type() -> ASSET_TYPE:
     ).ask()
     asset_type: ASSET_TYPE = ASSET_TYPE_DICT[asset_type_inp]
     return asset_type
+
+
+def save_asset(world: World, asset: ASSET_TYPE):
+    asset_path = asset2path(world.name, asset) / clean_filename(asset.name)
+    asset_data = asset.to_dict()
+    content = toml.dumps(asset_data)
+    with asset_path.open("w") as file:
+        file.write(content)
 
 
 if __name__ == "__main__":
