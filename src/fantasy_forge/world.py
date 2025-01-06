@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-from collections import defaultdict
 from pathlib import Path
 from typing import IO, TYPE_CHECKING, Iterator, Self
 
@@ -23,7 +22,6 @@ class World:
     name: str
     areas: dict[str, Area]
     spawn: str  # area name to spawn in
-    assets: dict[str, list[ASSET_TYPE]]  # store of all loaded assets
     store: dict[str, ASSET_TYPE]  # stores all assets
 
     def __init__(
@@ -39,8 +37,6 @@ class World:
         self.spawn = spawn
 
         self.store = dict()
-        
-        self.assets = defaultdict(list)
         self._load_assets()
 
 
@@ -108,8 +104,6 @@ class World:
                 logger.info("skipped " + toml_path.name)
                 continue
 
-            self.assets[asset_type.__name__].append(asset)
-
             assert asset.name not in self.store
             self.store[asset.name] = asset
 
@@ -130,20 +124,6 @@ class World:
 
     def filter(self, wanted_type: type) -> Iterator[ASSET_TYPE]:
         yield from (asset for asset in self if isinstance(asset, wanted_type))
-
-    def iter_assets(self) -> Iterator[ASSET_TYPE]:
-        for assets in self.assets.values():
-            yield from assets
-
-    def get_asset(self, asset_name: str, asset_type: str = "") -> ASSET_TYPE:
-        if asset_type:
-            assets = self.assets[asset_type]
-        else:
-            assets = self.iter_assets()
-
-        for asset in assets:
-            if asset.__name__ == asset_name:
-                return asset
 
 
 if TYPE_CHECKING:
