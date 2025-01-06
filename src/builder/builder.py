@@ -34,9 +34,9 @@ class BuilderShell(cmd.Cmd):
     def preloop(self):
         select = questionary.select(
             "What do you want to do?",
-            choices=["Create a new world?", "Edit an existing world"],
+            choices=["Create a new world", "Edit an existing world"],
         ).ask()
-        if select == "Create a new world?":
+        if select == "Create a new world":
             world = new_world()
         elif select == "Edit an existing world":
             world = select_world()
@@ -55,6 +55,7 @@ class BuilderShell(cmd.Cmd):
         match line:
             case "world":
                 self.do_save()
+                print("Let's create a new area.")
                 world = new_world()
                 self.world = world
             case "area":
@@ -82,12 +83,15 @@ class BuilderShell(cmd.Cmd):
         """Lists all the elements of a kind."""
         match line:
             case "world":
+                print("Let's list all worlds.")
                 for world_dir in WORLDS_FOLDER.iterdir():
                     print(world_dir)
             case "area":
+                print("Let's list all areas.")
                 for area_name, area in self.world.areas.items():
                     print(area_name, repr(area))
             case "all" | "":
+                print("Let's list all assets.")
                 # list all assets
                 for asset in self.world.iter_assets():
                     print(repr(asset))
@@ -97,6 +101,7 @@ class BuilderShell(cmd.Cmd):
                     asset_type = ASSET_TYPE_DICT[line.title()]
                 else:
                     asset_type = select_asset_type()
+                print(f"Let's list all assets of type {asset_type.__name__}")
                 for asset in self.world.assets[asset_type.__name__]:
                     print(repr(asset))
 
@@ -114,7 +119,9 @@ class BuilderShell(cmd.Cmd):
         """Prints or selects the spawn area of the current world."""
         if line:
             # set spawn area
-            area_name = questionary.select("Choose a spawn area", choices=list(self.world.areas.keys())).ask()
+            area_name = questionary.select(
+                "Choose a spawn area", choices=list(self.world.areas.keys())
+            ).ask()
             self.world.spawn = area_name
         else:
             # print spawn
