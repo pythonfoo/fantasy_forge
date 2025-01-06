@@ -76,6 +76,10 @@ class Builder(cmd.Cmd):
             case "area":
                 for area_name, area in self.world.areas.items():
                     print(area_name, repr(area))
+            case "all" | "":
+                # list all assets
+                for asset in self.world.iter_assets():
+                    print(repr(asset))
             case _:
                 asset_type: ASSET_TYPE
                 if line.title() in ASSET_TYPE_DICT:
@@ -83,7 +87,7 @@ class Builder(cmd.Cmd):
                 else:
                     asset_type = select_asset_type()
                 for asset in self.world.assets[asset_type.__name__]:
-                    print(asset.name, repr(asset))
+                    print(repr(asset))
 
 
     def do_save(self, line):
