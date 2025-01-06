@@ -62,6 +62,7 @@ def init_nested_folder_structure(world_name: str):
         path = asset2path(world_name, asset_type)
         path.mkdir(parents=True, exist_ok=True)
 
+
 def asset2path(world_name: str, asset_type: ASSET_TYPE) -> Path:
     world_path = WORLDS_FOLDER / clean_filename(world_name)
 

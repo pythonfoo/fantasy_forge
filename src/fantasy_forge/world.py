@@ -57,14 +57,13 @@ class World:
             logger.debug(f"Path {world_path} not found, using {name}")
             world_path = Path(name)
 
-
         world_toml_path: Path = world_path / "world.toml"
         with world_toml_path.open() as world_file:
             world_toml_data: dict = load(world_file)
 
         world_name: str = world_toml_data["name"]
         assert world_name == name
-        
+
         areas: dict[str, Area] = dict()
 
         # load language for localization

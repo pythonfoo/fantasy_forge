@@ -4,6 +4,7 @@ from typing import Any, Self, TYPE_CHECKING
 
 from fantasy_forge.entity import Entity
 
+
 class Item(Entity):
     """An Item is an entity which can be picked up by the player."""
 

@@ -9,6 +9,7 @@ DATA_FOLDER: Path = ROOT_FOLDER / "data"  # fantasy_forge/data
 WORLDS_FOLDER: Path = DATA_FOLDER / "worlds"  # fantasy_forge/data/worlds
 LOCALE_FOLDER: Path = DATA_FOLDER / "l10n"  # fantasy_forge/data/l10n
 
+
 def clean_filename(filename: str) -> str:
     result = []
     for char in filename.casefold():
