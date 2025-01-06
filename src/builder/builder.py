@@ -75,7 +75,7 @@ class BuilderShell(cmd.Cmd):
                 print(f"Let's create a new {asset_type.__name__}.")
                 config_dict: dict = get_asset_data(asset_type)
                 asset = asset_type(config_dict, self.world.l10n)
-                self.world.assets[asset_type.__name__].append(asset)
+                self.world.add_asset(asset)
 
     def do_edit(self):
         """Edits an existing element."""
@@ -95,7 +95,7 @@ class BuilderShell(cmd.Cmd):
             case "all" | "":
                 print("Let's list all assets.")
                 # list all assets
-                for asset in self.world.iter_assets():
+                for asset in self.world:
                     print(repr(asset))
             case _:
                 asset_type: ASSET_TYPE
@@ -104,12 +104,12 @@ class BuilderShell(cmd.Cmd):
                 else:
                     asset_type = select_asset_type()
                 print(f"Let's list all assets of type {asset_type.__name__}")
-                for asset in self.world.assets[asset_type.__name__]:
+                for asset in self.world.filter(asset_type):
                     print(repr(asset))
 
     def do_save(self, line):
         """Save the current world to filesystem."""
-        for asset in self.world.iter_assets():
+        for asset in self.world:
             save_asset(self.world, asset)
         # TODO: save world.toml
         pass
@@ -134,10 +134,10 @@ class BuilderShell(cmd.Cmd):
         """Adds assets from world into an area."""
         assets_to_add = questionary.checkbox(
             "Choose the assets",
-            choices=[str(asset) for asset in self.world.iter_assets()],
+            choices=list(self.world.store.keys()),
         ).ask()
         for asset_name in assets_to_add:
-            asset = self.world.get_asset(asset_name)
+            asset = self.world[asset_name]
             area.contents[asset_name] = asset
 
 
