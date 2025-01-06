@@ -12,8 +12,7 @@ from fantasy_forge.gateway import Gateway
 from fantasy_forge.inventory import Inventory
 from fantasy_forge.item import Item
 from fantasy_forge.key import Key
-from fantasy_forge.player import Player
-from fantasy_forge.utils import WORLDS_FOLDER
+from fantasy_forge.utils import WORLDS_FOLDER, clean_filename
 from fantasy_forge.weapon import Weapon
 
 logger = logging.getLogger(__name__)
@@ -65,8 +64,9 @@ def init_nested_folder_structure(world_name: str):
         path = asset2path(world_name, asset_type)
         path.mkdir(parents=True, exist_ok=True)
 
+
 def asset2path(world_name: str, asset_type: ASSET_TYPE) -> Path:
-    world_path = WORLDS_FOLDER / world_name
+    world_path = WORLDS_FOLDER / clean_filename(world_name)
 
     current: ASSET_TYPE = asset_type
     type_hierarchy: list[ASSET_TYPE] = [current]
