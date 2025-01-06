@@ -110,6 +110,16 @@ class BuilderShell(cmd.Cmd):
         print(f"current world: {self.world}")
         print(f"current world dir: {self.world_dir}")
 
+    def do_spawn(self, line: str):
+        """Prints or selects the spawn area of the current world."""
+        if line:
+            # set spawn area
+            area_name = questionary.select("Choose a spawn area", choices=list(self.world.areas.keys())).ask()
+            self.world.spawn = area_name
+        else:
+            # print spawn
+            print(f"current spawn: {self.world.spawn}")
+
 
 def new_world() -> World:
     name = questionary.text("Choose a name for your new world: ").ask()
