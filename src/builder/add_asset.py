@@ -8,25 +8,7 @@ from fantasy_forge.folder_structure import (
     asset2path,
 )
 from fantasy_forge.utils import WORLDS_FOLDER, clean_filename
-
-
-def get_asset_data(asset_type: ASSET_TYPE) -> dict:
-    config_dict: dict = {}
-    attr_name: str
-    attr_type: type
-    for attr_name, attr_type in asset_type.__attributes__.items():
-        prompt = f"{attr_name}: "
-        match attr_type.__name__:
-            case "bool":
-                data = questionary.confirm(prompt).ask()
-            case "int":
-                raw = questionary.text(prompt).ask()
-                assert raw.isdigit()
-                data = int(raw)
-            case _:
-                data = questionary.text(prompt).ask()
-        config_dict[attr_name] = data
-    return config_dict
+from builder import get_asset_data
 
 
 def main():
