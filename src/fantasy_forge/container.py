@@ -6,7 +6,7 @@ from fantasy_forge.entity import Entity
 from fantasy_forge.inventory import Inventory
 
 
-class Container(Entity, Inventory):
+class Container(Inventory):
     __important_attributes__ = ("name", "capacity")
     __attributes__ = {**Entity.__attributes__, **Inventory.__attributes__}
 
