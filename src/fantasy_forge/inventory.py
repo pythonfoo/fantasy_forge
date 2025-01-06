@@ -13,6 +13,7 @@ class Inventory(Entity):
     contents: dict[str, Entity]
     l10n: FluentLocalization
 
+    __important_attributes__ = ("name", "capacity")
     __attributes__ = {**Entity.__attributes__, "capacity": int}
 
     def __init__(self: Self, config_dict: dict, l10n: FluentLocalization):
