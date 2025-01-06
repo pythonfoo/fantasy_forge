@@ -24,6 +24,7 @@ class World:
     areas: dict[str, Area]
     spawn: str  # area name to spawn in
     assets: dict[str, list[ASSET_TYPE]]  # store of all loaded assets
+    store: dict[str, ASSET_TYPE]  # stores all assets
 
     def __init__(
         self: Self,
@@ -37,8 +38,11 @@ class World:
         self.areas = areas
         self.spawn = spawn
 
+        self.store = dict()
+        
         self.assets = defaultdict(list)
         self._load_assets()
+
 
         # populate areas dict
         area: Area
@@ -113,6 +117,27 @@ class World:
                 continue
 
             self.assets[asset_type.__name__].append(asset)
+
+            assert asset.name not in self.store
+            self.store[asset.name] = asset
+
+    def __iter__(self) -> Iterator[ASSET_TYPE]:
+        yield from self.store.values()
+
+    def __getitem__(self, asset_key: str) -> ASSET_TYPE | None:
+        return self.store.get(asset_key)
+
+    def add_asset(self, asset: ASSET_TYPE) -> None:
+        assert asset.name not in self.store
+        self.store[asset.name] = asset
+
+    def pop_asset(self, asset_key: str) -> ASSET_TYPE | None:
+        if asset_key in self.store:
+            asset: ASSET_TYPE = self.store.pop(asset_key)
+            return asset
+
+    def filter(self, wanted_type: type) -> Iterator[ASSET_TYPE]:
+        yield from (asset for asset in self if isinstance(asset, wanted_type))
 
     def iter_assets(self) -> Iterator[ASSET_TYPE]:
         for assets in self.assets.values():
