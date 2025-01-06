@@ -53,23 +53,25 @@ class World:
             logger.debug(f"Path {world_path} not found, using {name}")
             world_path = Path(name)
 
-        areas: dict[str, Area] = dict()
 
         world_toml_path: Path = world_path / "world.toml"
         with world_toml_path.open() as world_file:
             world_toml_data: dict = load(world_file)
 
-            world_name: str = world_toml_data["name"]
-            assert world_name == name
+        world_name: str = world_toml_data["name"]
+        assert world_name == name
+        
+        areas: dict[str, Area] = dict()
+        # TODO: load all areas
 
-            # load language for localization
-            language: str = world_toml_data["language"]
-            l10n: FluentLocalization = get_fluent_locale(language)
-            logger.debug("language")
-            logger.debug(language)
+        # load language for localization
+        language: str = world_toml_data["language"]
+        l10n: FluentLocalization = get_fluent_locale(language)
+        logger.debug("language")
+        logger.debug(language)
 
-            world_spawn: str = world_toml_data["spawn"]
-            world = World(l10n, world_name, areas, world_spawn)
+        world_spawn: str = world_toml_data["spawn"]
+        world = World(l10n, world_name, areas, world_spawn)
         return world
 
     def _load_assets(self):
