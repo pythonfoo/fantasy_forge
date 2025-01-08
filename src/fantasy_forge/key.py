@@ -17,6 +17,19 @@ class Key(Item):
     def __init__(
         self: Self, config_dict: dict[str, Any], l10n: FluentLocalization
     ) -> None:
+        """
+        config_dict contents
+        key_id (str): identifiable key id
+
+        inherited from Item
+        'moveable' (bool): can the item be moved by the player (default: True)
+        'carryable' (bool): can the item be put in the inventory by the player (default: True)
+
+        inherited from Entity
+        'name' (str): name of the entity
+        'description' (str): description of the entity (default: "")
+        'obvious'(bool): whether the entity will be spotted immediately (default: False)
+        """
         self.key_id = config_dict.pop("key_id")
 
         self.moveable = True  # keys are moveable by default

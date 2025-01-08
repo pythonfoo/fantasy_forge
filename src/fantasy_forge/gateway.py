@@ -18,6 +18,17 @@ class Gateway(Entity):
     key_list: list[str]
 
     def __init__(self: Self, config_dict: dict[str, Any], l10n: FluentLocalization):
+        """
+        config_dict contents
+        'target' (str): name of the target area
+        'locked' (bool): whether the gateway is locked (default: False)
+        'key_list' (list[str]): a list of keys to use for this gateway (default: [])
+
+        inherited from Entity
+        'name' (str): name of the entity
+        'description' (str): description of the entity (default: "")
+        'obvious'(bool): whether the entity will be spotted immediately (default: False)
+        """
         self.target = config_dict.pop("target")
         self.locked = config_dict.pop("locked", False)
         self.key_list = config_dict.pop("key_list", [])

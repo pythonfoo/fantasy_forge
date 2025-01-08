@@ -20,6 +20,20 @@ class Armour(Item):
     __attributes__ = {**Item.__attributes__, "armour_type": str, "defense": int}
 
     def __init__(self, config_dict, l10n: FluentLocalization):
+        """
+        config_dict contents
+        'armour_type' (str): armour slot ("head", "torso", "legs", "feet")
+        'defense' (int): defense points gained by armour
+
+        inherited from Item:
+        'moveable' (bool): can the item be moved by the player (default: True)
+        'carryable' (bool): can the item be put in the inventory by the player (default: True)
+
+        inherited from Entity
+        'name' (str): name of the entity
+        'description' (str): description of the entity (default: "")
+        'obvious'(bool): whether the entity will be spotted immediately (default: False)
+        """
         a_type: str = config_dict.pop("armour_type")
         assert a_type in ARMOUR_TYPES
         self.armour_type = a_type
