@@ -54,7 +54,10 @@ class World:
         world_path = WORLDS_FOLDER / name
 
         if not world_path.exists():
-            logger.debug(f"Path {world_path} not found, using {name}")
+            logger.debug(
+                "Path %(world_path) not found, using %(name)",
+                {"world_path": world_path, "name": name},
+            )
             world_path = Path(name)
 
         world_toml_path: Path = world_path / "world.toml"
@@ -64,7 +67,7 @@ class World:
         world_name: str = world_toml_data["name"]
         assert world_name == name
 
-        areas: dict[str, Area] = dict()
+        areas: dict[str, Area] = {}
 
         # load language for localization
         language: str = world_toml_data["language"]
@@ -89,7 +92,7 @@ class World:
             if parent in ASSET_TYPES.keys():
                 asset_type = ASSET_TYPES[parent]
             else:
-                logger.info("skipped " + toml_path.name)
+                logger.info("skipped %s", toml_path.name)
                 continue
 
             # read toml
@@ -101,7 +104,7 @@ class World:
             if hasattr(asset_type, "from_dict"):
                 asset = asset_type.from_dict(toml_data, self.l10n)
             else:
-                logger.info("skipped " + toml_path.name)
+                logger.info("skipped %s", toml_path.name)
                 continue
 
             self.assets[asset_type.__name__].append(asset)

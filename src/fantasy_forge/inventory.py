@@ -31,7 +31,7 @@ class Inventory(Entity):
 
     def __contains__(self: Self, other: str) -> bool:
         """Returns if entity is in inventory."""
-        return other in self.contents.keys()
+        return other in self.contents
 
     def add(self: Self, entity: Entity) -> None:
         """Adds Item to inventory with respect to capacity."""

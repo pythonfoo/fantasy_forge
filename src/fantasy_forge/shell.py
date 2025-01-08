@@ -84,11 +84,11 @@ class ShellEn(Shell):
         """
         if arg.strip() == "around":
             self.player.look_around()
-            logger.debug("%s looks around" % self.player.name)
+            logger.debug("%s looks around", self.player.name)
         elif arg.strip().startswith("at"):
             entity_name = arg.strip().removeprefix("at").strip()
             self.player.look_at(entity_name)
-            logger.debug("%s looks at %s" % (self.player.name, entity_name))
+            logger.debug("%s looks at %s", self.player.name, entity_name)
         else:
             self.default(arg)
 
@@ -120,7 +120,7 @@ class ShellEn(Shell):
         if arg.startswith("up "):
             arg = arg.removeprefix("up ")
         self.player.pick_up(arg.strip())
-        logger.debug("%s picks up %s" % (self.player.name, arg.strip()))
+        logger.debug("%s picks up %s", self.player.name, arg.strip())
 
     def complete_pick(
         self,
@@ -160,7 +160,7 @@ class ShellEn(Shell):
     def do_go(self, arg: str):
         """go <gateway>"""
         self.player.go(arg)
-        logger.debug("%s goes to %s" % (self.player.name, arg))
+        logger.debug("%s goes to %s", self.player.name, arg)
 
     def complete_go(
         self,
@@ -240,25 +240,25 @@ class ShellEn(Shell):
             if " " in completions:
                 completions.remove(" ")
             return completions
-        else:
-            # we're looking for the subject
-            subject_name = " ".join(args).strip()
-            completions = [
-                text + name.removeprefix(subject_name).strip() + " "
-                for name in self.player.seen_entities.keys()
-                if name.startswith(subject_name)
-            ]
-            if " " in completions:
-                completions.remove(" ")
-            # we might already be in the "with"
-            if any(
-                (
-                    entity_name == subject_name.rstrip("ihtw").strip()
-                    for entity_name in self.player.seen_entities
-                )
-            ):
-                completions.append("with ")
-            return completions
+
+        # we're looking for the subject
+        subject_name = " ".join(args).strip()
+        completions = [
+            text + name.removeprefix(subject_name).strip() + " "
+            for name in self.player.seen_entities.keys()
+            if name.startswith(subject_name)
+        ]
+        if " " in completions:
+            completions.remove(" ")
+        # we might already be in the "with"
+        if any(
+            (
+                entity_name == subject_name.rstrip("ihtw").strip()
+                for entity_name in self.player.seen_entities
+            )
+        ):
+            completions.append("with ")
+        return completions
 
     def do_attack(self, arg: str) -> None:
         """Attack another entity."""

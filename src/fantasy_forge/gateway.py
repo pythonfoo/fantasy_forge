@@ -1,9 +1,13 @@
+"""Gateway class
+
+A gateway connects two areas.
+"""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Self
 
 from fantasy_forge.entity import Entity
-from fantasy_forge.item import Item
 from fantasy_forge.key import Key
 
 
@@ -11,7 +15,12 @@ class Gateway(Entity):
     """A Gateway is a one-way connection to an area."""
 
     __important_attributes__ = ("name", "target", "locked")
-    __attributes__ = {**Entity.__attributes__, "target": str, "locked": bool, "key_list": list}
+    __attributes__ = {
+        **Entity.__attributes__,
+        "target": str,
+        "locked": bool,
+        "key_list": list,
+    }
 
     target: str  # This is not an area because the target might not be loaded yet.
     locked: bool
@@ -35,13 +44,15 @@ class Gateway(Entity):
         super().__init__(config_dict, l10n)
 
     def on_look(self: Self) -> str:
+        """Returns description if unlocked."""
         text = []
         if self.key_list and self.locked:
             text.append(self.l10n.format_value("gateway-on-look-locked"))
         text.append(self.description)
         return "\n".join(text)
 
-    def on_use(self: Self, other: Item | None = None):
+    def on_use(self: Self, other: Entity | None = None):
+        """Handles gateway use."""
         if other is None:
             super().on_use()
             return
@@ -70,6 +81,7 @@ class Gateway(Entity):
             self.on_lock(other)
 
     def on_unlock(self: Self, key: Key):
+        """Handles gateway unlock."""
         if key.key_id in self.key_list:
             self.locked = False
             key.used = True
@@ -83,6 +95,7 @@ class Gateway(Entity):
             )
 
     def on_lock(self: Self, key: Key):
+        """Handles gateway lock."""
         if key.key_id in self.key_list:
             self.locked = True
             key.used = True
@@ -96,6 +109,7 @@ class Gateway(Entity):
             )
 
     def to_dict(self: Self) -> dict:
+        """Returns gateway as a dictionary."""
         gateway_dict: dict = super().to_dict()
         gateway_dict["target"] = self.target
         return gateway_dict

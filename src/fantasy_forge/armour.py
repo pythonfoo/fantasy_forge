@@ -1,3 +1,8 @@
+"""Armour class
+
+An Armour is an item which can be worn by Characters and grants protection.
+"""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Self
@@ -13,6 +18,8 @@ ARMOUR_TYPES = ("head", "torso", "legs", "feet")
 
 
 class Armour(Item):
+    """An Armour object."""
+
     armour_type: str
     defense: int
 
