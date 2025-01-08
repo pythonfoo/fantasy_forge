@@ -21,6 +21,14 @@ class Area(Entity):
     contents: dict[str, Entity]
 
     def __init__(self: Self, config_dict: dict[str, Any], l10n: FluentLocalization):
+        """
+        config_dict contents
+        
+        inherited from Entity
+        'name' (str): name of the entity
+        'description' (str): description of the entity (default: "")
+        'obvious'(bool): whether the entity will be spotted immediately (default: False)
+        """
         super().__init__(config_dict, l10n)
         self.contents: dict = {}
 

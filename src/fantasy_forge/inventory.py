@@ -17,6 +17,15 @@ class Inventory(Entity):
     __attributes__ = {**Entity.__attributes__, "capacity": int}
 
     def __init__(self: Self, config_dict: dict, l10n: FluentLocalization):
+        """
+        config_dict contents
+        'capacity' (int): maximum capacity of the inventory
+
+        inherited from Entity
+        'name' (str): name of the entity
+        'description' (str): description of the entity (default: "")
+        'obvious'(bool): whether the entity will be spotted immediately (default: False)
+        """
         self.capacity = config_dict.pop("capacity")
         self.contents = {}
         super().__init__(config_dict, l10n)

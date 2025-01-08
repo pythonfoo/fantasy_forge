@@ -28,6 +28,15 @@ class Character(Entity):
     def __init__(
         self: Self, config_dict: dict[str, Any], l10n: FluentLocalization
     ) -> None:
+        """
+        config_dict contents
+        'health' (int): health points
+        
+        inherited from Entity:
+        'name' (str): name of the entity
+        'description' (str): description of the entity (default: "")
+        'obvious'(bool): whether the entity will be spotted immediately (default: False)
+        """
         self.health = config_dict.pop("health")
         name = config_dict["name"]
         inventory_dict: dict = {

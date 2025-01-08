@@ -23,6 +23,12 @@ class Entity:
     def __init__(
         self: Self, config_dict: dict[str, Any], l10n: FluentLocalization
     ) -> None:
+        """
+        config_dict contents
+        'name' (str): name of the entity
+        'description' (str): description of the entity (default: "")
+        'obvious'(bool): whether the entity will be spotted immediately (default: False)
+        """
         self.name = config_dict.pop("name")
         self.description = config_dict.pop("description", "")
         self.obvious = config_dict.pop("obvious", False)
