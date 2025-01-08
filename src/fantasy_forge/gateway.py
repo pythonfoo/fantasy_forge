@@ -1,9 +1,13 @@
+"""Gateway class
+
+A gateway connects two areas.
+"""
+
 from __future__ import annotations
 
 from typing import Any, Self, TYPE_CHECKING
 
 from fantasy_forge.entity import Entity
-from fantasy_forge.item import Item
 from fantasy_forge.key import Key
 
 
@@ -29,19 +33,21 @@ class Gateway(Entity):
         super().__init__(config_dict, l10n)
 
     def on_look(self: Self) -> str:
+        """Returns description if unlocked."""
         text = []
         if self.key_list and self.locked:
-            text.append(self.world.l10n.format_value("gateway-on-look-locked"))
+            text.append(self.l10n.format_value("gateway-on-look-locked"))
         text.append(self.description)
         return "\n".join(text)
 
-    def on_use(self: Self, other: Item | None = None):
+    def on_use(self: Self, other: Entity | None = None):
+        """Handles gateway use."""
         if other is None:
             super().on_use()
             return
         if not self.key_list:
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "gateway-no-keys",
                     {
                         "name": self.name,
@@ -50,7 +56,7 @@ class Gateway(Entity):
             )
         if not isinstance(other, Key):
             print(
-                self.world.l10n.format_value("gateway-key-needed"),
+                self.l10n.format_value("gateway-key-needed"),
                 {
                     "name": self.name,
                 },
@@ -62,11 +68,12 @@ class Gateway(Entity):
             self.on_lock(other)
 
     def on_unlock(self: Self, key: Key):
+        """Handles gateway unlock."""
         if key.key_id in self.key_list:
             self.locked = False
             key.used = True
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "gateway-unlock-message",
                     {
                         "name": self.name,
@@ -75,11 +82,12 @@ class Gateway(Entity):
             )
 
     def on_lock(self: Self, key: Key):
+        """Handles gateway lock."""
         if key.key_id in self.key_list:
             self.locked = True
             key.used = True
             print(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "gateway-lock-message",
                     {
                         "name": self.name,
@@ -88,6 +96,7 @@ class Gateway(Entity):
             )
 
     def to_dict(self: Self) -> dict:
+        """Returns gateway as a dictionary."""
         gateway_dict: dict = super().to_dict()
         gateway_dict["target"] = self.target
         return gateway_dict

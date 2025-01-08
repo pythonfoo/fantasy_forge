@@ -1,3 +1,8 @@
+"""Enemy class
+
+An enemy is a hostile character which will attack the player on contact.
+"""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Self
@@ -20,13 +25,14 @@ class Enemy(Character):
         return self.name
 
     def attack(self: Self, target: Character):
+        """Attack another character."""
         if self.main_hand is None:
             damage = BASE_DAMAGE
         else:
             damage = self.main_hand.damage
         target.health = target.health - damage
         print(
-            self.world.l10n.format_value(
+            self.l10n.format_value(
                 "attack-character-message",
                 {
                     "source": self.name,

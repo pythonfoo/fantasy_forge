@@ -31,7 +31,7 @@ class Inventory(Entity):
 
     def __contains__(self: Self, other: str) -> bool:
         """Returns if entity is in inventory."""
-        return other in self.contents.keys()
+        return other in self.contents
 
     def add(self: Self, entity: Entity) -> None:
         """Adds Item to inventory with respect to capacity."""
@@ -40,7 +40,7 @@ class Inventory(Entity):
             self.contents[entity.name] = entity
         else:
             raise Exception(
-                self.world.l10n.format_value(
+                self.l10n.format_value(
                     "inventory-capacity-message",
                     {
                         "capacity": self.capacity,
@@ -60,16 +60,15 @@ class Inventory(Entity):
 
     def on_look(self: Self) -> str:
         if not self.contents:
-            return self.world.l10n.format_value("inventory-look-empty-message")
-        else:
-            return self.world.l10n.format_value(
-                "inventory-look-message",
-                {
-                    "items": ", ".join(
-                        [highlight_interactive(str(item)).format(None) for item in self]
-                    ),
-                },
-            )
+            return self.l10n.format_value("inventory-look-empty-message")
+        return self.l10n.format_value(
+            "inventory-look-message",
+            {
+                "items": ", ".join(
+                    [highlight_interactive(str(item)).format(None) for item in self]
+                ),
+            },
+        )
 
     def to_dict(self) -> dict:
         """Returns inventory as a dictionary."""

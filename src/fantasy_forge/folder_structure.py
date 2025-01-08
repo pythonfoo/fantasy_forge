@@ -1,3 +1,5 @@
+"""Contains functions for flat and nested folder structure."""
+
 import logging
 from pathlib import Path
 from typing import TypeAlias, Union
@@ -17,7 +19,7 @@ from fantasy_forge.utils import WORLDS_FOLDER, clean_filename
 
 logger = logging.getLogger(__name__)
 
-ASSET_TYPE: TypeAlias = Union[
+AssetType: TypeAlias = Union[
     Area,
     Armour,
     Character,
@@ -31,7 +33,7 @@ ASSET_TYPE: TypeAlias = Union[
     Weapon,
 ]
 
-ASSET_TYPE_DICT: dict[str, ASSET_TYPE] = {
+ASSET_TYPE_DICT: dict[str, type] = {
     "Area": Area,
     "Armour": Armour,
     "Character": Character,
@@ -57,19 +59,23 @@ def init_flat_folder_structure(world_name: str):
 
 def init_nested_folder_structure(world_name: str):
     """Generates nested directory structure based on class inheritance."""
-    asset_type: ASSET_TYPE
+    asset_type: type
     for asset_type in ASSET_TYPE_DICT.values():
         path = asset2path(world_name, asset_type)
         path.mkdir(parents=True, exist_ok=True)
 
 
-def asset2path(world_name: str, asset_type: ASSET_TYPE) -> Path:
+def asset2path(world_name: str, asset_type: type) -> Path:
+    """Returns the path based on asset type.
+
+    for example type <Weapon> --> data/worlds/<world_name>/Entity/Item/Weapon
+    """
     world_path = WORLDS_FOLDER / clean_filename(world_name)
 
-    current: ASSET_TYPE = asset_type
-    type_hierarchy: list[ASSET_TYPE] = [current]
+    current: type = asset_type
+    type_hierarchy: list[type] = [current]
     while True:
-        bases: tuple[ASSET_TYPE, ...] = current.__bases__
+        bases: tuple[type, ...] = current.__bases__
         if object in bases:
             break
         current = bases[0]

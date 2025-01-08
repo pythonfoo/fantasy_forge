@@ -24,9 +24,12 @@ class Key(Item):
         super().__init__(config_dict, l10n)
         self.used = False
 
-    def __eq__(self: Self, other: Key):
+    def __eq__(self: Self, other: object) -> bool:
         """Compares key ids."""
-        return self.key_id == other.key_id
+        if hasattr(other, "key_id"):
+            return self.key_id == other.key_id
+
+        return hash(self) == hash(other)
 
     def __hash__(self) -> int:
         """Returns hash of key id."""

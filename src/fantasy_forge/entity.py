@@ -1,12 +1,18 @@
+"""Entity class
+
+An entity is an abstract object in the world.
+Each entity is identifiable by its name.
+"""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Self
 
 
 class Entity:
-    """An Entity is an abstract object in the world."""
+    """An Entity object"""
 
-    __important_attributes__ = ("name",)
+    __important_attributes__: tuple[str, ...] = ("name",)
     __attributes__: dict[str, type] = {"name": str, "description": str, "obvious": bool}
 
     name: str
@@ -23,11 +29,13 @@ class Entity:
         self.l10n = l10n
 
     def on_look(self: Self) -> str:
+        """Returns description of entity."""
         return self.description
 
     def on_use(self: Self, other: Entity | None = None):
+        """Handles usage of entity."""
         print(
-            self.world.l10n.format_value(
+            self.l10n.format_value(
                 "cannot-use-message",
                 {
                     "self": self.name,
@@ -50,11 +58,13 @@ class Entity:
         return self.name
 
     def to_dict(self: Self) -> dict:
+        """Returns entity attributes as a dictionary."""
         entity_dict: dict = {"name": self.name, "description": self.description}
         return entity_dict
 
     @classmethod
     def from_dict(cls, entity_dict: dict, l10n: FluentLocalization) -> Self:
+        """Creates new entity from a dictionary."""
         entity = cls(entity_dict, l10n)
         return entity
 

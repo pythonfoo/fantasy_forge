@@ -26,7 +26,7 @@ def main():
     logger = logging.getLogger(__name__)
     numeric_level = getattr(logging, args.loglevel.upper(), None)
     logging.basicConfig(filename=args.logfile, level=numeric_level, filemode="w")
-    logger.info("load world %s" % args.world)
+    logger.info("load world %s", args.world)
 
     # load world
     world = World.load(args.world)
@@ -38,5 +38,5 @@ def main():
     player.enter_area(spawn)
 
     # main loop
-    logger.info("starting mainloop for player %s" % player)
+    logger.info("starting mainloop for player %s", player)
     player.main_loop()
