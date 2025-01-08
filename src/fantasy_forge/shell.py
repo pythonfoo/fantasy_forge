@@ -67,7 +67,7 @@ class ShellEn(Shell):
         """
         if arg.strip() == "around":
             self.player.look_around()
-            logger.debug("%s looks around", elf.player.name)
+            logger.debug("%s looks around", self.player.name)
         elif arg.strip().startswith("at"):
             entity_name = arg.strip().removeprefix("at").strip()
             self.player.look_at(entity_name)
