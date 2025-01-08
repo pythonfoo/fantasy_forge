@@ -1,3 +1,8 @@
+"""Character class
+
+A character is a living entity, which can interact with other entities or characters.
+"""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Self
@@ -38,7 +43,7 @@ class Character(Entity):
         """
         config_dict contents
         'health' (int): health points
-        
+
         inherited from Entity:
         'name' (str): name of the entity
         'description' (str): description of the entity (default: "")
@@ -51,6 +56,7 @@ class Character(Entity):
 
     @property
     def alive(self: Self) -> bool:
+        """Return True if the character is alive."""
         self._alive = self.health > 0
         return self._alive
 
@@ -72,6 +78,7 @@ class Character(Entity):
         )
 
     def on_attack(self: Self, weapon: Weapon):
+        """Handles an incoming attack."""
         self.health -= weapon.damage
 
     def _on_death(self: Self, player: Player):

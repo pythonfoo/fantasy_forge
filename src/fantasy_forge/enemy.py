@@ -1,3 +1,8 @@
+"""Enemy class
+
+An enemy is a hostile character which will attack the player on contact.
+"""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Self

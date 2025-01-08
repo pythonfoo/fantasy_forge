@@ -1,7 +1,8 @@
+"""An Area is a place in the world, containing NPCs, Items and connections to other areas."""
+
 from __future__ import annotations
 
 import logging
-
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Iterator, Self
 
@@ -10,6 +11,7 @@ import toml
 from fantasy_forge.entity import Entity
 
 logger = logging.getLogger(__name__)
+
 
 class Area(Entity):
     """An Area is a place in the world, containing NPCs, Items and connections to other areas."""
@@ -20,7 +22,7 @@ class Area(Entity):
     def __init__(self: Self, config_dict: dict[str, Any], l10n: FluentLocalization):
         """
         config_dict contents
-        
+
         inherited from Entity
         'name' (str): name of the entity
         'description' (str): description of the entity (default: "")
@@ -78,7 +80,7 @@ class Area(Entity):
                     contents_list.append(Armour(entity_dict, l10n))
 
                 case default:
-                    logger.info("could not determine %s used Entity instead" % default)
+                    logger.info("could not determine %s used Entity instead", default)
                     contents_list.append(Entity(entity_dict, l10n))
         contents = {entity.name: entity for entity in contents_list}
         area = Area(area_dict, l10n)
@@ -87,6 +89,7 @@ class Area(Entity):
 
     @staticmethod
     def load(world, root_path: Path, name: str):
+        """Loads an area from toml-file."""
         path = root_path / "areas" / f"{name}.toml"
         with path.open() as area_file:
             area_toml = toml.load(area_file)
@@ -96,10 +99,10 @@ class Area(Entity):
     def empty(l10n: FluentLocalization) -> Area:
         """Return an empty area, this is a placeholder."""
         return Area(
-            dict(
-                name=l10n.format_value("void-name"),
-                description=l10n.format_value("void-description"),
-            ),
+            {
+                "name": l10n.format_value("void-name"),
+                "description": l10n.format_value("void-description"),
+            },
             l10n,
         )
 

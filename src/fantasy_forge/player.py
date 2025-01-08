@@ -24,7 +24,7 @@ class Player(Character):
     area: Area  # the area we are currently in
     world: World
     seen_entities: dict[str, Entity]
-    armour_slots: dict[str, Armour]
+    armour_slots: dict[str, Armour | None]
 
     def __init__(
         self: Self,
@@ -56,8 +56,8 @@ class Player(Character):
     @property
     def defense(self) -> int:
         defense_sum: int = 0
-        armour_item: Armour
-        for armour_item in self.armour_slots.keys():
+        armour_item: Armour | None
+        for armour_item in self.armour_slots.values():
             if armour_item is not None:
                 defense_sum += armour_item.defense
         return defense_sum
@@ -202,7 +202,7 @@ class Player(Character):
 
     def equip_armour(self, armour: Armour) -> None:
         """Equips armour piece."""
-        current_armour: Armour = self.armour_slots.pop(armour.armour_type)
+        current_armour: Armour | None = self.armour_slots.pop(armour.armour_type)
         # check if armour slot is already filled
         if current_armour is not None:
             print(
@@ -228,7 +228,9 @@ class Player(Character):
 
     def unequip(self, item_name: str):
         """Unequips weapon or armour."""
-        item = self.seen_entities.get(item_name)
+        item: Entity | None = self.seen_entities.get(item_name)
+        if item is None:
+            return
         if self.main_hand is item:
             self.main_hand = None
         for armour_type, armour_item in self.armour_slots.items():
@@ -348,7 +350,10 @@ class Player(Character):
 
     def enter_gateway(self: Self, gateway: Gateway):
         """Uses gateway to enter a new area."""
-        # TODO: separate world from Player
+        # TODO: refactor
+        # The Player holds no reference to the current world,
+        # so a external function should do the area change
+
         if gateway.locked:
             print(
                 self.l10n.format_value(
