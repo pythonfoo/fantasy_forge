@@ -19,18 +19,21 @@ class Area(Entity):
 
     __important_attributes__ = ("name",)
     contents: dict[str, Entity]
+    content_refs: list[str]  # names of Entities
 
     def __init__(self: Self, config_dict: dict[str, Any], l10n: FluentLocalization):
         """
         config_dict contents
-        
+        'content_refs' (list[str]): list of contents as  names of Entity objects (default: [])
+
         inherited from Entity
         'name' (str): name of the entity
         'description' (str): description of the entity (default: "")
         'obvious'(bool): whether the entity will be spotted immediately (default: False)
         """
-        super().__init__(config_dict, l10n)
+        self.contents_refs = config_dict.get("content_refs", [])
         self.contents: dict = {}
+        super().__init__(config_dict, l10n)
 
     def __iter__(self: Self) -> Iterator:
         for obj in self.contents:
@@ -46,47 +49,10 @@ class Area(Entity):
         )
 
     def to_dict(self: Self) -> dict:
+        """Return area as a dictionary."""
         area_dict: dict = super().to_dict()
-        area_dict["contents"] = self.contents
+        area_dict["content_refs"] = self.content_refs
         return area_dict
-
-    @classmethod
-    def from_dict(cls, area_dict: dict, l10n: FluentLocalization) -> Area:
-        contents_list: list[Entity] = []
-        for entity_dict in area_dict.get("contents", []):
-            match entity_dict.get("kind", "entity"):
-                case "item":
-                    from fantasy_forge.item import Item
-
-                    contents_list.append(Item(entity_dict, l10n))
-                case "gateway":
-                    from fantasy_forge.gateway import Gateway
-
-                    contents_list.append(Gateway(entity_dict, l10n))
-                case "key":
-                    from fantasy_forge.key import Key
-
-                    contents_list.append(Key(entity_dict, l10n))
-                case "enemy":
-                    from fantasy_forge.enemy import Enemy
-
-                    contents_list.append(Enemy(entity_dict, l10n))
-                case "weapon":
-                    from fantasy_forge.weapon import Weapon
-
-                    contents_list.append(Weapon(entity_dict, l10n))
-                case "armour":
-                    from fantasy_forge.armour import Armour
-
-                    contents_list.append(Armour(entity_dict, l10n))
-
-                case default:
-                    logger.info("could not determine %s used Entity instead", default)
-                    contents_list.append(Entity(entity_dict, l10n))
-        contents = {entity.name: entity for entity in contents_list}
-        area = cls(area_dict, l10n)
-        area.contents = contents
-        return area
 
     @staticmethod
     def load(world, root_path: Path, name: str):

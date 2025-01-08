@@ -42,6 +42,10 @@ class World:
         # populate areas dict
         area: Area
         for area in self.filter(Area):
+            for ref in area.contents_refs:
+                # load entity from asset store into area
+                area.contents[ref.name] = self[ref.name]
+            # save area in areas dict
             self.areas[area.name] = area
 
     @property
