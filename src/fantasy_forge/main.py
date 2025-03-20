@@ -10,6 +10,7 @@ def parse_args(argv=argv[1:]):
     parser = ArgumentParser(description="Fantasy Forge: A text-based RPG")
     parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
     parser.add_argument("--world", help="The world to play in", default="chaosdorf")
+    parser.add_argument("--name", help="Set player name", default="")
     parser.add_argument(
         "--logfile",
         help="Enables logging for debug purposes",
@@ -30,7 +31,11 @@ def main():
 
     # load world
     world = World.load(args.world)
-    player_name = input(world.l10n.format_value("character-name-prompt") + " ")
+    if args.name == "":
+        player_name = input(world.l10n.format_value("character-name-prompt") + " ")
+    else:
+        player_name = args.name
+
     player = Player(world, player_name)
 
     # main loop
