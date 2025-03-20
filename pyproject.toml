@@ -3,7 +3,7 @@ name = "fantasy-forge"
 version = "0.1.0"
 description = "A textadventure that starts at Chaosdorf and ends wherever we want."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 authors = [
     { name = "pythonfoo", email = "pythonfoo@chaosdorf.de" }
 ]
