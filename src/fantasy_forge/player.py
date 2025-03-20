@@ -273,36 +273,7 @@ class Player(Character):
                 )
             )
         else:
-            print(
-                self.world.l10n.format_value(
-                    "attack-character-dead-message",
-                    {
-                        "target": target.name,
-                    },
-                )
-            )
-            # if the target is dead, remove it from the area and drop their inventory
-            self.area.contents.pop(target.name)
-            self.seen_entities.pop(target.name)
-            print(
-                self.world.l10n.format_value(
-                    "attack-drop-begin",
-                    {
-                        "target": target.name,
-                        "loot_count": len(target.inventory),
-                    },
-                )
-            )
-            for loot_item in target.inventory:
-                self.area.contents[loot_item.name] = loot_item
-                self.seen_entities[loot_item.name] = loot_item
-                print(
-                    self.world.l10n.format_value(
-                        "attack-drop-single",
-                        {"item": loot_item.name},
-                    )
-                )
-
+            target._on_death(self) 
         if self.alive:
             print(
                 self.world.l10n.format_value(
@@ -311,6 +282,7 @@ class Player(Character):
                 )
             )
         else:
+            # self._on_death(self)
             print(self.world.l10n.format_value("player-died"))
             exit()
 

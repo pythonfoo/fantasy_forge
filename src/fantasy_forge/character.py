@@ -60,3 +60,45 @@ class Character(Entity):
 
     def on_attack(self: Self, weapon: Weapon):
         self.health -= weapon.damage
+
+    def _on_death(self: Self, player: Player):
+        """
+            Automatic on death call. 
+        """
+        assert not self.alive, "On_death called while entity is alive"
+        print(
+                self.world.l10n.format_value(
+                    "attack-character-dead-message",
+                    {
+                        "target": self.name,
+                    },
+                )
+            )
+        # Populate area with loot
+        print(
+            self.world.l10n.format_value(
+                "attack-drop-begin",
+                {
+                    "target": self.name,
+                    "loot_count": len(self.inventory),
+                },
+            )
+        )
+        for loot_item in self.inventory:
+            player.area.contents[loot_item.name] = loot_item
+            player.seen_entities[loot_item.name] = loot_item
+            print(
+                self.world.l10n.format_value(
+                    "attack-drop-single",
+                    {"item": loot_item.name},
+                )
+            )
+        # if the target is dead, remove it from the area and drop their inventory
+        del player.area.contents[self.name]
+        del player.seen_entities[self.name]
+        
+        # remove entity from area
+
+
+
+
