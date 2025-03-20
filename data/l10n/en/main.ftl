@@ -45,7 +45,7 @@ inventory-item-not-found-message = Item { $item } couldn't be found.
 gateway-unlock-message = { INTER($name) } unlocked.
 gateway-lock-message = { INTER($name) } is now locked.
 gateway-locked-message = You can't use { INTER($gateway) } because it is locked.
-gateway-key-needed = You need a key.
+gateway-key-needed = You need a key to open { INTER($name) }.
 gateway-no-keys = You can't use { INTER($name) } like that.
 gateway-on-look-locked = It is locked.
 

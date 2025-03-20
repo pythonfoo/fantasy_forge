@@ -49,10 +49,10 @@ class Gateway(Entity):
             )
         if not isinstance(other, Key):
             print(
-                self.world.l10n.format_value("gateway-key-needed"),
+                self.world.l10n.format_value("gateway-key-needed",
                 {
                     "name": self.name,
-                },
+                },)
             )
             return
         if self.locked:
