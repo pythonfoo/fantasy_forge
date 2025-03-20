@@ -61,6 +61,10 @@ class ShellEn(Shell):
         """Quits the shell."""
         return self.do_EOF(arg)
 
+    def do_exit(self, arg: str) -> bool:
+        """Quits the shell."""
+        return self.do_EOF(arg)
+
     def do_look(self, arg: str):
         """look around
         look at <entity>
