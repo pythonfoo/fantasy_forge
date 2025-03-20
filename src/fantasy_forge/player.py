@@ -3,8 +3,7 @@ from typing import Self
 
 from fantasy_forge.area import Area
 from fantasy_forge.armour import ARMOUR_TYPES, Armour
-from fantasy_forge.character import Character
-from fantasy_forge.enemy import BASE_DAMAGE
+from fantasy_forge.character import bare_hands, Character
 from fantasy_forge.entity import Entity
 from fantasy_forge.gateway import Gateway
 from fantasy_forge.item import Item
@@ -14,15 +13,7 @@ from fantasy_forge.world import World
 
 BASE_PLAYER_HEALTH = 100
 
-def bare_hands(world: World):
-    return Weapon(
-        world,
-        {
-            "name": world.l10n.format_value("bare-hands-name"),
-            "description": world.l10n.format_value("bare-hands-description"),
-            "damage": BASE_DAMAGE,
-        },
-    )
+
 
 
 class Player(Character):
@@ -258,30 +249,16 @@ class Player(Character):
                 )
             )
             return
+        if target_name not in self.area.contents:
+            print(self.world.l10n.format_value("item-vanished"))
+            self.seen_entities.pop(target_name)
+            return
         if not isinstance(target, Character):
             print(
                 self.world.l10n.format_value("cannot-attack", {"target": target_name})
             )
             return
-        if target_name not in self.area.contents:
-            print(self.world.l10n.format_value("item-vanished"))
-            self.seen_entities.pop(target_name)
-            return
-        if self.main_hand is None:
-            weapon = bare_hands(self.world)
-        else:
-            weapon = self.main_hand
-        print(
-            self.world.l10n.format_value(
-                "attack-character-message",
-                {
-                    "source": self.name,
-                    "target": target.name,
-                    "weapon": weapon.name,
-                },
-            )
-        )
-        target.on_attack(weapon)
+        super().attack(target)
 
         if target.alive:
             # give the enemy an option for revenge
