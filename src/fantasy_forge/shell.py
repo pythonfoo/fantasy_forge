@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import fuzzywuzzy.process
 import logging
 from cmd import Cmd
 from typing import TYPE_CHECKING
@@ -48,8 +49,17 @@ class Shell(Cmd):
         return [name + " " for name in super().completenames(text, *ignored)]
 
     def default(self, line: str):
-        """Display an error message, because the command was invalid."""
-        print(self.player.world.l10n.format_value("shell-invalid-command"))
+
+        if len(line) < 3:
+            """Display an error message, because the command was invalid."""
+            print(self.player.world.l10n.format_value("shell-invalid-command"))
+
+        else:
+            """Check for potential typos and recommend closest command"""
+            commands = [x[3:] for x in self.get_names() if x.startswith("do_")]
+            possibilities = fuzzywuzzy.process.extract(line, commands)
+            closest_cmd, closest_ratio = possibilities[0]
+            print(self.player.world.l10n.format_value("shell-invalid-command"), f"Did you mean '{closest_cmd}'?")
 
     def do_EOF(self, arg: str) -> bool:
         """This is called if an EOF occures while parsing the command."""
