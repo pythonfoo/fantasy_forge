@@ -9,9 +9,10 @@ authors = [
 ]
 dependencies = [
     "fluent.runtime",
- "toml",
- "huepy",
- "fuzzywuzzy>=0.18.0",
+    "toml",
+    "huepy",
+    "fuzzywuzzy>=0.18.0",
+    "python-levenshtein>=0.27.1",
 ]
 
 [project.scripts]
