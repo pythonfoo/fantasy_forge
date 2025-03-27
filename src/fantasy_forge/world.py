@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from importlib import resources
 from pathlib import Path
-from typing import Any, Self
+from typing import Any, Optional, Self
 
 import huepy
 import toml
@@ -22,7 +22,8 @@ class World:
     l10n: FluentLocalization
     areas: dict[str, Area]
     name: str
-    spawn: str  # area name to spawn in
+    spawn_str: str  # area name to spawn in
+    spawn: Optional[Area]
     intro_text: str
 
     def __init__(
@@ -30,19 +31,15 @@ class World:
         l10n: FluentLocalization,
         name: str,
         areas: dict[str, Area],
-        spawn: str,
+        spawn_str: str,
         intro_text: str,
     ):
         self.l10n = l10n
         self.name = name
         self.areas = areas
-        self.spawn = spawn
+        self.spawn_str = spawn_str
+        self.spawn = None
         self.intro_text = intro_text
-
-    @property
-    def spawn_point(self) -> Area:
-        """Returns spawnpoint as area."""
-        return self.areas[self.spawn]
 
     @staticmethod
     def load(name: str) -> World:
@@ -81,6 +78,8 @@ class World:
         for area in self.areas.values():
             for entity in area.contents.values():
                 entity.resolve()
+
+        self.spawn = self.areas[self.spawn_str]
 
 
 def highlight_interactive(text: Any) -> FluentNone:
