@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from importlib import resources
 from pathlib import Path
 from typing import Any, Self
 
@@ -17,13 +18,18 @@ logger = logging.getLogger(__name__)
 
 class World:
     """A world contains many rooms. It's where the game happens."""
+
     l10n: FluentLocalization
     areas: dict[str, Area]
     name: str
     spawn: str  # area name to spawn in
 
     def __init__(
-        self: Self, l10n: FluentLocalization, name: str, areas: dict[str, Area], spawn: str
+        self: Self,
+        l10n: FluentLocalization,
+        name: str,
+        areas: dict[str, Area],
+        spawn: str,
     ):
         self.l10n = l10n
         self.name = name
@@ -37,8 +43,9 @@ class World:
 
     @staticmethod
     def load(name: str) -> World:
-        locale_path = "data/l10n/{locale}"
-        fluent_loader = FluentResourceLoader(locale_path)
+        with resources.as_file(resources.files()) as resource_path:
+            locale_path = resource_path / "l10n/{locale}"
+        fluent_loader = FluentResourceLoader(str(locale_path))
         path = Path("data/worlds") / name
         if not path.exists():
             logger.debug(f"Path {path} not found, using {name}")
@@ -64,7 +71,6 @@ class World:
                 areas[area_name] = Area.load(world, path, area_name)
         world.resolve()
         return world
-
 
     def resolve(self):
         for area in self.areas.values():
