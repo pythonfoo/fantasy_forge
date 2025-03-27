@@ -2,3 +2,8 @@ name = "Chaosdorf"
 language = "en"
 areas = ["cave", "lounge", "kitchen", "hackcenter", "floor", "elab", "conference-room", "everyones-toilet", "flinta-toilet", "premium-toilet", "wetlab"]
 spawn = "cave"
+intro_text = """
+You awake confused from a deep sleep.
+It's early saturday morning and your breath smells like white claw monster energy.
+You don't remember what happened and how you got here.
+"""

@@ -417,6 +417,7 @@ class Player(Character):
 
     def main_loop(self):
         """Runs the game."""
+        print(self.world.intro_text)
         self.enter_area(self.world.spawn_point)
         Shell(self).cmdloop()
         # afterwards, leave the current area

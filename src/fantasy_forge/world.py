@@ -23,6 +23,7 @@ class World:
     areas: dict[str, Area]
     name: str
     spawn: str  # area name to spawn in
+    intro_text: str
 
     def __init__(
         self: Self,
@@ -30,11 +31,13 @@ class World:
         name: str,
         areas: dict[str, Area],
         spawn: str,
+        intro_text: str,
     ):
         self.l10n = l10n
         self.name = name
         self.areas = areas
         self.spawn = spawn
+        self.intro_text = intro_text
 
     @property
     def spawn_point(self) -> Area:
@@ -66,7 +69,9 @@ class World:
                 },
             )
             world_spawn: str = world_toml["spawn"]
-            world = World(l10n, world_toml["name"], areas, world_spawn)
+            world = World(
+                l10n, world_toml["name"], areas, world_spawn, world_toml["intro_text"]
+            )
             for area_name in world_toml["areas"]:
                 areas[area_name] = Area.load(world, path, area_name)
         world.resolve()
