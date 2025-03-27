@@ -90,3 +90,17 @@ class Gateway(Entity):
         gateway_dict: dict = super().to_dict()
         gateway_dict["target"] = self.target
         return gateway_dict
+
+
+    def resolve(self):
+        assert self.target in self.world.areas
+        if self.locked:
+            assert self.key_list
+            all_keys = []
+            for area in self.world.areas.values():
+                for entity in area.contents.values():
+                    if isinstance(entity, Key):
+                        all_keys.append(entity.key_id)
+
+            for key in self.key_list:
+                assert key in all_keys

@@ -62,7 +62,14 @@ class World:
             world = World(l10n, world_toml["name"], areas, world_spawn)
             for area_name in world_toml["areas"]:
                 areas[area_name] = Area.load(world, path, area_name)
+        world.resolve()
         return world
+
+
+    def resolve(self):
+        for area in self.areas.values():
+            for entity in area.contents.values():
+                entity.resolve()
 
 
 def highlight_interactive(text: Any) -> FluentNone:

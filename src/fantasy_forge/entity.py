@@ -55,5 +55,9 @@ class Entity:
         return entity_dict
 
 
+    def resolve(self):
+        pass
+
+
 if TYPE_CHECKING:
     from fantasy_forge.world import World
