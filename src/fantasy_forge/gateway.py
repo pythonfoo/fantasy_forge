@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Self
+from typing import Any, Optional, Self
 
 from fantasy_forge.entity import Entity
 from fantasy_forge.item import Item
@@ -13,7 +13,8 @@ class Gateway(Entity):
 
     __important_attributes__ = ("name", "target", "locked")
 
-    target: str  # This is not an area because the target might not be loaded yet.
+    target_str: str  # This is not an area because the target might not be loaded yet.
+    target: Optional[Area]
     locked: bool
     key_list: list[str]
 
@@ -22,7 +23,8 @@ class Gateway(Entity):
         world: World,
         config_dict: dict[str, Any],
     ):
-        self.target = config_dict.pop("target")
+        self.target_str = config_dict.pop("target")
+        self.target = None
         self.locked = config_dict.pop("locked", False)
         self.key_list = config_dict.pop("key_list", [])
         super().__init__(world, config_dict)
@@ -49,10 +51,12 @@ class Gateway(Entity):
             )
         if not isinstance(other, Key):
             print(
-                self.world.l10n.format_value("gateway-key-needed",
-                {
-                    "name": self.name,
-                },)
+                self.world.l10n.format_value(
+                    "gateway-key-needed",
+                    {
+                        "name": self.name,
+                    },
+                )
             )
             return
         if self.locked:
@@ -91,9 +95,8 @@ class Gateway(Entity):
         gateway_dict["target"] = self.target
         return gateway_dict
 
-
     def resolve(self):
-        assert self.target in self.world.areas
+        self.target = self.world.areas[self.target_str]
         if self.locked:
             assert self.key_list
             all_keys = []

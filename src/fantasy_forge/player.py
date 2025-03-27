@@ -3,7 +3,7 @@ from typing import Self
 
 from fantasy_forge.area import Area
 from fantasy_forge.armour import ARMOUR_TYPES, Armour
-from fantasy_forge.character import bare_hands, Character
+from fantasy_forge.character import Character, bare_hands
 from fantasy_forge.entity import Entity
 from fantasy_forge.gateway import Gateway
 from fantasy_forge.item import Item
@@ -12,8 +12,6 @@ from fantasy_forge.weapon import Weapon
 from fantasy_forge.world import World
 
 BASE_PLAYER_HEALTH = 100
-
-
 
 
 class Player(Character):
@@ -40,7 +38,7 @@ class Player(Character):
         self.seen_entities = {}
 
         # define armour slots
-        self.armour_slots: dict[str, Armour|None] = {}
+        self.armour_slots: dict[str, Armour | None] = {}
         for armour_type in ARMOUR_TYPES:
             self.armour_slots[armour_type] = None
 
@@ -273,7 +271,7 @@ class Player(Character):
                 )
             )
         else:
-            target._on_death(self) 
+            target._on_death(self)
         if self.alive:
             print(
                 self.world.l10n.format_value(
@@ -353,8 +351,7 @@ class Player(Character):
                 )
             )
             return
-        area = self.world.areas[gateway.target]
-        self.enter_area(area)
+        self.enter_area(gateway.target)
 
     def enter_area(self, new_area: Area):
         """Enters a new area."""
