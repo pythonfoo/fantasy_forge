@@ -415,11 +415,11 @@ class Player(Character):
             )
         )
 
-    def main_loop(self):
+    def main_loop(self, stdin=None, stdout=None):
         """Runs the game."""
         print(self.world.intro_text)
         self.enter_area(self.world.spawn)
-        Shell(self).cmdloop()
+        Shell(self, stdin=stdin, stdout=stdout).cmdloop()
         # afterwards, leave the current area
         self.leave_area()
         quit_message = random.choice(

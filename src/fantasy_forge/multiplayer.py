@@ -1,20 +1,43 @@
 from socket import AF_INET6
 from socketserver import StreamRequestHandler, TCPServer, ThreadingMixIn
 from threading import current_thread
+from typing import Optional
 
 from fantasy_forge.player import Player
 from fantasy_forge.world import World
 
 
+class FakeFile:
+    """Wrap rfile or wfile to convert bytes to str and vice-versa."""
+
+    def __init__(self, file):
+        self.file = file
+
+    def write(self, text: str):
+        self.file.write(text.encode())
+
+    def readline(self, max_length: Optional[int] = None) -> str:
+        if max_length is not None:
+            text = self.file.readline(max_length)
+        else:
+            text = self.file.readline()
+        return text.decode()
+
+    def flush(self):
+        self.file.flush()
+
+
 class MyTCPHandler(StreamRequestHandler):
     def handle(self):
-        self.wfile.write(
+        rfile = FakeFile(self.rfile)
+        wfile = FakeFile(self.wfile)
+        wfile.write(
             self.server.world.l10n.format_value(
                 "character-name-prompt", {"default": "Player"}
-            ).encode()
-            + b" "
+            )
+            + " "
         )
-        name_input = self.rfile.readline(10000).rstrip().decode()
+        name_input = rfile.readline(10000).rstrip()
         if name_input:
             player_name = name_input
         else:
@@ -23,8 +46,7 @@ class MyTCPHandler(StreamRequestHandler):
         thread = current_thread().getName()
         print(f"new connection from {player_name} @ {ip_adress} on {thread}")
         player = Player(self.server.world, player_name)
-        while True:
-            pass
+        player.main_loop(stdin=rfile, stdout=wfile)
 
 
 class ThreadedTCPServer6(ThreadingMixIn, TCPServer):
