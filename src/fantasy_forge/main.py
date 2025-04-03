@@ -63,10 +63,10 @@ def main():
     if name_input:
         player_name = name_input
         print("Succesfully changed name! Your hormones should arrive soon.")
-        print()
     else:
         player_name = args.name
     player = Player(world, player_name)
+    print()
 
     # main loop
     logger.info("starting mainloop for player %s" % player)
