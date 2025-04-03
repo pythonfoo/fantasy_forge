@@ -54,7 +54,7 @@ class ThreadedTCPServer6(ThreadingMixIn, TCPServer):
 
 
 def main():
-    HOST, PORT = "::", 9998
+    HOST, PORT = "::", 9999
     WORLD = "chaosdorf"
     # TODO: argparse
 

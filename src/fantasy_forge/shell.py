@@ -55,16 +55,18 @@ class Shell(Cmd):
     def default(self, line: str):
         if len(line) < 3:
             """Display an error message, because the command was invalid."""
-            print(self.player.world.l10n.format_value("shell-invalid-command"))
+            self.stdout.write(
+                self.player.world.l10n.format_value("shell-invalid-command")
+            )
 
         else:
             """Check for potential typos and recommend closest command"""
             commands = [x[3:] for x in self.get_names() if x.startswith("do_")]
             possibilities = fuzzywuzzy.process.extract(line, commands)
             closest_cmd, closest_ratio = possibilities[0]
-            print(
-                self.player.world.l10n.format_value("shell-invalid-command"),
-                f"Did you mean '{closest_cmd}'?",
+            self.stdout.write(
+                self.player.world.l10n.format_value("shell-invalid-command")
+                + f" Did you mean '{closest_cmd}'?",
             )
 
     def do_EOF(self, arg: str) -> bool:
@@ -184,12 +186,12 @@ class ShellEn(Shell):
 
     def do_inventory(self, arg: str):
         """shows the contents of the players inventory"""
-        print(self.player.inventory.on_look())
+        self.stdout.write(self.player.inventory.on_look())
 
     def do_armour(self, arg: str):
         """shows the players armour"""
         for armour_type, armour_item in self.player.armour_slots.items():
-            print(
+            self.stdout.write(
                 self.player.world.l10n.format_value(
                     "armour-detail",
                     {
