@@ -1,10 +1,13 @@
 import logging
+import shutil
 from argparse import ArgumentParser
+from importlib import resources
 from pathlib import Path
 from sys import argv
 from typing import Any
 
 import toml
+from xdg_base_dirs import xdg_config_home
 
 from fantasy_forge.player import Player
 from fantasy_forge.world import World
@@ -26,11 +29,24 @@ def parse_args(config: dict[str, Any], argv=argv[1:]):
     return parser.parse_args(argv)
 
 
-def main():
-    # load config
-    with Path("data/config.toml").open() as config_file:
+def load_config() -> dict[str, Any]:
+    with resources.as_file(resources.files()) as resource_path:
+        default_config_file = resource_path / "config.toml"
+
+    usr_config_file = xdg_config_home() / "fantasy_forge.toml"
+
+    if not usr_config_file.exists():
+        shutil.copyfile(default_config_file, usr_config_file)
+
+    with usr_config_file.open() as config_file:
         config = toml.load(config_file)
 
+    return config
+
+
+def main():
+    # load config and args
+    config = load_config()
     args = parse_args(config)
 
     # init logger
