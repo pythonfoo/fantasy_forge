@@ -1,4 +1,4 @@
-character-name-prompt = Please name your character:
+character-name-prompt = Current character name is { $default }. Would you like to change it? (Press enter to keep)
 player-description = the heroic player
 bare-hands-name = bare hands
 bare-hands-description = the harmful hands of the player
