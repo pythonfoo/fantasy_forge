@@ -11,6 +11,7 @@ from fluent.runtime import FluentLocalization, FluentResourceLoader
 from fluent.runtime.types import FluentNone
 
 from fantasy_forge.area import Area
+from fantasy_forge.messages import Messages
 
 logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
@@ -21,6 +22,7 @@ class World:
 
     l10n: FluentLocalization
     areas: dict[str, Area]
+    messages: Messages
     name: str
     spawn_str: str  # area name to spawn in
     spawn: Optional[Area]
@@ -40,6 +42,7 @@ class World:
         self.spawn_str = spawn_str
         self.spawn = None
         self.intro_text = intro_text
+        self.messages = Messages(l10n)
 
     @staticmethod
     def load(name: str) -> World:

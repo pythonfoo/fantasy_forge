@@ -7,6 +7,7 @@ from fantasy_forge.character import Character, bare_hands
 from fantasy_forge.entity import Entity
 from fantasy_forge.gateway import Gateway
 from fantasy_forge.item import Item
+from fantasy_forge.messages import Messages
 from fantasy_forge.shell import Shell
 from fantasy_forge.weapon import Weapon
 from fantasy_forge.world import World
@@ -18,6 +19,7 @@ class Player(Character):
     __important_attributes__ = ("name", "area", "health")
 
     area: Area  # the area we are currently in
+    shell: Shell
     seen_entities: dict[str, Entity]
     armour_slots: dict[str, Armour]
 
@@ -419,7 +421,8 @@ class Player(Character):
         """Runs the game."""
         print(self.world.intro_text)
         self.enter_area(self.world.spawn)
-        Shell(self, stdin=stdin, stdout=stdout).cmdloop()
+        self.shell = Shell(self.world.messages, self, stdin=stdin, stdout=stdout)
+        self.shell.cmdloop()
         # afterwards, leave the current area
         self.leave_area()
         quit_message = random.choice(

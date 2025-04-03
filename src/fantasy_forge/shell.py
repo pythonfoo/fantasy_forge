@@ -10,6 +10,7 @@ from fantasy_forge.armour import Armour
 from fantasy_forge.character import Character
 from fantasy_forge.gateway import Gateway
 from fantasy_forge.item import Item
+from fantasy_forge.messages import Messages
 from fantasy_forge.weapon import Weapon
 
 logger = logging.getLogger(__name__)
@@ -19,9 +20,12 @@ class Shell(Cmd):
     """Base class for the Cmd shell"""
 
     player: Player
+    messages: Messages
     prompt = "> "
 
-    def __new__(cls, player: Player, stdin=None, stdout=None) -> Shell:
+    def __new__(
+        cls, messages: Messages, player: Player, stdin=None, stdout=None
+    ) -> Shell:
         match player.world.l10n.locales[0]:
             case "en":
                 shell_type = ShellEn
@@ -37,12 +41,13 @@ class Shell(Cmd):
         shell = super().__new__(shell_type)
         return shell
 
-    def __init__(self, player: Player, stdin=None, stdout=None):
+    def __init__(self, messages: Messages, player: Player, stdin=None, stdout=None):
         super().__init__(stdin=stdin, stdout=stdout)
         if stdin is not None:
             assert stdout is not None
             self.use_rawinput = False
         self.player = player
+        self.messages = messages
 
     def completenames(self, text, *ignored):
         """This is called when completing the command itself.
@@ -55,16 +60,18 @@ class Shell(Cmd):
     def default(self, line: str):
         if len(line) < 3:
             """Display an error message, because the command was invalid."""
-            print(self.player.world.l10n.format_value("shell-invalid-command"))
+            self.stdout.write(
+                self.player.world.l10n.format_value("shell-invalid-command")
+            )
 
         else:
             """Check for potential typos and recommend closest command"""
             commands = [x[3:] for x in self.get_names() if x.startswith("do_")]
             possibilities = fuzzywuzzy.process.extract(line, commands)
             closest_cmd, closest_ratio = possibilities[0]
-            print(
-                self.player.world.l10n.format_value("shell-invalid-command"),
-                f"Did you mean '{closest_cmd}'?",
+            self.stdout.write(
+                self.player.world.l10n.format_value("shell-invalid-command")
+                + f" Did you mean '{closest_cmd}'?",
             )
 
     def do_EOF(self, arg: str) -> bool:
@@ -184,21 +191,18 @@ class ShellEn(Shell):
 
     def do_inventory(self, arg: str):
         """shows the contents of the players inventory"""
-        print(self.player.inventory.on_look())
+        self.messages.to([self.player], self.player.inventory.on_look())
 
     def do_armour(self, arg: str):
         """shows the players armour"""
         for armour_type, armour_item in self.player.armour_slots.items():
-            print(
-                self.player.world.l10n.format_value(
-                    "armour-detail",
-                    {
-                        "type": armour_type,
-                        "item": armour_item,
-                        "item-name": getattr(armour_item, "name", None),
-                        "item-defense": getattr(armour_item, "defense", None),
-                    },
-                )
+            self.messages.to(
+                [self.player],
+                "armour-detail",
+                type=armour_type,
+                item=armour_item,
+                item_name=getattr(armour_item, "name", None),
+                item_defense=getattr(armour_item, "defense", None),
             )
 
     def do_use(self, arg: str):
