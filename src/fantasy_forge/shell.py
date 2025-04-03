@@ -49,7 +49,6 @@ class Shell(Cmd):
         return [name + " " for name in super().completenames(text, *ignored)]
 
     def default(self, line: str):
-
         if len(line) < 3:
             """Display an error message, because the command was invalid."""
             print(self.player.world.l10n.format_value("shell-invalid-command"))
@@ -59,7 +58,10 @@ class Shell(Cmd):
             commands = [x[3:] for x in self.get_names() if x.startswith("do_")]
             possibilities = fuzzywuzzy.process.extract(line, commands)
             closest_cmd, closest_ratio = possibilities[0]
-            print(self.player.world.l10n.format_value("shell-invalid-command"), f"Did you mean '{closest_cmd}'?")
+            print(
+                self.player.world.l10n.format_value("shell-invalid-command"),
+                f"Did you mean '{closest_cmd}'?",
+            )
 
     def do_EOF(self, arg: str) -> bool:
         """This is called if an EOF occures while parsing the command."""
@@ -75,17 +77,39 @@ class ShellEn(Shell):
         """Quits the shell."""
         return self.do_EOF(arg)
 
+    def do_inspect(self, arg: str):
+        """inspect entity
+        inspect <entity>
+        """
+        entity_name = arg.strip()
+        self.player.inspect(entity_name)
+        logger.debug("%s looks at %s" % (self.player.name, entity_name))
+
+    def complete_inspect(
+        self,
+        text: str,
+        line: str,
+        begidx: int,
+        endidx: int,
+    ):
+        if line.startswith("inspect "):
+            entity_name = line.removeprefix("inspect ").strip()
+            completions = [
+                text + name.removeprefix(entity_name).strip() + " "
+                for name in self.player.seen_entities.keys()
+                if name.startswith(entity_name)
+            ]
+            if " " in completions:
+                completions.remove(" ")
+            return completions
+
     def do_look(self, arg: str):
         """look around
-        look at <entity>
+        look around <entity>
         """
         if arg.strip() == "around":
             self.player.look_around()
             logger.debug("%s looks around" % self.player.name)
-        elif arg.strip().startswith("at"):
-            entity_name = arg.strip().removeprefix("at").strip()
-            self.player.look_at(entity_name)
-            logger.debug("%s looks at %s" % (self.player.name, entity_name))
         else:
             self.default(arg)
 
@@ -96,20 +120,10 @@ class ShellEn(Shell):
         begidx: int,
         endidx: int,
     ):
-        if line.startswith("look at "):
-            entity_name = line.removeprefix("look at ").strip()
-            completions = [
-                text + name.removeprefix(entity_name).strip() + " "
-                for name in self.player.seen_entities.keys()
-                if name.startswith(entity_name)
-            ]
-            if " " in completions:
-                completions.remove(" ")
-            return completions
+        if line.startswith("look "):
+            return ["around"]
         if line.startswith("look around "):
             return []
-        if line.startswith("look "):
-            return [verb for verb in ["at ", "around "] if verb.startswith(text)]
         return []
 
     def do_pick(self, arg: str):
@@ -183,12 +197,17 @@ class ShellEn(Shell):
     def do_armour(self, arg: str):
         """shows the players armour"""
         for armour_type, armour_item in self.player.armour_slots.items():
-            print(self.player.world.l10n.format_value("armour-detail", {
-                "type": armour_type,
-                "item": armour_item,
-                "item-name": getattr(armour_item, "name", None),
-                "item-defense":getattr(armour_item, "defense", None),
-            }))
+            print(
+                self.player.world.l10n.format_value(
+                    "armour-detail",
+                    {
+                        "type": armour_type,
+                        "item": armour_item,
+                        "item-name": getattr(armour_item, "name", None),
+                        "item-defense": getattr(armour_item, "defense", None),
+                    },
+                )
+            )
 
     def do_use(self, arg: str):
         """
