@@ -58,15 +58,20 @@ def main():
     # set player name and load world
     world = World.load(args.world)
     name_input = input(
-        world.l10n.format_value("character-name-prompt", {"default": args.name}) + " "
+        world.l10n.format_value("character-name-prompt", {"default_name": args.name})
+        + " "
     )
     if name_input:
         player_name = name_input
-        print("Succesfully changed name! Your hormones should arrive soon.")
+        print(
+            world.l10n.format_value(
+                "character-name-change-successful", {"chosen_name": name_input}
+            )
+        )
     else:
         player_name = args.name
-    player = Player(world, player_name)
     print()
+    player = Player(world, player_name)
 
     # main loop
     logger.info("starting mainloop for player %s" % player)

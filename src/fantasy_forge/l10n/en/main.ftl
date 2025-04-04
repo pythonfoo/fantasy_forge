@@ -1,4 +1,5 @@
-character-name-prompt = Current character name is { $default }. Would you like to change it? (Press enter to keep)
+character-name-prompt = Current character name is { $default_name }. Would you like to change it? (Press enter to keep)
+character-name-change-successful = Successfully changed name to { $chosen_name }! Your hormones should arrive soon...
 player-description = the heroic player
 bare-hands-name = bare hands
 bare-hands-description = the harmful hands of the player
@@ -52,6 +53,7 @@ gateway-on-look-locked = It is locked.
 void-name = the void
 void-description = a place filled with nothingness
 shell-invalid-command = This is not a valid command.
+shell-invalid-command-suggest = This is not a valid command. Did you mean { $closest_cmd }?
 quit-game-message-light = There is some light on the horizon, the first dancing rays of the sun.
 quit-game-message-dark = There is only pure nothingness that stares into your soul.
 quit-game-message-turtles = You look around, it's turtles, all the way down.

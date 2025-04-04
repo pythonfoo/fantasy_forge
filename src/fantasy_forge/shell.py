@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-import fuzzywuzzy.process
 import logging
 from cmd import Cmd
 from typing import TYPE_CHECKING
+
+import fuzzywuzzy.process
 
 from fantasy_forge.armour import Armour
 from fantasy_forge.character import Character
@@ -49,7 +50,6 @@ class Shell(Cmd):
         return [name + " " for name in super().completenames(text, *ignored)]
 
     def default(self, line: str):
-
         if len(line) < 3:
             """Display an error message, because the command was invalid."""
             print(self.player.world.l10n.format_value("shell-invalid-command"))
@@ -59,7 +59,11 @@ class Shell(Cmd):
             commands = [x[3:] for x in self.get_names() if x.startswith("do_")]
             possibilities = fuzzywuzzy.process.extract(line, commands)
             closest_cmd, closest_ratio = possibilities[0]
-            print(self.player.world.l10n.format_value("shell-invalid-command"), f"Did you mean '{closest_cmd}'?")
+            print(
+                self.player.world.l10n.format_value(
+                    "shell-invalid-command-suggest", {"closest_cmd": closest_cmd}
+                )
+            )
 
     def do_EOF(self, arg: str) -> bool:
         """This is called if an EOF occures while parsing the command."""
@@ -183,12 +187,17 @@ class ShellEn(Shell):
     def do_armour(self, arg: str):
         """shows the players armour"""
         for armour_type, armour_item in self.player.armour_slots.items():
-            print(self.player.world.l10n.format_value("armour-detail", {
-                "type": armour_type,
-                "item": armour_item,
-                "item-name": getattr(armour_item, "name", None),
-                "item-defense":getattr(armour_item, "defense", None),
-            }))
+            print(
+                self.player.world.l10n.format_value(
+                    "armour-detail",
+                    {
+                        "type": armour_type,
+                        "item": armour_item,
+                        "item-name": getattr(armour_item, "name", None),
+                        "item-defense": getattr(armour_item, "defense", None),
+                    },
+                )
+            )
 
     def do_use(self, arg: str):
         """
