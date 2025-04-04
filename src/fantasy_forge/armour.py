@@ -34,8 +34,5 @@ class Armour(Item):
 
     @staticmethod
     def from_dict(world: World, armour_dict: dict) -> Armour:
-        armour: Armour = Armour(
-            world,
-            armour_dict
-        )
+        armour: Armour = Armour(world, armour_dict)
         return armour

@@ -1,10 +1,8 @@
 from typing import Any, Self
 
-from fantasy_forge.character import bare_hands, Character
+from fantasy_forge.character import Character, bare_hands
 from fantasy_forge.item import Item
 from fantasy_forge.world import World
-
-
 
 
 class Enemy(Character):
@@ -17,4 +15,3 @@ class Enemy(Character):
 
     def __str__(self: Self) -> str:
         return self.name
-

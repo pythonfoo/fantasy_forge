@@ -54,7 +54,6 @@ class Entity:
         entity_dict: dict = {"name": self.name, "description": self.description}
         return entity_dict
 
-
     def resolve(self):
         pass
 

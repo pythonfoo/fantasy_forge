@@ -10,6 +10,7 @@ from fantasy_forge.world import World
 BASE_INVENTORY_CAPACITY = 10
 BASE_DAMAGE = 1
 
+
 def bare_hands(world: World):
     return Weapon(
         world,
@@ -19,6 +20,7 @@ def bare_hands(world: World):
             "damage": BASE_DAMAGE,
         },
     )
+
 
 class Character(Entity):
     """A character in the world."""
@@ -46,7 +48,7 @@ class Character(Entity):
             weapon = bare_hands(self.world)
         else:
             weapon = self.main_hand
-        target.on_attack(weapon)     
+        target.on_attack(weapon)
         print(
             self.world.l10n.format_value(
                 "attack-character-message",
@@ -63,17 +65,17 @@ class Character(Entity):
 
     def _on_death(self: Self, player: Player):
         """
-            Automatic on death call. 
+        Automatic on death call.
         """
         assert not self.alive, "On_death called while entity is alive"
         print(
-                self.world.l10n.format_value(
-                    "attack-character-dead-message",
-                    {
-                        "target": self.name,
-                    },
-                )
+            self.world.l10n.format_value(
+                "attack-character-dead-message",
+                {
+                    "target": self.name,
+                },
             )
+        )
         # Populate area with loot
         print(
             self.world.l10n.format_value(
@@ -96,9 +98,5 @@ class Character(Entity):
         # if the target is dead, remove it from the area and drop their inventory
         del player.area.contents[self.name]
         del player.seen_entities[self.name]
-        
+
         # remove entity from area
-
-
-
-
