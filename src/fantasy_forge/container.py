@@ -1,4 +1,4 @@
-from typing import Self, Any
+from typing import Any, Self
 
 from fantasy_forge.entity import Entity
 from fantasy_forge.inventory import Inventory
