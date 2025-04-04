@@ -71,7 +71,7 @@ class Player(Character):
             )
             self.seen_entities[entity.name] = entity
 
-    def look_at(self, name: str):
+    def inspect(self, name: str):
         """Calls the on_look method of an object."""
         entity = self.seen_entities.get(name)
         if entity is None:
