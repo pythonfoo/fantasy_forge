@@ -65,9 +65,9 @@ def main():
         print("Succesfully changed name! Your hormones should arrive soon.")
     else:
         player_name = args.name
-    player = Player(world, player_name)
+    player = Player(world.messages, player_name)
     print()
 
     # main loop
     logger.info("starting mainloop for player %s" % player)
-    player.main_loop()
+    player.main_loop(world)

@@ -26,12 +26,12 @@ class Shell(Cmd):
     def __new__(
         cls, messages: Messages, player: Player, stdin=None, stdout=None
     ) -> Shell:
-        match player.world.l10n.locales[0]:
+        match messages.l10n.locales[0]:
             case "en":
                 shell_type = ShellEn
             case default:
                 raise RuntimeError(
-                    player.world.l10n.format_value(
+                    messages.l10n.format_value(
                         "unknown-language-error",
                         {
                             "language": default,
@@ -60,9 +60,7 @@ class Shell(Cmd):
     def default(self, line: str):
         if len(line) < 3:
             """Display an error message, because the command was invalid."""
-            self.stdout.write(
-                self.player.world.l10n.format_value("shell-invalid-command")
-            )
+            self.stdout.write(self.messages.l10n.format_value("shell-invalid-command"))
 
         else:
             """Check for potential typos and recommend closest command"""
@@ -70,7 +68,7 @@ class Shell(Cmd):
             possibilities = fuzzywuzzy.process.extract(line, commands)
             closest_cmd, closest_ratio = possibilities[0]
             self.stdout.write(
-                self.player.world.l10n.format_value("shell-invalid-command")
+                self.messages.l10n.format_value("shell-invalid-command")
                 + f" Did you mean '{closest_cmd}'?",
             )
 

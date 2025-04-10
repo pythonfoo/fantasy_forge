@@ -18,14 +18,19 @@ class Messages:
 
     def to(
         self: Self,
-        receivers: list[Player],
+        receivers: list[Character],
         message_id: str,
         **parameters: Any,
     ):
+        from fantasy_forge.player import Player
+
         localized = self.l10n.format_value(message_id, parameters)
         for receiver in receivers:
+            if not isinstance(receiver, Player):
+                # only deliver messages to actual players
+                continue
             receiver.shell.stdout.write(localized + "\n")
 
 
 if TYPE_CHECKING:
-    from fantasy_forge.player import Player
+    from fantasy_forge.player import Character

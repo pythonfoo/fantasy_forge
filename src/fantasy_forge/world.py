@@ -73,14 +73,14 @@ class World:
                 l10n, world_toml["name"], areas, world_spawn, world_toml["intro_text"]
             )
             for area_name in world_toml["areas"]:
-                areas[area_name] = Area.load(world, path, area_name)
+                areas[area_name] = Area.load(world.messages, path, area_name)
         world.resolve()
         return world
 
     def resolve(self):
         for area in self.areas.values():
             for entity in area.contents.values():
-                entity.resolve()
+                entity.resolve(self)
 
         self.spawn = self.areas[self.spawn_str]
 
