@@ -75,7 +75,12 @@ class Inventory:
                 "inventory-look-message",
                 {
                     "items": ", ".join(
-                        [highlight_interactive(str(item)).format(None) for item in self]
+                        [
+                            highlight_interactive(
+                                str(f"{item} (weight: {item.weight})")
+                            ).format(None)
+                            for item in self
+                        ]
                     ),
                 },
             )
