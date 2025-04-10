@@ -6,6 +6,10 @@ from fantasy_forge.item import Item
 from fantasy_forge.world import World, highlight_interactive
 
 
+class InventoryFull(Exception):
+    pass
+
+
 class Inventory:
     """An Inventory contains multiple items."""
 
@@ -17,10 +21,6 @@ class Inventory:
         self.world = world
         self.capacity = capacity
         self.contents = {}
-
-    def __len__(self: Self) -> int:
-        """Returns current capacity."""
-        return len(self.contents)
 
     def __iter__(self: Self) -> Iterator[Item]:
         """Iterates over items in inventory."""
@@ -35,13 +35,20 @@ class Inventory:
         output += "[" + ", ".join(self.contents.keys()) + "]"
         return output
 
+    def calculate_weight(self: Self) -> int:
+        weight = 0
+        for item in self.contents.values():
+            weight += item.weight
+        return weight
+
     def add(self: Self, item: Item) -> None:
         """Adds Item to inventory with respect to capacity."""
         assert item.name not in self.contents
-        if len(self) < self.capacity:
+        weight = self.calculate_weight()
+        if weight + item.weight <= self.capacity:
             self.contents[item.name] = item
         else:
-            raise Exception(
+            raise InventoryFull(
                 self.world.l10n.format_value(
                     "inventory-capacity-message",
                     {

@@ -6,6 +6,7 @@ from fantasy_forge.armour import ARMOUR_TYPES, Armour
 from fantasy_forge.character import Character, bare_hands
 from fantasy_forge.entity import Entity
 from fantasy_forge.gateway import Gateway
+from fantasy_forge.inventory import Inventory, InventoryFull
 from fantasy_forge.item import Item
 from fantasy_forge.shell import Shell
 from fantasy_forge.weapon import Weapon
@@ -113,17 +114,21 @@ class Player(Character):
             self.seen_entities.pop(item_name)
             return
         if isinstance(item, Item) and item.carryable:
-            self.inventory.add(item)
-            # picking up items keeps them in seen_entities
-            self.area.contents.pop(item_name)
-            print(
-                self.world.l10n.format_value(
-                    "pick-up-item-message",
-                    {
-                        "item": item.name,
-                    },
+            try:
+                self.inventory.add(item)
+            except InventoryFull:
+                print(self.world.l10n.format_value("pick-up-failed-inv-full"))
+            else:
+                # picking up items keeps them in seen_entities
+                self.area.contents.pop(item_name)
+                print(
+                    self.world.l10n.format_value(
+                        "pick-up-item-message",
+                        {
+                            "item": item.name,
+                        },
+                    )
                 )
-            )
         else:
             print(self.world.l10n.format_value("pick-up-failed-message"))
 

@@ -13,10 +13,12 @@ class Item(Entity):
 
     moveable: bool
     carryable: bool
+    weight: int
 
     def __init__(self: Self, world: World, config_dict: dict[str, Any]) -> None:
         self.moveable = config_dict.pop("moveable", True)
         self.carryable = config_dict.pop("carryable", True)
+        self.weight = config_dict.pop("weight", 1)
         super().__init__(world, config_dict)
 
     def __repr__(self: Self) -> str:
@@ -30,6 +32,7 @@ class Item(Entity):
         item_dict: dict = super().to_dict()
         item_dict["moveable"] = self.moveable
         item_dict["carryable"] = self.carryable
+        item_dict["weight"] = self.weight
         return item_dict
 
     @staticmethod

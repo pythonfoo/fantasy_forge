@@ -13,6 +13,7 @@ entity-does-not-exist = { $entity } does not exist.
 item-vanished = The item has vanished before your eyes.
 item-is-in-inventory = You already picked up this item.
 pick-up-failed-message = You can't pick up this item.
+pick-up-failed-inv-full = You can't pick up this item right now, your inventory is full.
 go-failed-message = You can't go there.
 equip-item-message = You equipped { INTER($item) }.
 unequip-item-message = You took of { INTER($item)} and took it in your inventory.
