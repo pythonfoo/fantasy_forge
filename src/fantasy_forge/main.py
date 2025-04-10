@@ -19,6 +19,9 @@ def parse_args(config: dict[str, Any], argv=argv[1:]):
     parser.add_argument("--world", help="The world to play in", default=config["world"])
     parser.add_argument("--name", help="Set player name", default=config["name"])
     parser.add_argument(
+        "--description", help="Set player description", default=config["description"]
+    )
+    parser.add_argument(
         "--logfile",
         help="Enables logging for debug purposes",
         default=config["logfile"],
@@ -48,6 +51,7 @@ def main():
     # load config and args
     config = load_config()
     args = parse_args(config)
+    description = args.description
 
     # init logger
     logger = logging.getLogger(__name__)
@@ -71,7 +75,7 @@ def main():
     else:
         player_name = args.name
     print()
-    player = Player(world, player_name)
+    player = Player(world, player_name, description)
 
     # main loop
     logger.info("starting mainloop for player %s" % player)

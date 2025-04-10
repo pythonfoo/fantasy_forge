@@ -22,12 +22,18 @@ class Player(Character):
     seen_entities: dict[str, Entity]
     armour_slots: dict[str, Armour]
 
-    def __init__(self: Self, world: World, name: str, health: int = BASE_PLAYER_HEALTH):
+    def __init__(
+        self: Self,
+        world: World,
+        name: str,
+        description: int,
+        health: int = BASE_PLAYER_HEALTH,
+    ):
         super().__init__(
             world,
             dict(
                 name=name,
-                description=world.l10n.format_value("player-description"),
+                description=description,
                 health=health,
             ),
         )
