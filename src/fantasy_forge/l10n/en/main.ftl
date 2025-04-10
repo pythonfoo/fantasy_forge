@@ -1,6 +1,5 @@
 character-name-prompt = Current character name is { $default_name }. Would you like to change it? (Press enter to keep)
 character-name-change-successful = Successfully changed name to { $chosen_name }! Your hormones should arrive soon...
-player-description = the heroic player
 bare-hands-name = bare hands
 bare-hands-description = the harmful hands of the player
 look-at-message = You look at { INTER($object) }.
