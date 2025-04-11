@@ -22,7 +22,7 @@ class Item(Entity):
         super().__init__(world, config_dict)
 
     def __repr__(self: Self) -> str:
-        return f"Item({self.name}, {self.description}, moveable={self.moveable}, carryable={self.carryable})"
+        return f"Item({self.name}, {self.description}, moveable={self.moveable}, carryable={self.carryable}, weight={self.weight})"
 
     def on_pickup(self: Self):
         # TODO
