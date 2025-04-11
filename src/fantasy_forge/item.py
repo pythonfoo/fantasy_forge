@@ -9,7 +9,7 @@ from fantasy_forge.world import World
 class Item(Entity):
     """An Item is an entity which can be picked up by the player."""
 
-    __important_attributes__ = ("name", "moveable", "carryable")
+    __important_attributes__ = ("name", "moveable", "carryable", "weight")
 
     moveable: bool
     carryable: bool
