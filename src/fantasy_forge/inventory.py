@@ -10,6 +10,10 @@ class InventoryFull(Exception):
     pass
 
 
+class InventoryTooSmall(Exception):
+    pass
+
+
 class Inventory:
     """An Inventory contains multiple items."""
 
@@ -47,12 +51,22 @@ class Inventory:
         weight = self.calculate_weight()
         if weight + item.weight <= self.capacity:
             self.contents[item.name] = item
-        else:
+        elif weight == self.capacity:
             raise InventoryFull(
                 self.world.l10n.format_value(
                     "inventory-capacity-message",
                     {
                         "capacity": self.capacity,
+                    },
+                )
+            )
+        elif weight + item.weight > self.capacity:
+            raise InventoryTooSmall(
+                self.world.l10n.format_value(
+                    "inventory-too-small-message",
+                    {
+                        "capacity": self.capacity,
+                        "weight": item.weight,
                     },
                 )
             )
