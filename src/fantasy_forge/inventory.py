@@ -76,9 +76,8 @@ class Inventory:
                 {
                     "items": ", ".join(
                         [
-                            highlight_interactive(
-                                str(f"{item} (weight: {item.weight})")
-                            ).format(None)
+                            highlight_interactive(str(item)).format(None)
+                            + f" (weight: {item.weight})"
                             for item in self
                         ]
                     ),
