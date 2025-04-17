@@ -22,6 +22,14 @@ class Area(Entity):
         for obj in self.contents:
             yield obj
 
+    @property
+    def players(self: Self) -> str:
+        from fantasy_forge.player import Player
+
+        return [
+            player for player in self.contents.values() if isinstance(player, Player)
+        ]
+
     def on_look(self: Self, actor: Player):
         self.messages.to(
             [actor],

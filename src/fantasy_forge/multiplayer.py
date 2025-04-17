@@ -48,8 +48,8 @@ class MyTCPHandler(StreamRequestHandler):
         ip_adress = self.client_address[0]
         thread = current_thread().getName()
         print(f"new connection from {player_name} @ {ip_adress} on {thread}")
-        player = Player(self.server.world.messages, player_name, player_description)
-        player.main_loop(self.server.world, stdin=rfile, stdout=wfile)
+        player = Player(self.server.world, player_name, player_description)
+        player.main_loop(stdin=rfile, stdout=wfile)
 
 
 class ThreadedTCPServer6(ThreadingMixIn, TCPServer):

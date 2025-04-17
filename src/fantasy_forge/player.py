@@ -8,7 +8,6 @@ from fantasy_forge.entity import Entity
 from fantasy_forge.gateway import Gateway
 from fantasy_forge.inventory import Inventory, InventoryFull, InventoryTooSmall
 from fantasy_forge.item import Item
-from fantasy_forge.messages import Messages
 from fantasy_forge.shell import Shell
 from fantasy_forge.weapon import Weapon
 from fantasy_forge.world import World
@@ -23,23 +22,25 @@ class Player(Character):
     shell: Shell
     seen_entities: dict[str, Entity]
     armour_slots: dict[str, Armour]
+    world: World
 
     def __init__(
         self: Self,
-        messages: Messages,
+        world: World,
         name: str,
         description: int,
         health: int = BASE_PLAYER_HEALTH,
     ):
         super().__init__(
-            messages,
+            world.messages,
             dict(
                 name=name,
                 description=description,
                 health=health,
             ),
         )
-        self.area = Area.empty(messages)
+        self.world = world
+        self.area = Area.empty(world.messages)
         # put us in the void
         # We will (hopefully) never see this, but it's important for the
         # transition to the next area.
@@ -370,14 +371,39 @@ class Player(Character):
             item=item_name,
         )
 
-    def main_loop(self, world: World, stdin=None, stdout=None):
+    def shout(self: Self, message: str) -> None:
+        for area in self.world.areas.values():
+            self.messages.to(
+                area.players, "player-shouts", player=self.name, message=message
+            )
+
+    def say(self: Self, message: str) -> None:
+        self.messages.to(
+            self.area.players, "player-says", player=self.name, message=message
+        )
+
+    def whisper(self: Self, target: str, message: str) -> None:
+        for player in self.area.players:
+            if player.name == target:
+                self.messages.to(
+                    [player, self],
+                    "player-whispers",
+                    player=self.name,
+                    target=target,
+                    message=message,
+                )
+                break
+        else:
+            self.messages.to([self], "whisper-target-nonexistant")
+
+    def main_loop(self, stdin=None, stdout=None):
         """Runs the game."""
         if stdout is None:
-            print(world.intro_text)
+            print(self.world.intro_text)
         else:
-            stdout.write(world.intro_text + "\n")
-        self.shell = Shell(world.messages, self, stdin=stdin, stdout=stdout)
-        self.enter_area(world.spawn)
+            stdout.write(self.world.intro_text + "\n")
+        self.shell = Shell(self.world.messages, self, stdin=stdin, stdout=stdout)
+        self.enter_area(self.world.spawn)
         self.shell.cmdloop()
         # afterwards, leave the current area
         self.leave_area()

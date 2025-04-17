@@ -332,6 +332,17 @@ class ShellEn(Shell):
         """
         self.player.drop(arg)
 
+    def do_shout(self, arg: str) -> None:
+        self.player.shout(arg)
+
+    def do_say(self, arg: str) -> None:
+        self.player.say(arg)
+
+    def do_whisper(self, arg: str) -> None:
+        target, message = arg.split(" ", 1)
+        self.player.whisper(target, message)
+        # TODO: add support for players with spaces in their names
+
 
 if TYPE_CHECKING:
     from fantasy_forge.player import Player

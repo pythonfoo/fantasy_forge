@@ -75,8 +75,8 @@ def main():
     else:
         player_name = args.name
     print()
-    player = Player(world.messages, player_name, description)
+    player = Player(world, player_name, description)
 
     # main loop
     logger.info("starting mainloop for player %s" % player)
-    player.main_loop(world)
+    player.main_loop()
