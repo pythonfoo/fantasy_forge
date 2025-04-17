@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from typing import Iterator, Self
+from typing import TYPE_CHECKING, Iterator, Self
 
 from fantasy_forge.item import Item
-from fantasy_forge.world import World, highlight_interactive
+from fantasy_forge.world import highlight_interactive
 
 
 class InventoryFull(Exception):
@@ -17,12 +17,12 @@ class InventoryTooSmall(Exception):
 class Inventory:
     """An Inventory contains multiple items."""
 
-    world: World
+    messages: Messages
     capacity: int
     contents: dict[str, Item]
 
-    def __init__(self: Self, world: World, capacity: int):
-        self.world = world
+    def __init__(self: Self, messages: Messages, capacity: int):
+        self.messages = messages
         self.capacity = capacity
         self.contents = {}
 
@@ -53,7 +53,7 @@ class Inventory:
             self.contents[item.name] = item
         elif weight == self.capacity:
             raise InventoryFull(
-                self.world.l10n.format_value(
+                self.messages.l10n.format_value(
                     "inventory-capacity-message",
                     {
                         "capacity": self.capacity,
@@ -62,7 +62,7 @@ class Inventory:
             )
         elif weight + item.weight > self.capacity:
             raise InventoryTooSmall(
-                self.world.l10n.format_value(
+                self.messages.l10n.format_value(
                     "inventory-too-small-message",
                     {
                         "capacity": self.capacity,
@@ -83,9 +83,9 @@ class Inventory:
 
     def on_look(self: Self) -> str:
         if not self.contents:
-            return self.world.l10n.format_value("inventory-look-empty-message")
+            return self.messages.l10n.format_value("inventory-look-empty-message")
         else:
-            return self.world.l10n.format_value(
+            return self.messages.l10n.format_value(
                 "inventory-look-message",
                 {
                     "items": ", ".join(
@@ -97,3 +97,7 @@ class Inventory:
                     ),
                 },
             )
+
+
+if TYPE_CHECKING:
+    from fantasy_forge.messages import Messages

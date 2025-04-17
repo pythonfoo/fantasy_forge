@@ -8,33 +8,30 @@ class Entity:
 
     __important_attributes__ = ("name",)
 
-    world: World
+    messages: Messages
     name: str
     description: str
     obvious: bool  # obvious entities are seen when entering the room
 
     def __init__(
         self: Self,
-        world: World,
+        messages: Messages,
         config_dict: dict[str, Any],
     ) -> None:
-        self.world = world
+        self.messages = messages
         self.name = config_dict.pop("name")
         self.description = config_dict.pop("description", "")
         self.obvious = config_dict.pop("obvious", False)
 
-    def on_look(self: Self) -> str:
-        return self.description
+    def on_look(self: Self, actor: Player):
+        actor.shell.stdout.write(self.description + "\n")
 
-    def on_use(self: Self, other: Entity | None = None):
-        print(
-            self.world.l10n.format_value(
-                "cannot-use-message",
-                {
-                    "self": self.name,
-                    "other": getattr(other, "name", None),
-                },
-            )
+    def on_use(self: Self, actor: Player, other: Entity | None = None):
+        self.messages.to(
+            [actor],
+            "cannot-use-message",
+            self=self.name,
+            other=getattr(other, "name", None),
         )
 
     def __repr__(self: Self) -> str:
@@ -54,9 +51,11 @@ class Entity:
         entity_dict: dict = {"name": self.name, "description": self.description}
         return entity_dict
 
-    def resolve(self):
+    def resolve(self, world: World):
         pass
 
 
 if TYPE_CHECKING:
+    from fantasy_forge.messages import Messages
+    from fantasy_forge.player import Player
     from fantasy_forge.world import World

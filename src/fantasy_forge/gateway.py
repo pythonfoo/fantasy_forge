@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from typing import Any, Optional, Self
+from typing import TYPE_CHECKING, Any, Optional, Self
 
+from fantasy_forge.area import Area
 from fantasy_forge.entity import Entity
 from fantasy_forge.item import Item
 from fantasy_forge.key import Key
+from fantasy_forge.messages import Messages
 from fantasy_forge.world import World
 
 
@@ -20,74 +22,60 @@ class Gateway(Entity):
 
     def __init__(
         self: Self,
-        world: World,
+        messages: Messages,
         config_dict: dict[str, Any],
     ):
         self.target_str = config_dict.pop("target")
         self.target = None
         self.locked = config_dict.pop("locked", False)
         self.key_list = config_dict.pop("key_list", [])
-        super().__init__(world, config_dict)
+        super().__init__(messages, config_dict)
 
-    def on_look(self: Self) -> str:
-        text = []
+    def on_look(self: Self, actor: Player):
         if self.key_list and self.locked:
-            text.append(self.world.l10n.format_value("gateway-on-look-locked"))
-        text.append(self.description)
-        return "\n".join(text)
+            self.messages.to([actor], "gateway-on-look-locked")
+        actor.shell.stdout.write(self.description + "\n")
 
-    def on_use(self: Self, other: Item | None = None):
+    def on_use(self: Self, actor: Player, other: Item | None = None):
         if other is None:
-            super().on_use()
+            super().on_use(actor)
             return
         if not self.key_list:
-            print(
-                self.world.l10n.format_value(
-                    "gateway-no-keys",
-                    {
-                        "name": self.name,
-                    },
-                )
+            self.messages.to(
+                [actor],
+                "gateway-no-keys",
+                name=self.name,
             )
         if not isinstance(other, Key):
-            print(
-                self.world.l10n.format_value(
-                    "gateway-key-needed",
-                    {
-                        "name": self.name,
-                    },
-                )
+            self.messages.to(
+                [actor],
+                "gateway-key-needed",
+                name=self.name,
             )
             return
         if self.locked:
-            self.on_unlock(other)
+            self.on_unlock(actor, other)
         else:
-            self.on_lock(other)
+            self.on_lock(actor, other)
 
-    def on_unlock(self: Self, key: Key):
+    def on_unlock(self: Self, actor: Player, key: Key):
         if key.key_id in self.key_list:
             self.locked = False
             key.used = True
-            print(
-                self.world.l10n.format_value(
-                    "gateway-unlock-message",
-                    {
-                        "name": self.name,
-                    },
-                )
+            self.messages.to(
+                [actor],
+                "gateway-unlock-message",
+                name=self.name,
             )
 
-    def on_lock(self: Self, key: Key):
+    def on_lock(self: Self, actor: Player, key: Key):
         if key.key_id in self.key_list:
             self.locked = True
             key.used = True
-            print(
-                self.world.l10n.format_value(
-                    "gateway-lock-message",
-                    {
-                        "name": self.name,
-                    },
-                )
+            self.messages.to(
+                [actor],
+                "gateway-lock-message",
+                name=self.name,
             )
 
     def to_dict(self: Self) -> dict:
@@ -95,15 +83,19 @@ class Gateway(Entity):
         gateway_dict["target"] = self.target
         return gateway_dict
 
-    def resolve(self):
-        self.target = self.world.areas[self.target_str]
+    def resolve(self, world: World):
+        self.target = world.areas[self.target_str]
         if self.locked:
             assert self.key_list
             all_keys = []
-            for area in self.world.areas.values():
+            for area in world.areas.values():
                 for entity in area.contents.values():
                     if isinstance(entity, Key):
                         all_keys.append(entity.key_id)
 
             for key in self.key_list:
                 assert key in all_keys
+
+
+if TYPE_CHECKING:
+    from fantasy_forge.player import Player

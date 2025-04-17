@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from typing import Self
+from typing import TYPE_CHECKING, Self
 
 from fantasy_forge.item import Item
-from fantasy_forge.world import World
 
 # Armour types:
 # 'head': for caps, hats, helmets
@@ -19,12 +18,12 @@ class Armour(Item):
 
     __important_attributes__ = ("name", "armour_type", "defense")
 
-    def __init__(self, world, config_dict):
+    def __init__(self, messages: Messages, config_dict):
         a_type: str = config_dict.pop("armour_type")
         assert a_type in ARMOUR_TYPES
         self.armour_type = a_type
         self.defense = config_dict.pop("defense")
-        super().__init__(world, config_dict)
+        super().__init__(messages, config_dict)
 
     def to_dict(self: Self) -> dict:
         armour_dict: dict = super().to_dict()
@@ -33,6 +32,10 @@ class Armour(Item):
         return armour_dict
 
     @staticmethod
-    def from_dict(world: World, armour_dict: dict) -> Armour:
-        armour: Armour = Armour(world, armour_dict)
+    def from_dict(messages: Messages, armour_dict: dict) -> Armour:
+        armour: Armour = Armour(messages, armour_dict)
         return armour
+
+
+if TYPE_CHECKING:
+    from fantasy_forge.messages import Messages

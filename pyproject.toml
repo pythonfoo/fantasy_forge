@@ -18,6 +18,7 @@ dependencies = [
 
 [project.scripts]
 fantasy-forge = "fantasy_forge.main:main"
+fantasy-forge-server = "fantasy_forge.multiplayer:main"
 
 [build-system]
 requires = ["hatchling"]

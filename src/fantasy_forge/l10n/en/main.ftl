@@ -4,7 +4,7 @@ bare-hands-name = bare hands
 bare-hands-description = the harmful hands of the player
 look-at-message = You look at { INTER($object) }.
 entity-not-seen = There is no { $entity }.
-look-around-begin = You take a look around the { $area-name }. It is { $area-description }. You see:
+look-around-begin = You take a look around the { $area_name }. It is { $area_description }. You see:
 look-around-single = * { INTER($object) }
 pick-up-item-menu = Please select your option:
 pick-up-item-message = You picked up { INTER($item) } and put it in your inventory.
@@ -35,7 +35,7 @@ cannot-use-message = You can't use { EXISTS($other) ->
     *[false] { "" }
 }{ INTER($self) }.
 armour-detail = {$type}: {EXISTS($item) ->
-    [true] {$item-name} ({NUM($item-defense)} defense)
+    [true] {$item_name} ({NUM($item_defense)} defense)
     *[false] Nothing
 }.
 drop-not-found = You can't drop { $item }.
