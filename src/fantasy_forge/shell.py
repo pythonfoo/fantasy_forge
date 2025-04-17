@@ -339,9 +339,16 @@ class ShellEn(Shell):
         self.player.say(arg)
 
     def do_whisper(self, arg: str) -> None:
-        target, message = arg.split(" ", 1)
-        self.player.whisper(target, message)
-        # TODO: add support for players with spaces in their names
+        fragments = []
+        for player_fragment in arg.split(" "):
+            fragments.append(player_fragment)
+            target = " ".join(fragments)
+            if target in self.player.area.contents:
+                message = arg.removeprefix(target + " ")
+                self.player.whisper(target, message)
+                break
+        else:
+            self.world.messages.to(self.player, "whisper-player-nonexistant")
 
 
 if TYPE_CHECKING:
