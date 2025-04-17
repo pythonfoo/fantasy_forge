@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 from socket import AF_INET6
 from socketserver import StreamRequestHandler, TCPServer, ThreadingMixIn
 from threading import current_thread
@@ -53,17 +54,25 @@ class ThreadedTCPServer6(ThreadingMixIn, TCPServer):
     address_family = AF_INET6
 
 
+def parse_args():
+    parser = ArgumentParser(description="Fantasy Forge: A text-based RPG")
+    parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
+    parser.add_argument("--world", help="The world to play in", default="chaosdorf")
+    parser.add_argument("--host", help="The address to bind to", default="::")
+    parser.add_argument("--port", help="The port to bind to", default=9999, type=int)
+    return parser.parse_args()
+
+
 def main():
-    HOST, PORT = "::", 9999
-    WORLD = "chaosdorf"
-    # TODO: argparse
+    args = parse_args()
 
     # first, create the world
-    world = World.load(WORLD)
+    world = World.load(args.world)
 
     # Create the server, binding to localhost on port 9999
-    with ThreadedTCPServer6((HOST, PORT), MyTCPHandler) as server:
+    with ThreadedTCPServer6((args.host, args.port), MyTCPHandler) as server:
         server.world = world
+        print(f"Serving {args.world} on [{args.host}]:{args.port}")
         # Activate the server; this will keep running until you
         # interrupt the program with Ctrl-C
         server.serve_forever()
