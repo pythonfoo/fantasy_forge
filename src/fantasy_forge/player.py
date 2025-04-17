@@ -394,7 +394,7 @@ class Player(Character):
                 )
                 break
         else:
-            self.messages.to([self], "whisper-target-nonexistant")
+            self.messages.to([self], "whisper-invalid")
 
     def main_loop(self, stdin=None, stdout=None):
         """Runs the game."""
