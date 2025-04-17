@@ -348,7 +348,7 @@ class ShellEn(Shell):
                 self.player.whisper(target, message)
                 break
         else:
-            self.world.messages.to(self.player, "whisper-player-nonexistant")
+            self.world.messages.to(self.player, "whisper-target-nonexistant")
 
 
 if TYPE_CHECKING:
