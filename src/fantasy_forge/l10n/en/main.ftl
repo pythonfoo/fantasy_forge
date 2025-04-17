@@ -16,7 +16,8 @@ pick-up-failed-inv-full = You can't pick up this item right now, your inventory 
 pick-up-failed-inv-too-small = You can't pick up this item right now, it's too heavy to fit into your inventory.
 go-failed-message = You can't go there.
 equip-item-message = You equipped { INTER($item) }.
-unequip-item-message = You took of { INTER($item)} and took it in your inventory.
+unequip-item-message = You took off { INTER($item)} and took it in your inventory.
+unequip-nothing-message = You cant unequip nothing.
 cannot-equip = You can't equip { INTER($weapon) }.
 attack-character-message = { INTER($source) } attacks { INTER($target) }{ EXISTS($weapon) ->
     [true] { "" } with { $weapon }

@@ -230,9 +230,18 @@ class Player(Character):
 
     def unequip(self, item_name: str):
         """Unequips weapon or armour."""
-        item = self.seen_entities.get(item_name)
-        # TODO: Validate Item was already seen
-        # TODO: Validate Item is in inventory
+        if not item_name:
+            print(self.world.l10n.format_value("unequip-nothing-message"))
+            return
+        if item_name in self.seen_entities and item_name in self.inventory.contents:
+            item = self.seen_entities.get(item_name)
+        else:
+            print(
+                self.world.l10n.format_value(
+                    "entity-does-not-exist", {"entity": item_name}
+                )
+            )
+            return
         if self.main_hand is item:
             self.main_hand = None
         for armour_type, armour_item in self.armour_slots.items():
