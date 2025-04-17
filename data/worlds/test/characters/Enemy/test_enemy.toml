@@ -1,0 +1,3 @@
+name = "test enemy"
+description = "an enemy is a character which will attack the player"
+health = 100

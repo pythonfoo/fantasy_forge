@@ -1,0 +1,5 @@
+name = "test item"
+description = "an item is a entity in the world, which the player can interact with"
+obvious = true
+moveable = true
+carryable = true

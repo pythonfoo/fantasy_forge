@@ -1,0 +1,3 @@
+name = "test container"
+description = "a container is an item which has an inventory"
+capacity = 10

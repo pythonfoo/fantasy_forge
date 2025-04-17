@@ -1,0 +1,4 @@
+name = "test gateway"
+description = "a gateway is a portal to another area"
+target = "test area"
+locked = false

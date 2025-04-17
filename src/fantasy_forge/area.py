@@ -1,5 +1,8 @@
+"""An Area is a place in the world, containing NPCs, Items and connections to other areas."""
+
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Iterator, Self
 
@@ -7,14 +10,24 @@ import toml
 
 from fantasy_forge.entity import Entity
 
+logger = logging.getLogger(__name__)
+
 
 class Area(Entity):
     """An Area is a place in the world, containing NPCs, Items and connections to other areas."""
 
     __important_attributes__ = ("name",)
     contents: dict[str, Entity]
-
+    
     def __init__(self: Self, messages: Messages, config_dict: dict[str, Any]):
+        """
+        config_dict contents
+
+        inherited from Entity
+        'name' (str): name of the entity
+        'description' (str): description of the entity (default: "")
+        'obvious'(bool): whether the entity will be spotted immediately (default: False)
+        """
         super().__init__(messages, config_dict)
         self.contents: dict = {}
 

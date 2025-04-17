@@ -1,0 +1,4 @@
+name = "test key"
+description = "a key is an item which can be used by the player to open doors"
+obvious = true
+key_id = "dungeon key 1"

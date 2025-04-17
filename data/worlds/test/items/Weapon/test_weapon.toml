@@ -1,0 +1,3 @@
+name = "test weapon"
+description = "a weapon is an item which can be used by the player to damage his enemies"
+damage = 10
