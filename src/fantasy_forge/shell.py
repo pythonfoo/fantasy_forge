@@ -340,6 +340,9 @@ class ShellEn(Shell):
 
     def do_whisper(self, arg: str) -> None:
         fragments = []
+        if len(arg.split(" ")) < 2:
+            self.messages.to([self.player], "whisper-too-short")
+            return
         for player_fragment in arg.split(" "):
             fragments.append(player_fragment)
             target = " ".join(fragments)
@@ -347,8 +350,9 @@ class ShellEn(Shell):
                 message = arg.removeprefix(target + " ")
                 self.player.whisper(target, message)
                 break
-        else:
-            self.world.messages.to(self.player, "whisper-target-nonexistant")
+            else:
+                self.messages.to([self.player], "whisper-target-nonexistant")
+                return
 
 
 if TYPE_CHECKING:
