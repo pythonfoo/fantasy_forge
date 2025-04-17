@@ -3,9 +3,7 @@
 A container is an item in the world which holds an inventory.
 """
 
-from __future__ import annotations
-
-from typing import TYPE_CHECKING, Any, Self
+from typing import Any, Self
 
 from fantasy_forge.inventory import Inventory
 from fantasy_forge.item import Item

@@ -2,21 +2,30 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Iterator, Self
 
-from fantasy_forge.entity import Entity
-from fantasy_forge.localization import highlight_interactive
+from fantasy_forge.item import Item
+from fantasy_forge.world import highlight_interactive
+
+
+class InventoryFull(Exception):
+    pass
+
+
+class InventoryTooSmall(Exception):
+    pass
 
 
 class Inventory(Entity):
     """An Inventory contains multiple entities."""
 
+    messages: Messages
     capacity: int
     contents: dict[str, Entity]
-    l10n: FluentLocalization
 
     __important_attributes__ = ("name", "capacity")
     __attributes__ = {**Entity.__attributes__, "capacity": int}
 
-    def __init__(self: Self, capacity: int, l10n: FluentLocalization):
+    def __init__(self: Self, messages: Messages, capacity: int):
+        self.messages = messages
         self.capacity = capacity
         self.contents = {}
         self.l10n = l10n
@@ -25,25 +34,42 @@ class Inventory(Entity):
         """Returns current capacity."""
         return len(self.contents)
 
-    def __iter__(self: Self) -> Iterator[Entity]:
-        """Iterates over entities in inventory."""
+    def __iter__(self: Self) -> Iterator[Item]:
+        """Iterates over items in inventory."""
         yield from self.contents.values()
 
     def __contains__(self: Self, other: str) -> bool:
         """Returns if entity is in inventory."""
         return other in self.contents
 
-    def add(self: Self, entity: Entity) -> None:
+    def calculate_weight(self: Self) -> int:
+        weight = 0
+        for item in self.contents.values():
+            weight += item.weight
+        return weight
+
+    def add(self: Self, item: Item) -> None:
         """Adds Item to inventory with respect to capacity."""
-        assert entity.name not in self.contents
-        if len(self) < self.capacity:
-            self.contents[entity.name] = entity
-        else:
-            raise Exception(
-                self.l10n.format_value(
+        assert item.name not in self.contents
+        weight = self.calculate_weight()
+        if weight + item.weight <= self.capacity:
+            self.contents[item.name] = item
+        elif weight == self.capacity:
+            raise InventoryFull(
+                self.messages.l10n.format_value(
                     "inventory-capacity-message",
                     {
                         "capacity": self.capacity,
+                    },
+                )
+            )
+        elif weight + item.weight > self.capacity:
+            raise InventoryTooSmall(
+                self.messages.l10n.format_value(
+                    "inventory-too-small-message",
+                    {
+                        "capacity": self.capacity,
+                        "weight": item.weight,
                     },
                 )
             )
@@ -60,13 +86,17 @@ class Inventory(Entity):
 
     def on_look(self: Self) -> str:
         if not self.contents:
-            return self.l10n.format_value("inventory-look-empty-message")
+            return self.messages.l10n.format_value("inventory-look-empty-message")
         else:
-            return self.l10n.format_value(
+            return self.messages.l10n.format_value(
                 "inventory-look-message",
                 {
                     "items": ", ".join(
-                        [highlight_interactive(str(item)).format(None) for item in self]
+                        [
+                            highlight_interactive(str(item)).format(None)
+                            + f" (weight: {item.weight})"
+                            for item in self
+                        ]
                     ),
                 },
             )
@@ -79,4 +109,4 @@ class Inventory(Entity):
 
 
 if TYPE_CHECKING:
-    from fluent.runtime import FluentLocalization
+    from fantasy_forge.messages import Messages

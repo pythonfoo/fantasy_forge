@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Self
 
 from fantasy_forge.item import Item
+from fantasy_forge.messages import Messages
 
 
 class Weapon(Item):
@@ -13,9 +14,7 @@ class Weapon(Item):
 
     damage: int
 
-    def __init__(
-        self: Self, config_dict: dict[str, Any], l10n: FluentLocalization
-    ) -> None:
+    def __init__(self: Self, messages: Messages, config_dict: dict[str, Any]) -> None:
         """
         config_dict contents
         'damage' (int): damage dealt using the weapon
@@ -30,8 +29,4 @@ class Weapon(Item):
         'obvious'(bool): whether the entity will be spotted immediately (default: False)
         """
         self.damage = config_dict.pop("damage")
-        super().__init__(config_dict, l10n)
-
-
-if TYPE_CHECKING:
-    from fluent.runtime import FluentLocalization
+        super().__init__(messages, config_dict)

@@ -18,8 +18,8 @@ class Area(Entity):
 
     __important_attributes__ = ("name",)
     contents: dict[str, Entity]
-
-    def __init__(self: Self, config_dict: dict[str, Any], l10n: FluentLocalization):
+    
+    def __init__(self: Self, messages: Messages, config_dict: dict[str, Any]):
         """
         config_dict contents
 
@@ -28,20 +28,27 @@ class Area(Entity):
         'description' (str): description of the entity (default: "")
         'obvious'(bool): whether the entity will be spotted immediately (default: False)
         """
-        super().__init__(config_dict, l10n)
+        super().__init__(messages, config_dict)
         self.contents: dict = {}
 
     def __iter__(self: Self) -> Iterator:
         for obj in self.contents:
             yield obj
 
-    def on_look(self: Self) -> str:
-        return self.l10n.format_value(
+    @property
+    def players(self: Self) -> str:
+        from fantasy_forge.player import Player
+
+        return [
+            player for player in self.contents.values() if isinstance(player, Player)
+        ]
+
+    def on_look(self: Self, actor: Player):
+        self.messages.to(
+            [actor],
             "look-around-begin",
-            {
-                "area-name": self.name,
-                "area-description": self.description,
-            },
+            area_name=self.name,
+            area_description=self.description,
         )
 
     def to_dict(self: Self) -> dict:
@@ -50,62 +57,61 @@ class Area(Entity):
         return area_dict
 
     @staticmethod
-    def from_dict(area_dict: dict, l10n: FluentLocalization) -> Area:
+    def from_dict(messages: Messages, area_dict: dict) -> Area:
         contents_list: list[Entity] = []
         for entity_dict in area_dict.get("contents", []):
             match entity_dict.get("kind", "entity"):
                 case "item":
                     from fantasy_forge.item import Item
 
-                    contents_list.append(Item(entity_dict, l10n))
+                    contents_list.append(Item(messages, entity_dict))
                 case "gateway":
                     from fantasy_forge.gateway import Gateway
 
-                    contents_list.append(Gateway(entity_dict, l10n))
+                    contents_list.append(Gateway(messages, entity_dict))
                 case "key":
                     from fantasy_forge.key import Key
 
-                    contents_list.append(Key(entity_dict, l10n))
+                    contents_list.append(Key(messages, entity_dict))
                 case "enemy":
                     from fantasy_forge.enemy import Enemy
 
-                    contents_list.append(Enemy(entity_dict, l10n))
+                    contents_list.append(Enemy(messages, entity_dict))
                 case "weapon":
                     from fantasy_forge.weapon import Weapon
 
-                    contents_list.append(Weapon(entity_dict, l10n))
+                    contents_list.append(Weapon(messages, entity_dict))
                 case "armour":
                     from fantasy_forge.armour import Armour
 
-                    contents_list.append(Armour(entity_dict, l10n))
+                    contents_list.append(Armour(messages, entity_dict))
 
                 case default:
-                    logger.info("could not determine %s used Entity instead", default)
-                    contents_list.append(Entity(entity_dict, l10n))
+                    contents_list.append(Entity(messages, entity_dict))
         contents = {entity.name: entity for entity in contents_list}
-        area = Area(area_dict, l10n)
+        area = Area(messages, area_dict)
         area.contents = contents
         return area
 
     @staticmethod
-    def load(world, root_path: Path, name: str):
-        """Loads an area from toml-file."""
+    def load(messages: Messages, root_path: Path, name: str):
         path = root_path / "areas" / f"{name}.toml"
         with path.open() as area_file:
             area_toml = toml.load(area_file)
-        return Area.from_dict(area_toml, world.l10n)
+        return Area.from_dict(messages, area_toml)
 
     @staticmethod
-    def empty(l10n: FluentLocalization) -> Area:
+    def empty(messages: Messages) -> Area:
         """Return an empty area, this is a placeholder."""
         return Area(
-            {
-                "name": l10n.format_value("void-name"),
-                "description": l10n.format_value("void-description"),
-            },
-            l10n,
+            messages,
+            dict(
+                name=messages.l10n.format_value("void-name"),
+                description=messages.l10n.format_value("void-description"),
+            ),
         )
 
 
 if TYPE_CHECKING:
-    from fluent.runtime import FluentLocalization
+    from fantasy_forge.messages import Messages
+    from fantasy_forge.player import Player

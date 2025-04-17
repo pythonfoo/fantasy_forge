@@ -9,13 +9,16 @@ authors = [
 ]
 dependencies = [
     "fluent.runtime",
- "toml",
- "huepy",
- "fuzzywuzzy>=0.18.0",
+    "toml",
+    "huepy",
+    "fuzzywuzzy>=0.18.0",
+    "python-levenshtein>=0.27.1",
+    "xdg-base-dirs>=6.0.2",
 ]
 
 [project.scripts]
 fantasy-forge = "fantasy_forge.main:main"
+fantasy-forge-server = "fantasy_forge.multiplayer:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -25,6 +28,6 @@ build-backend = "hatchling.build"
 dev-dependencies = [
     "commandlib>=0.3.5",
     "hitchstory>=0.24.0",
-    "icommandlib>=0.8.0",
+    "icommandlib>=0.8.0 ; sys_platform == 'unix'",
     "pytest>=8.3.3",
 ]

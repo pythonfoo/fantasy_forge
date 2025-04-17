@@ -1,27 +1,59 @@
 import logging
+import toml
+import shutil
+
 from argparse import ArgumentParser
+from importlib import resources
+from pathlib import Path
+from sys import argv
+from typing import Any
+
+from xdg_base_dirs import xdg_config_home
 
 from fantasy_forge.area import Area
 from fantasy_forge.player import Player
 from fantasy_forge.world import World
 
 
-def parse_args():
+def parse_args(config: dict[str, Any], argv=argv[1:]):
     parser = ArgumentParser(description="Fantasy Forge: A text-based RPG")
     parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
-    parser.add_argument("--world", help="The world to play in", default="chaosdorf")
-    parser.add_argument("--name", help="Set player name", default="")
+    parser.add_argument("--world", help="The world to play in", default=config["world"])
+    parser.add_argument("--name", help="Set player name", default=config["name"])
+    parser.add_argument(
+        "--description", help="Set player description", default=config["description"]
+    )
     parser.add_argument(
         "--logfile",
         help="Enables logging for debug purposes",
-        default="fantasy_forge.log",
+        default=config["logfile"],
     )
-    parser.add_argument("--loglevel", help="Severity Level for logging", default="INFO")
-    return parser.parse_args()
+    parser.add_argument(
+        "--loglevel", help="Severity Level for logging", default=config["loglevel"]
+    )
+    return parser.parse_args(argv)
+
+
+def load_config() -> dict[str, Any]:
+    with resources.as_file(resources.files()) as resource_path:
+        default_config_file = resource_path / "config.toml"
+
+    usr_config_file = xdg_config_home() / "fantasy_forge.toml"
+
+    if not usr_config_file.exists():
+        shutil.copyfile(default_config_file, usr_config_file)
+
+    with usr_config_file.open() as config_file:
+        config = toml.load(config_file)
+
+    return config
 
 
 def main():
-    args = parse_args()
+    # load config and args
+    config = load_config()
+    args = parse_args(config)
+    description = args.description
 
     # init logger
     logger = logging.getLogger(__name__)
@@ -29,15 +61,24 @@ def main():
     logging.basicConfig(filename=args.logfile, level=numeric_level, filemode="w")
     logger.info("load world %s", args.world)
 
-    # load world
+    # set player name and load world
     world = World.load(args.world)
 
-    if args.name == "":
-        player_name = input(world.l10n.format_value("character-name-prompt") + " ")
+    name_input = input(
+        world.l10n.format_value("character-name-prompt", {"default_name": args.name})
+        + " "
+    )
+    if name_input:
+        player_name = name_input
+        print(
+            world.l10n.format_value(
+                "character-name-change-successful", {"chosen_name": name_input}
+            )
+        )
     else:
         player_name = args.name
-
-    player = Player(world, player_name)
+    print()
+    player = Player(world, player_name, description)
 
     #  enter spawn area
     spawn: Area = world.spawn_point

@@ -15,13 +15,16 @@ class Entity:
     __important_attributes__ = ("name",)
     __attributes__: dict[str, type] = {"name": str, "description": str, "obvious": bool}
 
+    messages: Messages
     name: str
     description: str
     obvious: bool  # obvious entities are seen when entering the room
     l10n: FluentLocalization
 
     def __init__(
-        self: Self, config_dict: dict[str, Any], l10n: FluentLocalization
+        self: Self,
+        messages: Messages,
+        config_dict: dict[str, Any],
     ) -> None:
         """
         config_dict contents
@@ -29,25 +32,20 @@ class Entity:
         'description' (str): description of the entity (default: "")
         'obvious'(bool): whether the entity will be spotted immediately (default: False)
         """
+        self.messages = messages
         self.name = config_dict.pop("name")
         self.description = config_dict.pop("description", "")
         self.obvious = config_dict.pop("obvious", False)
-        self.l10n = l10n
+        
+    def on_look(self: Self, actor: Player):
+        actor.shell.stdout.write(self.description + "\n")
 
-    def on_look(self: Self) -> str:
-        """Returns description of entity."""
-        return self.description
-
-    def on_use(self: Self, other: Entity | None = None):
-        """Handles usage of entity."""
-        print(
-            self.l10n.format_value(
-                "cannot-use-message",
-                {
-                    "self": self.name,
-                    "other": getattr(other, "name", None),
-                },
-            )
+    def on_use(self: Self, actor: Player, other: Entity | None = None):
+        self.messages.to(
+            [actor],
+            "cannot-use-message",
+            self=self.name,
+            other=getattr(other, "name", None),
         )
 
     def __repr__(self: Self) -> str:
@@ -68,12 +66,11 @@ class Entity:
         entity_dict: dict = {"name": self.name, "description": self.description}
         return entity_dict
 
-    @classmethod
-    def from_dict(cls, entity_dict: dict, l10n: FluentLocalization) -> Self:
-        """Creates new entity from a dictionary."""
-        entity = cls(entity_dict, l10n)
-        return entity
+    def resolve(self, world: World):
+        pass
 
 
 if TYPE_CHECKING:
-    from fluent.runtime import FluentLocalization
+    from fantasy_forge.messages import Messages
+    from fantasy_forge.player import Player
+    from fantasy_forge.world import World

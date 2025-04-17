@@ -1,10 +1,10 @@
-character-name-prompt = Please name your character:
-player-description = the heroic player
+character-name-prompt = Current character name is { $default_name }. Would you like to change it? (Press enter to keep)
+character-name-change-successful = Successfully changed name to { $chosen_name }! Your hormones should arrive soon...
 bare-hands-name = bare hands
 bare-hands-description = the harmful hands of the player
 look-at-message = You look at { INTER($object) }.
 entity-not-seen = There is no { $entity }.
-look-around-begin = You take a look around the { $area-name }. It is { $area-description }. You see:
+look-around-begin = You take a look around the { $area_name }. It is { $area_description }. You see:
 look-around-single = * { INTER($object) }
 pick-up-item-menu = Please select your option:
 pick-up-item-message = You picked up { INTER($item) } and put it in your inventory.
@@ -12,9 +12,12 @@ entity-does-not-exist = { $entity } does not exist.
 item-vanished = The item has vanished before your eyes.
 item-is-in-inventory = You already picked up this item.
 pick-up-failed-message = You can't pick up this item.
+pick-up-failed-inv-full = You can't pick up this item right now, your inventory is full.
+pick-up-failed-inv-too-small = You can't pick up this item right now, it's too heavy to fit into your inventory.
 go-failed-message = You can't go there.
 equip-item-message = You equipped { INTER($item) }.
-unequip-item-message = You took of { INTER($item)} and took it in your inventory.
+unequip-item-message = You took off { INTER($item)} and took it in your inventory.
+unequip-nothing-message = You cant unequip nothing.
 cannot-equip = You can't equip { INTER($weapon) }.
 attack-character-message = { INTER($source) } attacks { INTER($target) }{ EXISTS($weapon) ->
     [true] { "" } with { $weapon }
@@ -32,7 +35,7 @@ cannot-use-message = You can't use { EXISTS($other) ->
     *[false] { "" }
 }{ INTER($self) }.
 armour-detail = {$type}: {EXISTS($item) ->
-    [true] {$item-name} ({NUM($item-defense)} defense)
+    [true] {$item_name} ({NUM($item_defense)} defense)
     *[false] Nothing
 }.
 drop-not-found = You can't drop { $item }.
@@ -41,6 +44,7 @@ enter-area-message = You are now in { $area }. You see:
 inventory-look-message = In the inventory you find { $items }.
 inventory-look-empty-message = Your inventory is empty.
 inventory-capacity-message = Maximum capacity ({ NUM($capacity) }) reached.
+inventory-too-small-message = Inventory isn't big enough to fit this item. (Capacity: ({ NUM($capacity) }), Item weight: ({ NUM($weight) })).
 inventory-item-not-found-message = Item { $item } couldn't be found.
 gateway-unlock-message = { INTER($name) } unlocked.
 gateway-lock-message = { INTER($name) } is now locked.
@@ -52,6 +56,11 @@ gateway-on-look-locked = It is locked.
 void-name = the void
 void-description = a place filled with nothingness
 shell-invalid-command = This is not a valid command.
+shell-invalid-command-suggest = This is not a valid command. Did you mean { $closest_cmd }?
+player-shouts = { INTER($player) } shouts: { $message }
+player-says = { INTER($player) } says: { $message }
+player-whispers = { INTER($player) } whispers to { INTER($target) }: { $message }
+whisper-target-nonexistant = this player does not exist.
 quit-game-message-light = There is some light on the horizon, the first dancing rays of the sun.
 quit-game-message-dark = There is only pure nothingness that stares into your soul.
 quit-game-message-turtles = You look around, it's turtles, all the way down.

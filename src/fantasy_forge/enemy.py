@@ -3,18 +3,14 @@
 An enemy is a hostile character which will attack the player on contact.
 """
 
-from __future__ import annotations
-
-from typing import TYPE_CHECKING, Any, Self
-
 from fantasy_forge.character import Character, bare_hands
 from fantasy_forge.item import Item
+from fantasy_forge.messages import Messages
 
 
 class Enemy(Character):
     """An enemy is a person which will fight back."""
-
-    def __init__(self: Self, config_dict: dict[str, Any], l10n: FluentLocalization):
+    def __init__(self: Self, messages: Messages, config_dict: dict[str, Any]):
         """
         config_dict contents
         'loot' (list[Item]): items dropped after death
@@ -27,9 +23,9 @@ class Enemy(Character):
         'description' (str): description of the entity (default: "")
         'obvious'(bool): whether the entity will be spotted immediately (default: False)
         """
-        super().__init__(config_dict, l10n)
+        super().__init__(messages, config_dict)
         for item_dict in config_dict.get("loot", []):
-            self.inventory.add(Item(item_dict, l10n))
+            self.inventory.add(Item(messages, item_dict))
 
     def __str__(self: Self) -> str:
         return self.name
