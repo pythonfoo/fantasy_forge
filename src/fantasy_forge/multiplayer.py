@@ -32,23 +32,47 @@ class MyTCPHandler(StreamRequestHandler):
     def handle(self):
         rfile = FakeFile(self.rfile)
         wfile = FakeFile(self.wfile)
+        while True:
+            wfile.write(
+                self.server.world.l10n.format_value(
+                    "character-name-prompt-multiplayer", {"default_name": "Player"}
+                )
+                + " "
+            )
+            name_input = rfile.readline(10000).rstrip()
+            if any(
+                (
+                    name_input in area.contents.keys()
+                    for area in self.server.world.areas.values()
+                )
+            ):
+                wfile.write(
+                    self.server.world.l10n.format_value("character-name-taken") + " "
+                )
+                continue
+            if name_input:
+                player_name = name_input
+                break
+            else:
+                wfile.write(
+                    self.server.world.l10n.format_value("character-name-empty") + " "
+                )
+                continue
+        player_desc = "the heroic player"
         wfile.write(
             self.server.world.l10n.format_value(
-                "character-name-prompt", {"default_name": "Player"}
+                "character-desc-prompt-multiplayer",
+                {"default_description": player_desc},
             )
             + " "
         )
-        name_input = rfile.readline(10000).rstrip()
-        # TODO: ask for description
-        player_description = "the heroic player"
-        if name_input:
-            player_name = name_input
-        else:
-            player_name = "Player"
+        desc_input = rfile.readline(10000).rstrip()
+        if desc_input:
+            player_desc = desc_input
         ip_adress = self.client_address[0]
         thread = current_thread().getName()
         print(f"new connection from {player_name} @ {ip_adress} on {thread}")
-        player = Player(self.server.world, player_name, player_description)
+        player = Player(self.server.world, player_name, player_desc)
         player.main_loop(stdin=rfile, stdout=wfile)
 
 
