@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Iterator, Self
 
 from fantasy_forge.item import Item
+from fantasy_forge.utils import UniqueDict
 from fantasy_forge.world import highlight_interactive
 
 
@@ -19,12 +20,12 @@ class Inventory:
 
     messages: Messages
     capacity: int
-    contents: dict[str, Item]
+    contents: UniqueDict[str, Item]
 
     def __init__(self: Self, messages: Messages, capacity: int):
         self.messages = messages
         self.capacity = capacity
-        self.contents = {}
+        self.contents = UniqueDict()
 
     def __iter__(self: Self) -> Iterator[Item]:
         """Iterates over items in inventory."""

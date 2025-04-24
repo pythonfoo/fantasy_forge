@@ -1,19 +1,7 @@
-from fantasy_forge.area import Area
-from fantasy_forge.item import Item
-
-
-def pickup_menu(area: Area) -> Item | None:
-    # filter items contained in area
-    pickup_items: list[Item] = list(
-        filter(lambda c: isinstance(c, Item), area.contents)
-    )
-
-    for idx, item in enumerate(pickup_items):
-        print(f"[{idx:>2}] {item.name}")
-    print("[ q] Quit")
-    selection: str = input(area.world.l10n.format_value("pick-up-item-menu") + " ")
-    if selection.upper() == "Q":
-        return None
-    if selection.isnumeric():
-        selection_index = int(selection)
-        return pickup_items[selection_index]
+# taken from https://stackoverflow.com/a/5948050/2192464
+class UniqueDict[K, V](dict[K, V]):
+    def __setitem__(self, key: K, value: V):
+        if key not in self:
+            dict.__setitem__(self, key, value)
+        else:
+            raise KeyError("Key already exists")

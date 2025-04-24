@@ -6,17 +6,18 @@ from typing import TYPE_CHECKING, Any, Iterator, Self
 import toml
 
 from fantasy_forge.entity import Entity
+from fantasy_forge.utils import UniqueDict
 
 
 class Area(Entity):
     """An Area is a place in the world, containing NPCs, Items and connections to other areas."""
 
     __important_attributes__ = ("name",)
-    contents: dict[str, Entity]
+    contents: UniqueDict[str, Entity]
 
     def __init__(self: Self, messages: Messages, config_dict: dict[str, Any]):
         super().__init__(messages, config_dict)
-        self.contents: dict = {}
+        self.contents = UniqueDict()
 
     def __iter__(self: Self) -> Iterator:
         for obj in self.contents:
@@ -75,9 +76,9 @@ class Area(Entity):
 
                 case default:
                     contents_list.append(Entity(messages, entity_dict))
-        contents = {entity.name: entity for entity in contents_list}
         area = Area(messages, area_dict)
-        area.contents = contents
+        for entity in contents_list:
+            area.contents[entity.name] = entity
         return area
 
     @staticmethod

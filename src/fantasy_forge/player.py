@@ -9,6 +9,7 @@ from fantasy_forge.gateway import Gateway
 from fantasy_forge.inventory import Inventory, InventoryFull, InventoryTooSmall
 from fantasy_forge.item import Item
 from fantasy_forge.shell import Shell
+from fantasy_forge.utils import UniqueDict
 from fantasy_forge.weapon import Weapon
 from fantasy_forge.world import World
 
@@ -20,7 +21,7 @@ class Player(Character):
 
     area: Area  # the area we are currently in
     shell: Shell
-    seen_entities: dict[str, Entity]
+    seen_entities: UniqueDict[str, Entity]
     armour_slots: dict[str, Armour]
     world: World
 
@@ -45,7 +46,7 @@ class Player(Character):
         # We will (hopefully) never see this, but it's important for the
         # transition to the next area.
         self.area.contents[self.name] = self
-        self.seen_entities = {}
+        self.seen_entities = UniqueDict()
 
         # define armour slots
         self.armour_slots: dict[str, Armour | None] = {}

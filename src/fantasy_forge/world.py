@@ -12,6 +12,7 @@ from fluent.runtime.types import FluentNone
 
 from fantasy_forge.area import Area
 from fantasy_forge.messages import Messages
+from fantasy_forge.utils import UniqueDict
 
 logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
@@ -21,7 +22,7 @@ class World:
     """A world contains many rooms. It's where the game happens."""
 
     l10n: FluentLocalization
-    areas: dict[str, Area]
+    areas: UniqueDict[str, Area]
     messages: Messages
     name: str
     spawn_str: str  # area name to spawn in
@@ -32,7 +33,7 @@ class World:
         self: Self,
         l10n: FluentLocalization,
         name: str,
-        areas: dict[str, Area],
+        areas: UniqueDict[str, Area],
         spawn_str: str,
         intro_text: str,
     ):
@@ -53,7 +54,7 @@ class World:
         if not path.exists():
             logger.debug(f"Path {path} not found, using {name}")
             path = Path(name)
-        areas: dict[str, Area] = dict()
+        areas: UniqueDict[str, Area] = UniqueDict()
         with (path / "world.toml").open() as world_file:
             world_toml = toml.load(world_file)
             logger.debug("language")
