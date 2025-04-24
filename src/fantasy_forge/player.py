@@ -373,10 +373,9 @@ class Player(Character):
         )
 
     def shout(self: Self, message: str) -> None:
-        for area in self.world.areas.values():
-            self.messages.to(
-                area.players, "player-shouts", player=self.name, message=message
-            )
+        self.messages.to(
+            self.world.players, "player-shouts", player=self.name, message=message
+        )
 
     def say(self: Self, message: str) -> None:
         self.messages.to(

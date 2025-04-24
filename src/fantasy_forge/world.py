@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from importlib import resources
 from pathlib import Path
-from typing import Any, Optional, Self
+from typing import TYPE_CHECKING, Any, Optional, Self
 
 import huepy
 import toml
@@ -78,6 +78,14 @@ class World:
         world.resolve()
         return world
 
+    @property
+    def players(self: Self) -> list[Player]:
+        players = []
+        for area in self.areas.values():
+            players += area.players
+
+        return players
+
     def resolve(self):
         for area in self.areas.values():
             for entity in area.contents.values():
@@ -99,3 +107,7 @@ def highlight_number(text: Any) -> FluentNone:
 def check_exists(obj: Any):
     """EXISTS() for the localization"""
     return str(not isinstance(obj, FluentNone)).lower()
+
+
+if TYPE_CHECKING:
+    from fantasy_forge.player import Player

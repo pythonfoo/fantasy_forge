@@ -24,7 +24,7 @@ class Area(Entity):
             yield obj
 
     @property
-    def players(self: Self) -> str:
+    def players(self: Self) -> list[Player]:
         from fantasy_forge.player import Player
 
         return [

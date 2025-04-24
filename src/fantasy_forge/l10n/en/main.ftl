@@ -33,6 +33,8 @@ attack-drop-begin = { INTER($target) } dropped { NUM($loot_count) } items:
 attack-drop-single = { INTER($item) }
 player-health-remaining = You have { NUM($health) } health remaining.
 player-died = You died.
+player-join = { INTER($player_name) } joined the game!
+player-quit = { INTER($player_name) } left the game.
 cannot-attack = Cannot attack { INTER($target) }.
 cannot-use-message = You can't use { EXISTS($other) ->
     [true] { INTER($other) } with{ " " }
