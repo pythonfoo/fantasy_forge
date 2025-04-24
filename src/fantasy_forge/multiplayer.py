@@ -74,6 +74,7 @@ class MyTCPHandler(StreamRequestHandler):
         print(f"new connection from {player_name} @ {ip_adress} on {thread}")
         player = Player(self.server.world, player_name, player_desc)
         player.main_loop(stdin=rfile, stdout=wfile)
+        print(f"closed connection from {player_name} @ {ip_adress} on {thread}")
 
 
 class ThreadedTCPServer6(ThreadingMixIn, TCPServer):
