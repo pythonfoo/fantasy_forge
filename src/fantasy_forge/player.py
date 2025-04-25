@@ -347,10 +347,20 @@ class Player(Character):
                     object=entity.name,
                 )
                 self.seen_entities[entity.name] = entity
+        self.world.messages.to(
+            [player for player in self.area.players if player != self],
+            "player-entered-room",
+            name=self.name,
+        )
         # TODO: output better text
 
     def leave_area(self):
         """Leave current area."""
+        self.world.messages.to(
+            [player for player in self.area.players if player != self],
+            "player-left-room",
+            name=self.name,
+        )
         self.area.contents.pop(self.name)
 
     def drop(self, item_name: str):

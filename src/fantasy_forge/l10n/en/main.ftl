@@ -35,6 +35,8 @@ player-health-remaining = You have { NUM($health) } health remaining.
 player-died = You died.
 player-join = { INTER($player_name) } joined the game!
 player-quit = { INTER($player_name) } left the game.
+player-entered-room = { INTER($name) } entered the room!
+player-left-room = { INTER($name) } left the room.
 cannot-attack = Cannot attack { INTER($target) }.
 cannot-use-message = You can't use { EXISTS($other) ->
     [true] { INTER($other) } with{ " " }
