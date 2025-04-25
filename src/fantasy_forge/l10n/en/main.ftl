@@ -1,8 +1,9 @@
-character-name-prompt = Current character name is { $default_name }. Would you like to change it? (Press enter to keep)
-character-name-change-successful = Successfully changed name to { $chosen_name }! Your hormones should arrive soon...
+character-name-prompt = Current character name is "{ INTER($default_name) }". Would you like to change it? (Press enter to keep)
+character-name-change-successful = Successfully changed name to "{ INTER($chosen_name) }"! Your hormones should arrive soon...
 character-name-prompt-multiplayer = What's your name?
 character-desc-prompt-multiplayer = Your current description is "{ $default_description }". Would you like to change it? (Press enter to keep)
 character-name-taken = This name already exists in this world. Choose something else please.
+character-name-taken-prompt = The name "{ INTER($name) }" already exists in this world. Choose something else please:
 character-name-empty = You have to input a name.
 bare-hands-name = bare hands
 bare-hands-description = the harmful hands of the player

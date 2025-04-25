@@ -47,7 +47,10 @@ class MyTCPHandler(StreamRequestHandler):
                 )
             ):
                 wfile.write(
-                    self.server.world.l10n.format_value("character-name-taken") + " "
+                    self.server.world.l10n.format_value(
+                        "character-name-taken", name=name_input
+                    )
+                    + " "
                 )
                 continue
             if name_input:

@@ -65,15 +65,41 @@ def main():
         world.l10n.format_value("character-name-prompt", {"default_name": args.name})
         + " "
     )
-    if name_input:
-        player_name = name_input
-        print(
-            world.l10n.format_value(
-                "character-name-change-successful", {"chosen_name": name_input}
+    while True:
+        if not any(
+            (
+                (name_input or args.name) in area.contents.keys()
+                for area in world.areas.values()
             )
-        )
-    else:
-        player_name = args.name
+        ):
+            if name_input:
+                player_name = name_input
+                print(
+                    world.l10n.format_value(
+                        "character-name-change-successful", {"chosen_name": name_input}
+                    )
+                )
+                break
+            else:
+                player_name = args.name
+                break
+        else:
+            if name_input:
+                name_input = input(
+                    world.l10n.format_value(
+                        "character-name-taken-prompt", {"name": name_input}
+                    )
+                    + " "
+                )
+            else:
+                name_input = input(
+                    world.l10n.format_value(
+                        "character-name-taken-prompt", {"name": args.name}
+                    )
+                    + " "
+                )
+            continue
+
     print()
     player = Player(world, player_name, description)
 
