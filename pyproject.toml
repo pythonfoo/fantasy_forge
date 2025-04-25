@@ -26,6 +26,7 @@ build-backend = "hatchling.build"
 
 [tool.uv]
 dev-dependencies = [
+    "brython>=3.13.1",
     "commandlib>=0.3.5",
     "hitchstory>=0.24.0",
     "icommandlib>=0.8.0 ; sys_platform == 'unix'",

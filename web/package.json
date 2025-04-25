@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@xterm/xterm": "^5.5.0"
+    "@xterm/xterm": "^5.5.0",
+    "brython": "^3.13.1"
   }
 }

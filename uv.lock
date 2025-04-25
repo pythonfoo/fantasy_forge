@@ -25,6 +25,15 @@ wheels = [
 ]
 
 [[package]]
+name = "brython"
+version = "3.13.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/dd/c7/ede5b11818e11a5cae1b4c3cecf433caad85cef6b94bf2cce350db974568/brython-3.13.1.tar.gz", hash = "sha256:c45530e19fb530234c5d5fd9fe144d01154ef03e6e0a739197de9ccab4577faf", size = 1468406 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d4/64/36ec11265b68265af221caff8a0bddad0566d8c13e1e5a8853deb688524c/brython-3.13.1-py3-none-any.whl", hash = "sha256:71c62490709f389f29ced21ff432bea743ae96aa4936f7c406caa0927d8e7398", size = 1487552 },
+]
+
+[[package]]
 name = "click"
 version = "8.1.7"
 source = { registry = "https://pypi.org/simple" }
@@ -66,6 +75,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "brython" },
     { name = "commandlib" },
     { name = "hitchstory" },
     { name = "icommandlib", marker = "sys_platform == 'unix'" },
@@ -84,6 +94,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "brython", specifier = ">=3.13.1" },
     { name = "commandlib", specifier = ">=0.3.5" },
     { name = "hitchstory", specifier = ">=0.24.0" },
     { name = "icommandlib", marker = "sys_platform == 'unix'", specifier = ">=0.8.0" },
