@@ -161,3 +161,6 @@ cython_debug/
 
 # VS Code configuration
 .vscode/
+
+# JavaScript
+web/node_modules

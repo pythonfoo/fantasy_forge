@@ -1,0 +1,4 @@
+html, body, #terminal, .terminal {
+    width: 100%;
+    height: 100%;
+}
