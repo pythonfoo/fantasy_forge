@@ -164,3 +164,4 @@ cython_debug/
 
 # JavaScript
 web/node_modules
+web/fantasy_forge
