@@ -31,6 +31,9 @@ class Inventory:
         """Iterates over items in inventory."""
         yield from self.contents.values()
 
+    def __len__(self: Self) -> int:
+        return len(self.contents)
+
     def __contains__(self: Self, other: str) -> bool:
         """Returns if item is in inventory."""
         return other in self.contents.keys()
@@ -81,6 +84,12 @@ class Inventory:
         if item_name in self:
             return self.contents.pop(item_name)
         return None
+
+    def pop_all(self: Self) -> list[Item]:
+        """Pops all items from the inventory, used for when the player dies/leaves the game in mp"""
+        items = list(self.contents.values())
+        self.contents.clear()
+        return items
 
     def on_look(self: Self) -> str:
         if not self.contents:

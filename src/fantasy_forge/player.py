@@ -415,6 +415,8 @@ class Player(Character):
         self.shell = Shell(self.world.messages, self, stdin=stdin, stdout=stdout)
         self.enter_area(self.world.spawn)
         self.shell.cmdloop()
+        for item in self.inventory.pop_all():
+            self.area.contents[item.name] = item
         # afterwards, leave the current area
         self.leave_area()
         quit_message = random.choice(

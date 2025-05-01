@@ -77,7 +77,7 @@ class Character(Entity):
             target=self.name,
             loot_count=len(self.inventory),
         )
-        for loot_item in self.inventory:
+        for loot_item in self.inventory.pop_all():
             player.area.contents[loot_item.name] = loot_item
             player.seen_entities[loot_item.name] = loot_item
             self.messages.to(
@@ -85,7 +85,7 @@ class Character(Entity):
                 "attack-drop-single",
                 item=loot_item.name,
             )
-        # if the target is dead, remove it from the area and drop their inventory
+        # if the target is dead, remove it from the area
         del player.area.contents[self.name]
         del player.seen_entities[self.name]
 
