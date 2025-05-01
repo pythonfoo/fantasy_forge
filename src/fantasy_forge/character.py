@@ -64,6 +64,7 @@ class Character(Entity):
         """
         Automatic on death call.
         """
+        assert self is not player
         assert not self.alive, "On_death called while entity is alive"
         self.messages.to(
             [player],
@@ -88,8 +89,6 @@ class Character(Entity):
         # if the target is dead, remove it from the area
         del player.area.contents[self.name]
         del player.seen_entities[self.name]
-
-        # remove entity from area
 
 
 if TYPE_CHECKING:

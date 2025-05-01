@@ -73,12 +73,17 @@ class MyTCPHandler(StreamRequestHandler):
         if desc_input:
             player_desc = desc_input
         ip_adress = self.client_address[0]
-        thread = current_thread().getName()
+        thread = current_thread()
         print(f"new connection from {player_name} @ {ip_adress} on {thread}")
         self.server.world.messages.to(
             self.server.world.players, "player-join", player_name=player_name
         )
-        player = Player(self.server.world, player_name, player_desc)
+        player = Player(
+            self.server.world,
+            player_name,
+            player_desc,
+            thread,
+        )
         player.main_loop(stdin=rfile, stdout=wfile)
         print(f"closed connection from {player_name} @ {ip_adress} on {thread}")
         self.server.world.messages.to(

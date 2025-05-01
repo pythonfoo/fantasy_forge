@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import random
-from typing import Self
+from threading import Thread
+from typing import Optional, Self
 
 from fantasy_forge.area import Area
 from fantasy_forge.armour import ARMOUR_TYPES, Armour
@@ -9,7 +12,7 @@ from fantasy_forge.gateway import Gateway
 from fantasy_forge.inventory import Inventory, InventoryFull, InventoryTooSmall
 from fantasy_forge.item import Item
 from fantasy_forge.shell import Shell
-from fantasy_forge.utils import UniqueDict
+from fantasy_forge.utils import UniqueDict, terminate_thread
 from fantasy_forge.weapon import Weapon
 from fantasy_forge.world import World
 
@@ -21,6 +24,7 @@ class Player(Character):
 
     area: Area  # the area we are currently in
     shell: Shell
+    thread: Thread
     seen_entities: UniqueDict[str, Entity]
     armour_slots: dict[str, Armour]
     world: World
@@ -30,6 +34,7 @@ class Player(Character):
         world: World,
         name: str,
         description: int,
+        thread: Thread,
         health: int = BASE_PLAYER_HEALTH,
     ):
         super().__init__(
@@ -41,6 +46,7 @@ class Player(Character):
             ),
         )
         self.world = world
+        self.thread = thread
         self.area = Area.empty(world.messages)
         # put us in the void
         # We will (hopefully) never see this, but it's important for the
@@ -221,7 +227,6 @@ class Player(Character):
             item=item.name,
         )
 
-    # TODO: Refactor
     def attack(self, target_name: str) -> None:
         """Player attacks character using their main hand."""
         target = self.seen_entities.get(target_name)
@@ -242,8 +247,9 @@ class Player(Character):
         super().attack(target)
 
         if target.alive:
-            # give the enemy an option for revenge
-            target.attack(self)
+            if not isinstance(target, Player):
+                # give the enemy an option for revenge
+                target.attack(self)
             self.messages.to(
                 [self],
                 "attack-character-alive-message",
@@ -259,9 +265,13 @@ class Player(Character):
                 health=self.health,
             )
         else:
-            # self._on_death(self)
-            self.messages.to([self], "player-died")
-            exit()
+            self._on_death(target)
+
+    def _on_death(self: Self, killer: Player):
+        super()._on_death(killer)
+        self.messages.to([self], "player-died")
+        # we cant actually close the connection, and threads dont have a kill method, so we copied a function from stackoverflow to do it for us.
+        terminate_thread(self.thread)
 
     def use(self, subject_name: str, other_name: str | None = None):
         subject = self.seen_entities.get(subject_name)

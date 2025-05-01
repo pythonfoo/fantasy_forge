@@ -4,6 +4,7 @@ from argparse import ArgumentParser
 from importlib import resources
 from pathlib import Path
 from sys import argv
+from threading import current_thread
 from typing import Any
 
 import toml
@@ -101,7 +102,7 @@ def main():
             continue
 
     print()
-    player = Player(world, player_name, description)
+    player = Player(world, player_name, description, current_thread())
 
     # main loop
     logger.info("starting mainloop for player %s" % player)
