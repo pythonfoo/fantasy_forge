@@ -165,3 +165,10 @@ cython_debug/
 # JavaScript
 web/node_modules
 web/fantasy_forge
+web/toml
+web/xdg_base_dirs
+web/huepy
+web/fluent
+web/typing_extensions.py
+web/babel
+web/attrs
