@@ -1,5 +1,7 @@
 import logging
 import shutil
+import fileinput
+import re
 from argparse import ArgumentParser
 from importlib import resources
 from pathlib import Path
@@ -47,6 +49,7 @@ def load_config() -> dict[str, Any]:
 
     return config
 
+usr_config_file = xdg_config_home() / "fantasy_forge.toml"
 
 def main():
     # load config and args
@@ -66,6 +69,16 @@ def main():
         world.l10n.format_value("character-name-prompt", {"default_name": args.name})
         + " "
     )
+
+    if name_input:
+        with fileinput.input(usr_config_file, "r+") as file:
+            for line in file:
+                line = line.strip()
+                if "name =" in line:
+                    print(re.sub(config["name"], name_input, line), end="\n")
+                else:
+                    print(line, end="\n")
+
     while True:
         if not any(
             (
