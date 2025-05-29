@@ -30,7 +30,7 @@ class Entity:
         self.messages.to(
             [actor],
             "cannot-use-message",
-            self=self.name,
+            this=self.name,
             other=getattr(other, "name", None),
         )
 
