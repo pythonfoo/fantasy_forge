@@ -390,6 +390,23 @@ class ShellEn(Shell):
         self.messages.to([self.player], "whisper-invalid")
         return
 
+    def complete_whisper(
+        self,
+        text: str,
+        line: str,
+        begidx: int,
+        endidx: int,
+    ) -> list[str]:
+        target = line.removeprefix("whisper ").strip()
+        completions = [
+            text + player.name.removeprefix(target).strip() + " "
+            for player in self.player.world.players
+            if player.name.startswith(target)
+        ]
+        if " " in completions:
+            completions.remove(" ")
+        return completions
+
 
 if TYPE_CHECKING:
     from fantasy_forge.player import Player
