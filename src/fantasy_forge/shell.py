@@ -324,6 +324,25 @@ class ShellEn(Shell):
         """Unequips item or armour."""
         self.player.unequip(arg)
 
+    def complete_unequip(
+        self,
+        text: str,
+        line: str,
+        begidx: int,
+        endidx: int,
+    ) -> list[str]:
+        item = line.removeprefix("unequip ").strip()
+        equipped_items = [self.player.main_hand] + list(self.player.armour_slots.values())
+        
+        completions = [
+            text + entity.name.removeprefix(item).strip() + " "
+            for entity in equipped_items
+            if entity is not None and entity.name.startswith(item)
+        ]
+        if " " in completions:
+            completions.remove(" ")
+        return completions
+
     def do_drop(self, arg: str) -> None:
         """
         drop <item>
