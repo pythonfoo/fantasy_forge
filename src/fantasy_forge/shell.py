@@ -351,6 +351,24 @@ class ShellEn(Shell):
         """
         self.player.drop(arg)
 
+    def complete_drop(
+        self,
+        text: str,
+        line: str,
+        begidx: int,
+        endidx: int,
+    ) -> list[str]:
+        item = line.removeprefix("drop ").strip()
+        
+        completions = [
+            text + entity.name.removeprefix(item).strip() + " "
+            for entity in self.player.inventory
+            if entity.name.startswith(item)
+        ]
+        if " " in completions:
+            completions.remove(" ")
+        return completions
+
     def do_shout(self, arg: str) -> None:
         self.player.shout(arg)
 
