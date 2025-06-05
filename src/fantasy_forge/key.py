@@ -22,6 +22,8 @@ class Key(Item):
         super().__init__(messages, config_dict)
         self.used = False
 
-    def __eq__(self: Self, other: Key):
+    def __eq__(self: Self, other: object):
         """Compares key ids."""
+        if not isinstance(other, Key):
+            return False
         return self.key_id == other.key_id
