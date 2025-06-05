@@ -153,6 +153,10 @@ class Player(Character):
             self.seen_entities.pop(item_name)
             return
 
+        if not isinstance(item, Item) or not item.carryable:
+            self.messages.to([self], "pick-up-failed-message")
+            return
+
         # by equipping the item is implicitly picked up
         if item not in self.inventory.contents.values():
             # if it's not already in the inventory, place it there
