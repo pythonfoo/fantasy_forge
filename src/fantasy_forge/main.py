@@ -1,7 +1,6 @@
 import logging
+import toml
 import shutil
-import fileinput
-import re
 from argparse import ArgumentParser
 from importlib import resources
 from pathlib import Path
@@ -9,9 +8,9 @@ from sys import argv
 from threading import current_thread
 from typing import Any
 
-import toml
 from xdg_base_dirs import xdg_config_home
 
+from fantasy_forge.area import Area
 from fantasy_forge.player import Player
 from fantasy_forge.world import World
 
@@ -61,10 +60,11 @@ def main():
     logger = logging.getLogger(__name__)
     numeric_level = getattr(logging, args.loglevel.upper(), None)
     logging.basicConfig(filename=args.logfile, level=numeric_level, filemode="w")
-    logger.info("load world %s" % args.world)
+    logger.info("load world %s", args.world)
 
     # set player name and load world
     world = World.load(args.world)
+
     name_input = input(
         world.l10n.format_value("character-name-prompt", {"default_name": args.name})
         + " "
@@ -112,5 +112,5 @@ def main():
     player = Player(world, player_name, description, current_thread())
 
     # main loop
-    logger.info("starting mainloop for player %s" % player)
+    logger.info("starting mainloop for player %s", player)
     player.main_loop()

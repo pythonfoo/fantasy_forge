@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Iterator, Self
 
+from fantasy_forge.entity import Entity
 from fantasy_forge.item import Item
 from fantasy_forge.utils import UniqueDict
-from fantasy_forge.world import highlight_interactive
 
 
 class InventoryFull(Exception):
@@ -15,17 +15,24 @@ class InventoryTooSmall(Exception):
     pass
 
 
-class Inventory:
-    """An Inventory contains multiple items."""
+class Inventory(Entity):
+    """An Inventory contains multiple entities."""
 
     messages: Messages
     capacity: int
     contents: UniqueDict[str, Item]
 
+    __important_attributes__ = ("name", "capacity")
+    __attributes__ = {**Entity.__attributes__, "capacity": int}
+
     def __init__(self: Self, messages: Messages, capacity: int):
         self.messages = messages
         self.capacity = capacity
         self.contents = UniqueDict()
+
+    def __len__(self: Self) -> int:
+        """Returns current capacity."""
+        return len(self.contents)
 
     def __iter__(self: Self) -> Iterator[Item]:
         """Iterates over items in inventory."""
@@ -35,13 +42,8 @@ class Inventory:
         return len(self.contents)
 
     def __contains__(self: Self, other: str) -> bool:
-        """Returns if item is in inventory."""
-        return other in self.contents.keys()
-
-    def __repr__(self: Self) -> str:
-        output: str = f"Inventory({len(self)}/{self.capacity})\n"
-        output += "[" + ", ".join(self.contents.keys()) + "]"
-        return output
+        """Returns if entity is in inventory."""
+        return other in self.contents
 
     def calculate_weight(self: Self) -> int:
         weight = 0
@@ -75,14 +77,14 @@ class Inventory:
                 )
             )
 
-    def get(self: Self, item_name: str) -> Item | None:
+    def get(self: Self, entity_name: str) -> Entity | None:
         """Gets item by name."""
-        return self.contents.get(item_name)
+        return self.contents.get(entity_name)
 
-    def pop(self: Self, item_name: str) -> Item | None:
+    def pop(self: Self, entity_name: str) -> Entity | None:
         """Pops item from inventory."""
-        if item_name in self:
-            return self.contents.pop(item_name)
+        if entity_name in self:
+            return self.contents.pop(entity_name)
         return None
 
     def pop_all(self: Self) -> list[Item]:
@@ -107,6 +109,12 @@ class Inventory:
                     ),
                 },
             )
+
+    def to_dict(self) -> dict:
+        """Returns inventory as a dictionary."""
+        entity_dict: dict = super().to_dict()
+        inventory_dict: dict = {**entity_dict, "capacity": self.capacity}
+        return inventory_dict
 
 
 if TYPE_CHECKING:

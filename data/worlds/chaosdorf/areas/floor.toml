@@ -10,19 +10,19 @@ obvious = true
 [[contents]]
 kind = "gateway"
 name = "everyones toilet door"
-target = "everyones-toilet"
+target = "everyones toilet"
 obvious = true
 
 [[contents]]
 kind = "gateway"
 name = "flinta toilet door"
-target = "flinta-toilet"
+target = "flinta toilet"
 obvious = true
 
 [[contents]]
 kind = "gateway"
 name = "premium toilet door"
-target = "premium-toilet"
+target = "premium toilet"
 obvious = true
 
 [[contents]]
@@ -34,7 +34,7 @@ obvious = true
 [[contents]]
 kind = "gateway"
 name = "conference room door"
-target = "conference-room"
+target = "conference room"
 obvious = true
 
 [[contents]]

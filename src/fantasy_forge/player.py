@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import random
 from threading import Thread
-from typing import Optional, Self
+from typing import TYPE_CHECKING, Optional, Self
 
 from fantasy_forge.area import Area
 from fantasy_forge.armour import ARMOUR_TYPES, Armour
@@ -14,7 +14,10 @@ from fantasy_forge.item import Item
 from fantasy_forge.shell import Shell
 from fantasy_forge.utils import UniqueDict, terminate_thread
 from fantasy_forge.weapon import Weapon
-from fantasy_forge.world import World
+
+if TYPE_CHECKING:
+    from fantasy_forge.world import World
+
 
 BASE_PLAYER_HEALTH = 100
 
@@ -48,6 +51,7 @@ class Player(Character):
         self.world = world
         self.thread = thread
         self.area = Area.empty(world.messages)
+
         # put us in the void
         # We will (hopefully) never see this, but it's important for the
         # transition to the next area.
@@ -62,8 +66,8 @@ class Player(Character):
     @property
     def defense(self) -> int:
         defense_sum: int = 0
-        armour_item: Armour
-        for armour_item in self.armour_slots.keys():
+        armour_item: Armour | None
+        for armour_item in self.armour_slots.values():
             if armour_item is not None:
                 defense_sum += armour_item.defense
         return defense_sum
@@ -144,7 +148,7 @@ class Player(Character):
                 entity=item_name,
             )
             return
-        # item must be in the area or the inventory to be equiped
+        # item must be in the area or the inventory to be equipped
         if (
             item_name not in self.area.contents
             and item_name not in self.inventory.contents
@@ -191,7 +195,7 @@ class Player(Character):
 
     def equip_armour(self, armour: Armour) -> None:
         """Equips armour piece."""
-        current_armour: Armour = self.armour_slots.pop(armour.armour_type)
+        current_armour: Armour | None = self.armour_slots.pop(armour.armour_type)
         # check if armour slot is already filled
         if current_armour is not None:
             self.messages.to(
@@ -327,6 +331,10 @@ class Player(Character):
 
     def enter_gateway(self: Self, gateway: Gateway):
         """Uses gateway to enter a new area."""
+        # TODO: refactor
+        # The Player holds no reference to the current world,
+        # so a external function should do the area change
+
         if gateway.locked:
             self.messages.to(
                 [self],

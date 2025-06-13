@@ -8,6 +8,8 @@ from fantasy_forge.entity import Entity
 class Item(Entity):
     """An Item is an entity which can be picked up by the player."""
 
+
+    __attributes__ = {**Entity.__attributes__, "moveable": bool, "carryable": bool, "weight": int}
     __important_attributes__ = ("name", "moveable", "carryable", "weight")
 
     moveable: bool
@@ -15,6 +17,17 @@ class Item(Entity):
     weight: int
 
     def __init__(self: Self, messages: Messages, config_dict: dict[str, Any]) -> None:
+        """
+        config_dict contents
+        'moveable' (bool): can the item be moved by the player (default: True)
+        'carryable' (bool): can the item be put in the inventory by the player (default: True)
+        'weight' (int): weight of the item (important for inventory capacity)
+
+        inherited from Entity
+        'name' (str): name of the entity
+        'description' (str): description of the entity (default: "")
+        'obvious'(bool): whether the entity will be spotted immediately (default: False)
+        """
         self.moveable = config_dict.pop("moveable", True)
         self.carryable = config_dict.pop("carryable", True)
         self.weight = config_dict.pop("weight", 1)

@@ -1,5 +1,8 @@
+"""An Area is a place in the world, containing NPCs, Items and connections to other areas."""
+
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Iterator, Self
 
@@ -7,6 +10,8 @@ import toml
 
 from fantasy_forge.entity import Entity
 from fantasy_forge.utils import UniqueDict
+
+logger = logging.getLogger(__name__)
 
 
 class Area(Entity):
@@ -16,6 +21,14 @@ class Area(Entity):
     contents: UniqueDict[str, Entity]
 
     def __init__(self: Self, messages: Messages, config_dict: dict[str, Any]):
+        """
+        config_dict contents
+
+        inherited from Entity
+        'name' (str): name of the entity
+        'description' (str): description of the entity (default: "")
+        'obvious'(bool): whether the entity will be spotted immediately (default: False)
+        """
         super().__init__(messages, config_dict)
         self.contents = UniqueDict()
 

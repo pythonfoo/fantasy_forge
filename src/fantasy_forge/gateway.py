@@ -1,19 +1,27 @@
+"""Gateway class
+
+A gateway connects two areas.
+"""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Optional, Self
 
 from fantasy_forge.area import Area
 from fantasy_forge.entity import Entity
-from fantasy_forge.item import Item
 from fantasy_forge.key import Key
 from fantasy_forge.messages import Messages
-from fantasy_forge.world import World
-
 
 class Gateway(Entity):
     """A Gateway is a one-way connection to an area."""
 
     __important_attributes__ = ("name", "target", "locked")
+    __attributes__ = {
+        **Entity.__attributes__,
+        "target": str,
+        "locked": bool,
+        "key_list": list,
+    }
 
     target_str: str  # This is not an area because the target might not be loaded yet.
     target: Optional[Area]
@@ -25,12 +33,23 @@ class Gateway(Entity):
         messages: Messages,
         config_dict: dict[str, Any],
     ):
+        """
+        config_dict contents
+        'target' (str): name of the target area
+        'locked' (bool): whether the gateway is locked (default: False)
+        'key_list' (list[str]): a list of keys to use for this gateway (default: [])
+
+        inherited from Entity
+        'name' (str): name of the entity
+        'description' (str): description of the entity (default: "")
+        'obvious'(bool): whether the entity will be spotted immediately (default: False)
+        """
         self.target_str = config_dict.pop("target")
         self.target = None
         self.locked = config_dict.pop("locked", False)
         self.key_list = config_dict.pop("key_list", [])
         super().__init__(messages, config_dict)
-
+        
     def on_look(self: Self, actor: Player):
         if self.key_list and self.locked:
             self.messages.to([actor], "gateway-on-look-locked")
@@ -79,6 +98,7 @@ class Gateway(Entity):
             )
 
     def to_dict(self: Self) -> dict:
+        """Returns gateway as a dictionary."""
         gateway_dict: dict = super().to_dict()
         gateway_dict["target"] = self.target
         return gateway_dict
@@ -99,3 +119,4 @@ class Gateway(Entity):
 
 if TYPE_CHECKING:
     from fantasy_forge.player import Player
+    from fantasy_forge.world import World
