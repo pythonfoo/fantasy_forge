@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Iterator, Self
+from typing import TYPE_CHECKING, Self
 
+from fantasy_forge.container import Container
 from fantasy_forge.entity import Entity
 from fantasy_forge.item import Item
+from fantasy_forge.localization import highlight_interactive
 from fantasy_forge.utils import UniqueDict
 
 
@@ -15,35 +17,13 @@ class InventoryTooSmall(Exception):
     pass
 
 
-class Inventory(Entity):
+class Inventory(Container):
     """An Inventory contains multiple entities."""
-
-    messages: Messages
-    capacity: int
-    contents: UniqueDict[str, Item]
-
-    __important_attributes__ = ("name", "capacity")
-    __attributes__ = {**Entity.__attributes__, "capacity": int}
 
     def __init__(self: Self, messages: Messages, capacity: int):
         self.messages = messages
         self.capacity = capacity
         self.contents = UniqueDict()
-
-    def __len__(self: Self) -> int:
-        """Returns current capacity."""
-        return len(self.contents)
-
-    def __iter__(self: Self) -> Iterator[Item]:
-        """Iterates over items in inventory."""
-        yield from self.contents.values()
-
-    def __len__(self: Self) -> int:
-        return len(self.contents)
-
-    def __contains__(self: Self, other: str) -> bool:
-        """Returns if entity is in inventory."""
-        return other in self.contents
 
     def calculate_weight(self: Self) -> int:
         weight = 0

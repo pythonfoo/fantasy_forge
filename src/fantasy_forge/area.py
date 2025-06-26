@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Any, Iterator, Self
 import toml
 
 from fantasy_forge.entity import Entity
-from fantasy_forge.utils import UniqueDict
+from fantasy_forge.utils import UniqueDict, inflate_contents
 
 logger = logging.getLogger(__name__)
 
@@ -59,39 +59,8 @@ class Area(Entity):
 
     @staticmethod
     def from_dict(messages: Messages, area_dict: dict) -> Area:
-        contents_list: list[Entity] = []
-        for entity_dict in area_dict.get("contents", []):
-            match entity_dict.get("kind", "entity"):
-                case "item":
-                    from fantasy_forge.item import Item
-
-                    contents_list.append(Item(messages, entity_dict))
-                case "gateway":
-                    from fantasy_forge.gateway import Gateway
-
-                    contents_list.append(Gateway(messages, entity_dict))
-                case "key":
-                    from fantasy_forge.key import Key
-
-                    contents_list.append(Key(messages, entity_dict))
-                case "enemy":
-                    from fantasy_forge.enemy import Enemy
-
-                    contents_list.append(Enemy(messages, entity_dict))
-                case "weapon":
-                    from fantasy_forge.weapon import Weapon
-
-                    contents_list.append(Weapon(messages, entity_dict))
-                case "armour":
-                    from fantasy_forge.armour import Armour
-
-                    contents_list.append(Armour(messages, entity_dict))
-
-                case default:
-                    contents_list.append(Entity(messages, entity_dict))
         area = Area(messages, area_dict)
-        for entity in contents_list:
-            area.contents[entity.name] = entity
+        inflate_contents(messages, area_dict.get("contents", []), area)
         return area
 
     @staticmethod

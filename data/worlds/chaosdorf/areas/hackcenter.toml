@@ -24,9 +24,13 @@ description = "a large couch. It seems quite comfortable..."
 obvious = true
 
 [[contents]]
+kind = "container"
 name = "fridge"
 description = "a fridge full of magic potions"
 obvious = true
+[[contents.contents]]
+name = "mate"
+kind = "item"
 
 [[contents]]
 name = "printer"
