@@ -395,6 +395,14 @@ class Player(Character):
                 item=item_name,
             )
             return
+        if item.quest_item:
+            self.inventory.add(item)
+            self.messages.to(
+                [self],
+                "cant-drop-quest-item",
+                item=item_name,
+            )
+            return
         self.area.contents[item.name] = item  # adds item to current area
         if self.main_hand is item:  # clears main hand if item was dropped from it
             self.main_hand = None

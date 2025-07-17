@@ -8,13 +8,19 @@ from fantasy_forge.entity import Entity
 class Item(Entity):
     """An Item is an entity which can be picked up by the player."""
 
-
-    __attributes__ = {**Entity.__attributes__, "moveable": bool, "carryable": bool, "weight": int}
-    __important_attributes__ = ("name", "moveable", "carryable", "weight")
+    __attributes__ = {
+        **Entity.__attributes__,
+        "moveable": bool,
+        "carryable": bool,
+        "weight": int,
+        "quest_item": bool,
+    }
+    __important_attributes__ = ("name", "moveable", "carryable", "weight", "quest_item")
 
     moveable: bool
     carryable: bool
     weight: int
+    quest_item: bool
 
     def __init__(self: Self, messages: Messages, config_dict: dict[str, Any]) -> None:
         """
@@ -31,10 +37,14 @@ class Item(Entity):
         self.moveable = config_dict.pop("moveable", True)
         self.carryable = config_dict.pop("carryable", True)
         self.weight = config_dict.pop("weight", 1)
+        self.quest_item = config_dict.pop("quest_item", False)
         super().__init__(messages, config_dict)
 
+        if self.quest_item:
+            self.weight = 0
+
     def __repr__(self: Self) -> str:
-        return f"Item({self.name}, {self.description}, moveable={self.moveable}, carryable={self.carryable}, weight={self.weight})"
+        return f"Item({self.name}, {self.description}, moveable={self.moveable}, carryable={self.carryable}, weight={self.weight}, quest_item={self.quest_item})"
 
     def on_pickup(self: Self):
         # TODO
@@ -45,6 +55,7 @@ class Item(Entity):
         item_dict["moveable"] = self.moveable
         item_dict["carryable"] = self.carryable
         item_dict["weight"] = self.weight
+        item_dict["quest_item"] = self.quest_item
         return item_dict
 
     @staticmethod

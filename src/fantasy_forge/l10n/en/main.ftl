@@ -49,6 +49,7 @@ armour-detail = {$type}: {EXISTS($item) ->
 }.
 drop-not-found = You can't drop { $item }.
 dropped = You dropped { INTER($item) }.
+cant-drop-quest-item = You can't drop { INTER($item) }, it's a quest item.
 enter-area-message = You are now in { $area }. You see:
 inventory-look-message = In the inventory you find { $items }.
 inventory-look-empty-message = Your inventory is empty.
