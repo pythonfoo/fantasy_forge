@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import logging
+import os.path
+import readline
 from cmd import Cmd
 from typing import TYPE_CHECKING
 
 import fuzzywuzzy.process
+from xdg_base_dirs import xdg_cache_home
 
 from fantasy_forge.armour import Armour
 from fantasy_forge.character import Character
@@ -22,6 +25,7 @@ class Shell(Cmd):
     player: Player
     messages: Messages
     prompt = "> "
+    histfile: str
 
     def __new__(
         cls, messages: Messages, player: Player, stdin=None, stdout=None
@@ -48,6 +52,19 @@ class Shell(Cmd):
             self.use_rawinput = False
         self.player = player
         self.messages = messages
+
+        if not stdin and not stdout:  # check if singleplayer
+            self.histfile = xdg_cache_home() / "fantasy_forge.hist"
+            if readline and os.path.exists(self.histfile):
+                readline.read_history_file(self.histfile)
+        else:
+            self.histfile = None
+
+    def postloop(self):
+        histfile_size = 1000
+        if readline and self.histfile:
+            readline.set_history_length(histfile_size)
+            readline.write_history_file(self.histfile)
 
     def completenames(self, text, *ignored):
         """This is called when completing the command itself.
@@ -332,8 +349,10 @@ class ShellEn(Shell):
         endidx: int,
     ) -> list[str]:
         item = line.removeprefix("unequip ").strip()
-        equipped_items = [self.player.main_hand] + list(self.player.armour_slots.values())
-        
+        equipped_items = [self.player.main_hand] + list(
+            self.player.armour_slots.values()
+        )
+
         completions = [
             text + entity.name.removeprefix(item).strip() + " "
             for entity in equipped_items
@@ -359,7 +378,7 @@ class ShellEn(Shell):
         endidx: int,
     ) -> list[str]:
         item = line.removeprefix("drop ").strip()
-        
+
         completions = [
             text + entity.name.removeprefix(item).strip() + " "
             for entity in self.player.inventory
