@@ -1,5 +1,4 @@
 import logging
-import toml
 import shutil
 from argparse import ArgumentParser
 from importlib import resources
@@ -8,51 +7,57 @@ from sys import argv
 from threading import current_thread
 from typing import Any
 
+import toml
 from xdg_base_dirs import xdg_config_home
 
 from fantasy_forge.area import Area
+from fantasy_forge.config import Config
 from fantasy_forge.player import Player
 from fantasy_forge.world import World
 
 
-def parse_args(config: dict[str, Any], argv=argv[1:]):
+def read_config_options(user_config: dict[str, Any]) -> Config:
+    config = Config()
+    config_options = dir(Config)
+    for option in config_options:
+        if option in user_config:
+            setattr(config, option, user_config[option])
+
+    return config
+
+
+def parse_args(config: Config, argv=argv[1:]):
     parser = ArgumentParser(description="Fantasy Forge: A text-based RPG")
     parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
-    parser.add_argument("--world", help="The world to play in", default=config["world"])
-    parser.add_argument("--name", help="Set player name", default=config["name"])
+    parser.add_argument("--world", help="The world to play in", default=config.world)
+    parser.add_argument("--name", help="Set player name", default=config.name)
     parser.add_argument(
-        "--description", help="Set player description", default=config["description"]
+        "--description", help="Set player description", default=config.description
     )
     parser.add_argument(
-        "--logfile",
-        help="Enables logging for debug purposes",
-        default=config["logfile"],
+        "--logfile", help="Enables logging for debug purposes", default=config.logfile
     )
     parser.add_argument(
-        "--loglevel", help="Severity Level for logging", default=config["loglevel"]
+        "--loglevel", help="Severity Level for logging", default=config.loglevel
     )
     return parser.parse_args(argv)
 
 
-def load_config() -> dict[str, Any]:
-    with resources.as_file(resources.files()) as resource_path:
-        default_config_file = resource_path / "config.toml"
+def user_config() -> dict[str, Any]:
+    config_file = xdg_config_home() / "fantasy_forge.toml"
 
-    usr_config_file = xdg_config_home() / "fantasy_forge.toml"
+    if not config_file.exists():
+        config_file.touch()
 
-    if not usr_config_file.exists():
-        shutil.copyfile(default_config_file, usr_config_file)
-
-    with usr_config_file.open() as config_file:
-        config = toml.load(config_file)
+    with config_file.open() as file:
+        config = toml.load(file)
 
     return config
 
-usr_config_file = xdg_config_home() / "fantasy_forge.toml"
 
 def main():
     # load config and args
-    config = load_config()
+    config = read_config_options(user_config())
     args = parse_args(config)
     description = args.description
 
