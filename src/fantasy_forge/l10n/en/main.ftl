@@ -42,7 +42,10 @@ cannot-attack = Cannot attack { INTER($target) }.
 cannot-use-message = You can't use { EXISTS($other) ->
     [true] { INTER($other) } with{ " " }
     *[false] { "" }
-}{ INTER($this) }.
+}{ INTER($this) }{ EXISTS($other) ->
+    [true] { "" }
+    *[false] { " on its own, you need to specify what to use it with" }
+}.
 armour-detail = {$type}: {EXISTS($item) ->
     [true] {$item_name} ({NUM($item_defense)} defense)
     *[false] Nothing
