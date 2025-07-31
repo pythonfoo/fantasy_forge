@@ -84,9 +84,7 @@ def main():
         ):
             if name_input:
                 player_name = name_input
-                config["name"] = name_input
-                with usr_config_file.open("w") as config_file:
-                    toml.dump(config, config_file)
+                setattr(config, 'name', name_input)
                 print(
                     world.l10n.format_value(
                         "character-name-change-successful", {"chosen_name": name_input}
