@@ -4,6 +4,6 @@ areas = ["cave", "lounge", "kitchen", "hackcenter", "floor", "elab", "conference
 spawn = "cave"
 intro_text = """
 You awake confused from a deep sleep.
-It's early saturday morning and your breath smells like white claw monster energy.
+It's early saturday morning and your breath smells like white monster energy ultra.
 You don't remember what happened and how you got here.
 """
