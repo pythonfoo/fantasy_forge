@@ -7,23 +7,10 @@ from sys import argv
 from threading import current_thread
 from typing import Any
 
-import toml
-from xdg_base_dirs import xdg_config_home
-
 from fantasy_forge.area import Area
 from fantasy_forge.config import Config
 from fantasy_forge.player import Player
 from fantasy_forge.world import World
-
-
-def read_config_options(user_config: dict[str, Any]) -> Config:
-    config = Config()
-    config_options = dir(Config)
-    for option in config_options:
-        if option in user_config:
-            setattr(config, option, user_config[option])
-
-    return config
 
 
 def parse_args(config: Config, argv=argv[1:]):
@@ -43,21 +30,9 @@ def parse_args(config: Config, argv=argv[1:]):
     return parser.parse_args(argv)
 
 
-def user_config() -> dict[str, Any]:
-    config_file = xdg_config_home() / "fantasy_forge.toml"
-
-    if not config_file.exists():
-        config_file.touch()
-
-    with config_file.open() as file:
-        config = toml.load(file)
-
-    return config
-
-
 def main():
     # load config and args
-    config = read_config_options(user_config())
+    config = Config.read()
     args = parse_args(config)
     description = args.description
 
@@ -84,7 +59,7 @@ def main():
         ):
             if name_input:
                 player_name = name_input
-                setattr(config, 'name', name_input)
+                setattr(config, "name", name_input)
                 print(
                     world.l10n.format_value(
                         "character-name-change-successful", {"chosen_name": name_input}
@@ -110,6 +85,8 @@ def main():
                     + " "
                 )
             continue
+
+    config.save()
 
     print()
     player = Player(world, player_name, description, current_thread())
