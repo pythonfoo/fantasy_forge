@@ -11,6 +11,7 @@ look-at-message = You look at { INTER($object) }.
 entity-not-seen = There is no { $entity }.
 look-around-begin = You take a look around the { $area_name }. It is { $area_description }. You see:
 look-around-single = * { INTER($object) }
+incomplete-look = This is not a valid command. try "look around" instead.
 pick-up-item-menu = Please select your option:
 pick-up-item-message = You picked up { INTER($item) } and put it in your inventory.
 entity-does-not-exist = { $entity } does not exist.

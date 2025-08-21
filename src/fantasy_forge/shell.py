@@ -77,7 +77,9 @@ class Shell(Cmd):
     def default(self, line: str):
         if len(line) < 3:
             """Display an error message, because the command was invalid."""
-            self.stdout.write(self.messages.l10n.format_value("shell-invalid-command"))
+            self.stdout.write(
+                self.messages.l10n.format_value("shell-invalid-command") + "\n"
+            )
 
         else:
             """Check for potential typos and recommend closest command"""
@@ -88,6 +90,7 @@ class Shell(Cmd):
                 self.messages.l10n.format_value(
                     "shell-invalid-command-suggest", {"closest_cmd": closest_cmd}
                 )
+                + "\n"
             )
 
     def do_EOF(self, arg: str) -> bool:
@@ -138,7 +141,7 @@ class ShellEn(Shell):
             self.player.look_around()
             logger.debug("%s looks around" % self.player.name)
         else:
-            self.default(arg)
+            self.stdout.write(self.messages.l10n.format_value("incomplete-look") + "\n")
 
     def complete_look(
         self,
