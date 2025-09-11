@@ -15,14 +15,26 @@ class FakeFile:
         self.file = file
 
     def write(self, text: str):
-        self.file.write(text.encode())
+        self.file.write(text.replace("\n", "\r\n").encode())
 
     def readline(self, max_length: Optional[int] = None) -> str:
+        print("shell asked us for a command")
         if max_length is not None:
+            # this request comes from our code (TCPListener)
             text = self.file.readline(max_length)
         else:
-            text = self.file.readline()
-        return text.decode()
+            # this request comes from cmd
+            text = b""
+            while True:
+                char = self.file.read(1)
+                
+                print(f"got {char}")
+                if char == b"\0":
+                    break
+                text += char
+        val = text.decode()
+        print(f"returning {val}")
+        return val
 
     def flush(self):
         self.file.flush()
@@ -84,6 +96,11 @@ class MyTCPHandler(StreamRequestHandler):
             player_desc,
             thread,
         )
+        # telnet: IAC WONT LINEMODE IAC WILL ECHO
+        # see: https://stackoverflow.com/a/279271/2192464
+        self.wfile.write(b"\377\375\042\377\373\001")
+        # the client will ACK this, ignore this message
+        self.rfile.read(65)
         player.main_loop(stdin=rfile, stdout=wfile)
         print(f"closed connection from {player_name} @ {ip_adress} on {thread}")
         self.server.world.messages.to(
