@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 import os.path
-import readline
 from cmd import Cmd
 from typing import TYPE_CHECKING
 
@@ -54,15 +53,17 @@ class Shell(Cmd):
         self.messages = messages
 
         if not stdin and not stdout:  # check if singleplayer
+            import readline
             self.histfile = xdg_cache_home() / "fantasy_forge.hist"
-            if readline and os.path.exists(self.histfile):
+            if os.path.exists(self.histfile):
                 readline.read_history_file(self.histfile)
         else:
             self.histfile = None
 
     def postloop(self):
         histfile_size = 1000
-        if readline and self.histfile:
+        if self.histfile:
+            import readline
             readline.set_history_length(histfile_size)
             readline.write_history_file(self.histfile)
 
