@@ -51,3 +51,9 @@ pre-commit run --all-files
 Unittests via [pytest](https://docs.pytest.org/) live in `./tests/unittests`
 
 Integration tests via [hitchstory](https://hitchdev.com/) and pytest are in `./tests/integration`
+
+## License
+
+The code (that is, the entire repository, except for the `data/worlds/chaosdorf` folder) is licensed under the GNU General Public License, version 3.
+
+The world (that is, the `data/world/chaosdorf` folder) does not currently have a license.
