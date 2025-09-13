@@ -56,4 +56,4 @@ Integration tests via [hitchstory](https://hitchdev.com/) and pytest are in `./t
 
 The code (that is, the entire repository, except for the `data/worlds/chaosdorf` folder) is licensed under the GNU General Public License, version 3.
 
-The world (that is, the `data/world/chaosdorf` folder) does not currently have a license.
+The world (that is, the `data/world/chaosdorf` folder) is licensed under Creative Commons Attribution Share Alike, version 4.
