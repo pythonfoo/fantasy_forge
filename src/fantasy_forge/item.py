@@ -59,6 +59,7 @@ class Item(Entity):
         return item_dict
 
     @staticmethod
+    # TODO: remove
     def from_dict(messages: Messages, item_dict: dict) -> Item:
         item: Item = Item(messages, item_dict)
         return item

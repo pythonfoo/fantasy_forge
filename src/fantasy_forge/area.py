@@ -58,7 +58,7 @@ class Area(Entity):
         return area_dict
 
     @staticmethod
-    def from_dict(messages: Messages, area_dict: dict) -> Area:
+    def from_dict(messages: Messages, area_dict: dict[str, Any]) -> Area:
         area = Area(messages, area_dict)
         inflate_contents(messages, area_dict.get("contents", []), area)
         return area

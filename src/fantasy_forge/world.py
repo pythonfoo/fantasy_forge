@@ -107,6 +107,7 @@ class World:
             parent: str = toml_path.parent.name
 
             # infer type from parent directory
+            # TODO: area is the only type here, we can simplify this
             if parent in ASSET_TYPES.keys():
                 asset_type = ASSET_TYPES[parent]
             else:

@@ -24,7 +24,7 @@ class Gateway(Entity):
     }
 
     target_str: str  # This is not an area because the target might not be loaded yet.
-    target: Optional[Area]
+    target: Optional[Area] = None
     locked: bool
     key_list: list[str]
 
@@ -45,7 +45,6 @@ class Gateway(Entity):
         'obvious'(bool): whether the entity will be spotted immediately (default: False)
         """
         self.target_str = config_dict.pop("target")
-        self.target = None
         self.locked = config_dict.pop("locked", False)
         self.key_list = config_dict.pop("key_list", [])
         super().__init__(messages, config_dict)
