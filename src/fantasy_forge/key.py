@@ -32,10 +32,10 @@ class Key(Item):
         'obvious'(bool): whether the entity will be spotted immediately (default: False)
         """
         self.key_id = config_dict.pop("key_id")
-
-        self.moveable = True  # keys are moveable by default
-        self.carryable = True  # keys are carryable by default
-        self.weight = 0  # keys are weightless by default
+        
+        # keys are weightless by default
+        if "weight" not in config_dict:
+            config_dict["weight"] = 0
 
         super().__init__(messages, config_dict)
         self.used = False
